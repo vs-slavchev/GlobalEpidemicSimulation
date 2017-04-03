@@ -17,6 +17,7 @@
 .menu-button {
          -fx-background-color: #dc143c;
          -fx-font-weight: bold;
+         -fx-background-radius: 16px;
  }
 
 .menu-button .label {

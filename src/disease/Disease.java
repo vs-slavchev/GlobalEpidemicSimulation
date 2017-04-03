@@ -6,6 +6,18 @@ package disease;
 
 public class Disease {
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(DiseaseType type) {
+        this.type = type;
+    }
+
+    public void setProperties(DiseaseProperties properties) {
+        this.properties = properties;
+    }
+
     private String name;
     private DiseaseType type;
     private DiseaseProperties properties;
