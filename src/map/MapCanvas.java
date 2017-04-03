@@ -1,4 +1,4 @@
-package main;
+package map;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import javafx.application.Platform;
@@ -8,12 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.util.Duration;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
@@ -30,6 +28,10 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.Set;
+
+/**
+ * Owner: Veselin
+ */
 
 public class MapCanvas {
 
@@ -83,6 +85,10 @@ public class MapCanvas {
         Rectangle rectangle = new Rectangle((int) canvas.getWidth(), (int) canvas.getHeight());
         draw.paint(graphics, rectangle, map.getViewport().getBounds());
 
+        //drawPointsForCountry(gc);
+    }
+
+    private void drawPointsForCountry(GraphicsContext gc) {
         gc.setFill(javafx.scene.paint.Color.YELLOW);
         Coordinate[] points = geoFinder.getCountryVertices("Russia");
         for (Coordinate mapPoint : points) {
@@ -99,7 +105,7 @@ public class MapCanvas {
             e.consume();
         });
 
-        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
+        /*canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
             double difX = e.getSceneX() - dragDistanceX;
             double difY = e.getSceneY() - dragDistanceY;
             dragDistanceX = e.getSceneX();
@@ -112,7 +118,7 @@ public class MapCanvas {
             setViewport(env);
             e.consume();
 
-        });
+        });*/
 
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, t -> {
             if (t.getClickCount() == 1) {
@@ -126,7 +132,7 @@ public class MapCanvas {
             t.consume();
         });
 
-        canvas.addEventHandler(ScrollEvent.SCROLL, e -> {
+        /*canvas.addEventHandler(ScrollEvent.SCROLL, e -> {
             ReferencedEnvelope envelope = map.getViewport().getBounds();
             double percent = -e.getDeltaY() / canvas.getWidth();
             double width = envelope.getWidth();
@@ -135,15 +141,15 @@ public class MapCanvas {
             double deltaH = height * percent;
             envelope.expandBy(deltaW, deltaH);
 
-            /*double refitting = (Math.abs(envelope.getMinimum(1)) - envelope.getMaximum(1)) / 2;
+            *//*double refitting = (Math.abs(envelope.getMinimum(1)) - envelope.getMaximum(1)) / 2;
             envelope.translate(0, refitting);
 
             System.out.println(envelope.toString());
-            System.out.println(refitting);*/
+            System.out.println(refitting);*//*
 
             setViewport(envelope);
             e.consume();
-        });
+        });*/
     }
 
     private void initPaintThread() {

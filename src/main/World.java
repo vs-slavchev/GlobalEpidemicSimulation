@@ -1,4 +1,4 @@
-package sample;
+package main;
 
 /**
  * Created by Yasen on 4/3/2017.
@@ -6,7 +6,7 @@ package sample;
 
 import java.util.ArrayList;
 import java.util.List;
-import sample.Environment;
+import main.Environment;
 
 public class World {
 

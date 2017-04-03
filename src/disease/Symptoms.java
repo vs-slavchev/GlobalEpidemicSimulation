@@ -1,11 +1,8 @@
-package sample;
+package disease;
 
 /**
  * Created by Yasen on 4/2/2017.
  */
-
-import sample.DiseaseProperties;
-import sample.SymptomType;
 
 
 public class Symptoms {

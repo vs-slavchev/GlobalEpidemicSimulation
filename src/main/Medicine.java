@@ -1,12 +1,12 @@
-package sample;
+package main;
 
 /**
  * Created by Owner on 4/2/2017.
  */
 
-import sample.DiseaseType;
-import sample.DiseaseProperties;
-import sample.SymptomType;
+import disease.DiseaseType;
+import disease.DiseaseProperties;
+import disease.SymptomType;
 
 public class Medicine {
 

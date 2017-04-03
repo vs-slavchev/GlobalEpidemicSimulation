@@ -1,4 +1,4 @@
-package main;
+package map;
 
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -14,8 +14,8 @@ import org.opengis.filter.identity.FeatureId;
 import java.awt.*;
 import java.util.Set;
 
-import static main.MapCanvas.filterFactory;
-import static main.MapCanvas.styleFactory;
+import static map.MapCanvas.filterFactory;
+import static map.MapCanvas.styleFactory;
 
 /**
  * Owner: Veselin

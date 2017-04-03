@@ -1,4 +1,4 @@
-package sample;
+package disease;
 
 /**
  * Created by Yasen on 4/2/2017.

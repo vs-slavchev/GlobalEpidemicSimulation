@@ -1,17 +1,19 @@
-package sample;
+package algorithm;
 
 /**
- * Created by Owner on 4/3/2017.
+ * Created by Kaloyan on 4/3/2017.
  */
+
+import disease.Disease;
+import main.Country;
 
 import java.util.ArrayList;
 import java.util.List;
-import sample.Country;
-import sample.Disease;
 
 public class InfectionSpread {
 
     public List<Disease> diseaseList;
+    private int infectionRate = 5;
 
     public InfectionSpread() {
         diseaseList = new ArrayList<Disease>();
