@@ -1,6 +1,9 @@
 package main;
 
 import algorithm.InfectionSpread;
+import disease.Disease;
+import disease.DiseaseProperties;
+import disease.DiseaseType;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -41,6 +44,7 @@ public class Main extends Application {
 
     private Thread algorithmThread;
     private World world;
+    private InfectionSpread infectionSpread;
 
     public static final int INFECTION_RADIUS = 3;
 
@@ -68,9 +72,9 @@ public class Main extends Application {
 
         scene.getStylesheets().add("Style.css");
 
-        InfectionSpread infectionSpread = new InfectionSpread();
         world = new World();
         random = new Random();
+        infectionSpread = new InfectionSpread();
 
         algorithmThread = new Thread(() -> {
             while (true) {
@@ -307,7 +311,12 @@ public class Main extends Application {
         save.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
+                    new DiseaseProperties((int)lethality.getValue(), Integer.parseInt(prefTemp.getText()),
+                        Integer.parseInt(tempTolerance.getText()), virulence.getValue()));
+                infectionSpread.diseaseList.add(disease);
                 popup.hide();
+                System.out.println(infectionSpread.diseaseList.size());
             }
         });
     }
