@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -246,20 +247,29 @@ public class Main extends Application {
         rec.setFill(Color.AQUAMARINE);
 
         //Items in popup
-        final Button save = new Button("YaskataaaaFX");
+        final TextField name = new TextField();
+        final TextField prefTemp = new TextField();
+        final TextField tempTolerance = new TextField();
         final Slider lethality = new Slider(0, 100, 50);
         final Slider virulence = new Slider(0, 100, 50);
+        final Button save = new Button("YaskataaaaFX");
 
         lethality.setShowTickLabels(true);
         lethality.setShowTickMarks(true);
         virulence.setShowTickLabels(true);
         virulence.setShowTickMarks(true);
 
+        final Label nameCaption = new Label("Name:");
+        final Label prefTempCaption = new Label("Preferred temperature:");
+        final Label tempToleranceCaption = new Label("Temperature tolerance:");
         final Label lethalityCaption = new Label("Lethality Level:");
         final Label virulenceCaption = new Label("Virulence Level:");
 
-        lethalityCaption.setPrefWidth(85);
-        virulenceCaption.setPrefWidth(85);
+        nameCaption.setPrefWidth(170);
+        prefTempCaption.setPrefWidth(170);
+        tempToleranceCaption.setPrefWidth(170);
+        lethalityCaption.setPrefWidth(170);
+        virulenceCaption.setPrefWidth(170);
 
         final Label lethalityValue = new Label("50");
         final Label virulenceValue = new Label("50");
@@ -278,13 +288,19 @@ public class Main extends Application {
             }
         });
 
-        HBox first = new HBox();
-        HBox second = new HBox();
+        HBox nameHB = new HBox();
+        HBox prefTempHB = new HBox();
+        HBox tempToleranceHB = new HBox();
+        HBox lethalityHB = new HBox();
+        HBox virulenceHB = new HBox();
         VBox test = new VBox();
 
-        first.getChildren().addAll(lethalityCaption, lethality, lethalityValue);
-        second.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
-        test.getChildren().addAll(first, second, save);
+        nameHB.getChildren().addAll(nameCaption, name);
+        prefTempHB.getChildren().addAll(prefTempCaption, prefTemp);
+        tempToleranceHB.getChildren().addAll(tempToleranceCaption, tempTolerance);
+        lethalityHB.getChildren().addAll(lethalityCaption, lethality, lethalityValue);
+        virulenceHB.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
+        test.getChildren().addAll(nameHB, prefTempHB, tempToleranceHB ,lethalityHB, virulenceHB, save);
         popup.getContent().addAll(rec, test);
         test.setSpacing(10);
         test.setPadding(new Insets(10, 10, 10, 10));
