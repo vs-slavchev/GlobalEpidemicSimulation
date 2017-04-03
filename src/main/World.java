@@ -4,21 +4,43 @@ package main;
  * Created by Yasen on 4/3/2017.
  */
 
+import javafx.geometry.Point2D;
+
 import java.util.ArrayList;
 import java.util.List;
-import main.Environment;
+import java.util.Optional;
 
 public class World {
 
-    private List<Country> listOfCountries;
-    private List<Country> listOfInfectedCountries;
+    private List<Country> countries;
+    private List<Country> infectedCountries;
 
     public World() {
-        listOfCountries = new ArrayList<Country>();
-        listOfInfectedCountries = new ArrayList<Country>();
+        countries = new ArrayList<Country>();
+        infectedCountries = new ArrayList<Country>();
+
+        countries.add(
+                new Country("Bulgaria", 7_000_000, 0, 0, 0, 100,
+                new Environment(5, 20, 29, 30, 20, 500)));
     }
 
     private void migrate() {
 
+    }
+
+    public List<Country> getCountries() {
+        return countries;
+    }
+
+    public Optional<Country> getCountry(String countryName) {
+        return countries.stream()
+                .filter(country -> country.getName().equals(countryName))
+                .findFirst();
+    }
+
+    public List<Point2D> getInfectionPoints() {
+        List<Point2D> points = new ArrayList<>();
+        countries.stream().forEach(country -> points.addAll(country.getInfectionPoints()));
+        return points;
     }
 }

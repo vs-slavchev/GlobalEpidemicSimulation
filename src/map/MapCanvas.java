@@ -41,6 +41,8 @@ public class MapCanvas {
     private Canvas canvas;
     private MapContent map;
     private GraphicsContext graphics;
+
+
     private GeoFinder geoFinder;
     private StyleManager styleManager;
 
@@ -85,16 +87,22 @@ public class MapCanvas {
         Rectangle rectangle = new Rectangle((int) canvas.getWidth(), (int) canvas.getHeight());
         draw.paint(graphics, rectangle, map.getViewport().getBounds());
 
-        //drawPointsForCountry(gc);
+        drawPointsForCountry(gc);
     }
 
     private void drawPointsForCountry(GraphicsContext gc) {
         gc.setFill(javafx.scene.paint.Color.YELLOW);
         Coordinate[] points = geoFinder.getCountryVertices("Russia");
+
         for (Coordinate mapPoint : points) {
             Point2D screenPoint = geoFinder.mapToScreenCoordinates(mapPoint.x, mapPoint.y);
             gc.fillOval(screenPoint.getX(), screenPoint.getY(), 2, 2);
+            //System.out.println(screenPoint.getX() + " " + screenPoint.getY());
         }
+    }
+
+    public void setNeedsRepaint(boolean needsRepaint) {
+        this.needsRepaint = needsRepaint;
     }
 
     private void initEvent() {
@@ -120,17 +128,17 @@ public class MapCanvas {
 
         });*/
 
-        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, t -> {
+        /*canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, t -> {
             if (t.getClickCount() == 1) {
                 //System.out.println("SCREEN: " + t.getX() + "; " + t.getY());
-                /*String countryName = geoFinder.getCountryName(t.getX(), t.getY());
-                System.out.println(countryName);*/
+                String countryName = geoFinder.getCountryName(t.getX(), t.getY());
+                System.out.println(countryName);
 
                 selectStyleChange(t.getX(), t.getY());
-                needsRepaint = true;
+                setNeedsRepaint(true);
             }
             t.consume();
-        });
+        });*/
 
         /*canvas.addEventHandler(ScrollEvent.SCROLL, e -> {
             ReferencedEnvelope envelope = map.getViewport().getBounds();
@@ -172,7 +180,7 @@ public class MapCanvas {
         needsRepaint = true;
     }
 
-    private void selectStyleChange(double x, double y) {
+    public void selectStyleChange(double x, double y) {
         SimpleFeatureCollection features = geoFinder.getCountryFeaturesCollection(x, y);
 
         Set<FeatureId> IDs = new HashSet<>();
@@ -198,5 +206,10 @@ public class MapCanvas {
         Layer layer = map.layers().get(0);
         ((FeatureLayer) layer).setStyle(style);
         //mapFrame.getMapPane().repaint();
+    }
+
+
+    public GeoFinder getGeoFinder() {
+        return geoFinder;
     }
 }

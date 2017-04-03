@@ -1,16 +1,20 @@
 package main;
 
+import algorithm.InfectionSpread;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -19,10 +23,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import map.MapCanvas;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Random;
 
 public class Main extends Application {
 
@@ -30,14 +36,19 @@ public class Main extends Application {
     private VBox root;
     private MapCanvas mapCanvas;
     private Popup popup = null;
+    private Random random;
+
+    private Thread algorithmThread;
+    private World world;
+
+    public static final int INFECTION_RADIUS = 3;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
         root = new VBox();
         root.setMinWidth(640);
         root.setMinHeight(480);
-
 
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
@@ -55,6 +66,36 @@ public class Main extends Application {
         primaryStage.show();
 
         scene.getStylesheets().add("Style.css");
+
+        InfectionSpread infectionSpread = new InfectionSpread();
+        world = new World();
+        random = new Random();
+
+        algorithmThread = new Thread(() -> {
+            while (true) {
+                /*world.getCountries()
+                        .forEach(country ->
+                                infectionSpread.infectCountry(country));*/
+                for (Point2D infectionPoint : world.getInfectionPoints()) {
+                    int newX = (int)(infectionPoint.getX()
+                            + random.nextInt(INFECTION_RADIUS*2) - INFECTION_RADIUS);
+                    int newY = (int)(infectionPoint.getY()
+                            + random.nextInt(INFECTION_RADIUS*2) - INFECTION_RADIUS);
+                    Point2D newPoint = new Point2D(newX, newY);
+                    if (world.getCountry("Bulgaria").isPresent()) {
+                        Country country = world.getCountry("Bulgaria").get();
+                        country.addInfectionPoint(newPoint);
+                    }
+                }
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    System.exit(0);
+                }
+            }
+        });
+        algorithmThread.start();
     }
 
     public static void main(String[] args) {
@@ -79,7 +120,7 @@ public class Main extends Application {
         setUpButtons(fileMenuButton, primaryStage);
     }
 
-    private void setUpButtons(MenuButton fileMenuButton, Stage primaryStage ){
+    private void setUpButtons(MenuButton fileMenuButton, Stage primaryStage) {
         FileInputStream playInput = null;
         try {
             playInput = new FileInputStream("images/play.png");
@@ -123,8 +164,8 @@ public class Main extends Application {
         stackPane.setMaxHeight(0);
 
         buttonBar.getChildren().addAll(
-            fileMenuButton,
-            disease, medicine, smaller, stop, bigger, stackPane);
+                fileMenuButton,
+                disease, medicine, smaller, stop, bigger, stackPane);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
 
@@ -133,14 +174,16 @@ public class Main extends Application {
 
     private void setUpEventHandlers(final Stage primaryStage, Button disease, final Button start, final Button pause) {
         start.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
+            @Override
+            public void handle(ActionEvent event) {
                 start.setVisible(false);
                 pause.setVisible(true);
             }
         });
 
         pause.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
+            @Override
+            public void handle(ActionEvent event) {
                 start.setVisible(true);
                 pause.setVisible(false);
             }
@@ -149,14 +192,54 @@ public class Main extends Application {
 
         // set up functionality
         disease.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
+            @Override
+            public void handle(ActionEvent event) {
                 SetUpPopup();
                 popup.show(primaryStage);
             }
         });
+
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                if (algorithmThread.isAlive()) {
+                    algorithmThread.interrupt();
+                }
+            }
+        });
+
+        mapCanvas.getCanvas().addEventHandler(MouseEvent.MOUSE_CLICKED, t -> {
+            if (t.getClickCount() == 1) {
+                if (t.getButton() == MouseButton.SECONDARY) {
+
+                    //System.out.println("SCREEN: " + t.getX() + "; " + t.getY());
+                    String clickedOnCountryName = mapCanvas
+                            .getGeoFinder()
+                            .getCountryName(t.getX(), t.getY());
+                    System.out.println(clickedOnCountryName);
+
+                    world.getCountries()
+                            .stream()
+                            .filter(country -> country.getName()
+                                    .equals(clickedOnCountryName))
+                            .forEach(country -> country.setInfectedPopulation(1));
+
+
+                    mapCanvas.selectStyleChange(t.getX(), t.getY());
+                    mapCanvas.setNeedsRepaint(true);
+                } else if (t.getButton() == MouseButton.PRIMARY) {
+
+                    if (world.getCountry("Bulgaria").isPresent()) {
+                        Country country = world.getCountry("Bulgaria").get();
+                        country.addInfectionPoint(new Point2D(t.getX(), t.getY()));
+                    }
+                }
+            }
+            t.consume();
+        });
     }
 
-    private void SetUpPopup(){
+    private void SetUpPopup() {
         // Set up Popups
         popup = new Popup();
         Rectangle rec = new Rectangle(500, 500);
@@ -164,7 +247,7 @@ public class Main extends Application {
 
         //Items in popup
         final Button save = new Button("YaskataaaaFX");
-        final Slider lethality  = new Slider(0, 100, 50);
+        final Slider lethality = new Slider(0, 100, 50);
         final Slider virulence = new Slider(0, 100, 50);
 
         lethality.setShowTickLabels(true);
@@ -206,7 +289,8 @@ public class Main extends Application {
         test.setSpacing(10);
         test.setPadding(new Insets(10, 10, 10, 10));
         save.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
+            @Override
+            public void handle(ActionEvent event) {
                 popup.hide();
             }
         });

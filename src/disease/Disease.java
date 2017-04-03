@@ -17,6 +17,13 @@ public class Disease {
         this.properties = diseaseProperties;
     }
 
+    public DiseaseType getType() {
+        return type;
+    }
+
+    public DiseaseProperties getProperties() {
+        return properties;
+    }
 }
 
 
