@@ -90,7 +90,7 @@ public class GeoFinder {
     private AffineTransform createWorldToScreenAffineTransform() {
         AffineTransform translate = AffineTransform.getTranslateInstance(180.0, 90.0);
         AffineTransform scale = AffineTransform.
-                getScaleInstance(screenWidth / 360.0, screenHeight / 172.5);
+                getScaleInstance(screenWidth / 360.0, screenHeight / 173.5);
         AffineTransform mirrorY_axis = new AffineTransform(1, 0, 0, -1, 0, screenHeight);
 
         AffineTransform worldToScreen = new AffineTransform(mirrorY_axis);

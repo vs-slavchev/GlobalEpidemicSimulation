@@ -15,7 +15,9 @@ public class Main extends Application {
         Rectangle2D bounds = screen.getVisualBounds();
         int width = (int) bounds.getWidth();
         int height = (int) bounds.getHeight();
+
         MapCanvas canvas = new MapCanvas(width, height);
+
         Pane pane = new Pane(canvas.getCanvas());
         Scene scene = new Scene(pane);
         primaryStage.setMaximized(true);

@@ -84,10 +84,10 @@ public class MapCanvas {
         draw.paint(graphics, rectangle, map.getViewport().getBounds());
 
         gc.setFill(javafx.scene.paint.Color.YELLOW);
-        Coordinate[] points = geoFinder.getCountryVertices("Italy");
+        Coordinate[] points = geoFinder.getCountryVertices("Russia");
         for (Coordinate mapPoint : points) {
             Point2D screenPoint = geoFinder.mapToScreenCoordinates(mapPoint.x, mapPoint.y);
-            gc.fillOval(screenPoint.getX(), screenPoint.getY(), 10, 10);
+            gc.fillOval(screenPoint.getX(), screenPoint.getY(), 2, 2);
         }
     }
 
