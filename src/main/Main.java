@@ -41,7 +41,7 @@ public class Main extends Application {
     private Thread algorithmThread;
     private World world;
 
-    public static final int INFECTION_RADIUS = 3;
+    public static final int INFECTION_RADIUS = 6;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -73,23 +73,34 @@ public class Main extends Application {
 
         algorithmThread = new Thread(() -> {
             while (true) {
-                /*world.getCountries()
-                        .forEach(country ->
-                                infectionSpread.infectCountry(country));*/
                 for (Point2D infectionPoint : world.getInfectionPoints()) {
-                    int newX = (int)(infectionPoint.getX()
-                            + random.nextInt(INFECTION_RADIUS*2) - INFECTION_RADIUS);
-                    int newY = (int)(infectionPoint.getY()
-                            + random.nextInt(INFECTION_RADIUS*2) - INFECTION_RADIUS);
-                    Point2D newPoint = new Point2D(newX, newY);
-                    if (world.getCountry("Bulgaria").isPresent()) {
-                        Country country = world.getCountry("Bulgaria").get();
-                        country.addInfectionPoint(newPoint);
+                    if (random.nextDouble() < infectionSpread.g) {
+                        int offsetX = random.nextInt(INFECTION_RADIUS) + INFECTION_RADIUS;
+                        int offsetY = random.nextInt(INFECTION_RADIUS) + INFECTION_RADIUS;
+                        int newPointX = random.nextBoolean()
+                                ? (int)(infectionPoint.getX() + offsetX)
+                                : (int)(infectionPoint.getX() - offsetX);
+                        int newPointY = random.nextBoolean()
+                                ? (int)(infectionPoint.getY() + offsetY)
+                                : (int)(infectionPoint.getY() - offsetY);
+                        Point2D newPoint = new Point2D(newPointX, newPointY);
+
+                        String name = mapCanvas.getGeoFinder()
+                                .getCountryName(newPoint.getX(), newPoint.getY());
+                        if (name.equals("water")) {
+                            continue;
+                        }
+
+                        if (world.getCountry("Bulgaria").isPresent()) {
+                            Country country = world.getCountry("Bulgaria").get();
+                            country.addInfectionPoint(newPoint);
+                        }
                     }
                 }
+                mapCanvas.updateInfectionPointsCoordinates(world.getInfectionPoints());
 
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     System.exit(0);
                 }
@@ -116,7 +127,6 @@ public class Main extends Application {
         fileMenuButton.getItems().addAll(newItem, openItem, separator, saveItem, saveAsItem);
 
         // assign action handlers to the items in the file menu
-
         setUpButtons(fileMenuButton, primaryStage);
     }
 
@@ -218,20 +228,15 @@ public class Main extends Application {
                             .getCountryName(t.getX(), t.getY());
                     System.out.println(clickedOnCountryName);
 
-                    world.getCountries()
-                            .stream()
-                            .filter(country -> country.getName()
-                                    .equals(clickedOnCountryName))
-                            .forEach(country -> country.setInfectedPopulation(1));
-
-
                     mapCanvas.selectStyleChange(t.getX(), t.getY());
                     mapCanvas.setNeedsRepaint(true);
                 } else if (t.getButton() == MouseButton.PRIMARY) {
 
                     if (world.getCountry("Bulgaria").isPresent()) {
                         Country country = world.getCountry("Bulgaria").get();
-                        country.addInfectionPoint(new Point2D(t.getX(), t.getY()));
+                        Point2D infectionPoint = new Point2D(t.getX(), t.getY());
+                        country.addInfectionPoint(infectionPoint);
+                        //System.out.println(country);
                     }
                 }
             }

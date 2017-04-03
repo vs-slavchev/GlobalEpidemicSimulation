@@ -86,6 +86,22 @@ public class Country {
     }
 
     public void addInfectionPoint(Point2D infectionPoint) {
-        infectionPoint.add(infectionPoint);
+        infectionPoints.add(infectionPoint);
+        if (infectionPoints.size() > 10_000) {
+            infectionPoints.remove(0);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "name='" + name + '\'' +
+                ", unaffectedPopulation=" + unaffectedPopulation +
+                ", infectedPopulation=" + infectedPopulation +
+                ", deadPopulation=" + deadPopulation +
+                ", curedPopulation=" + curedPopulation +
+                ", migrationRate=" + migrationRate +
+                ", infectionPoints.size()=" + infectionPoints.size() +
+                '}';
     }
 }

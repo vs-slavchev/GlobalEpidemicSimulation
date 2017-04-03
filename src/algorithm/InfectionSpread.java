@@ -33,6 +33,10 @@ public class InfectionSpread {
         country.modifyInfectedPopulation(toBeInfected);
     }
 
+    public Disease getMainDisease() {
+        return diseaseList.get(0);
+    }
+
     public void multiplyCountry(Country country) {
 
     }

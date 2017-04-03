@@ -1,9 +1,9 @@
 package map;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -25,7 +25,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +41,7 @@ public class MapCanvas {
     private Canvas canvas;
     private MapContent map;
     private GraphicsContext graphics;
-
+    private ArrayList<Point2D> infectionPoints;
 
     private GeoFinder geoFinder;
     private StyleManager styleManager;
@@ -56,6 +56,7 @@ public class MapCanvas {
         geoFinder = new GeoFinder(width, height);
         styleManager = new StyleManager(geoFinder.getFeatureSource());
         graphics = canvas.getGraphicsContext2D();
+        infectionPoints = new ArrayList<>();
         initMap();
         drawMap(graphics);
         initEvent();
@@ -74,7 +75,7 @@ public class MapCanvas {
         map.getViewport().setScreenArea(new Rectangle((int) canvas.getWidth(), (int) canvas.getHeight()));
     }
 
-    private void drawMap(GraphicsContext gc) {
+    private synchronized void drawMap(GraphicsContext gc) {
         if (!needsRepaint) {
             return;
         }
@@ -87,10 +88,17 @@ public class MapCanvas {
         Rectangle rectangle = new Rectangle((int) canvas.getWidth(), (int) canvas.getHeight());
         draw.paint(graphics, rectangle, map.getViewport().getBounds());
 
-        drawPointsForCountry(gc);
+        System.out.println("Num infection points: " + infectionPoints.size());
+
+        gc.setFill(javafx.scene.paint.Color.rgb(255, 0, 0, 0.4));
+        for (Point2D point : infectionPoints) {
+            gc.fillOval(point.getX(), point.getY(), 2, 2);
+        }
+
+        //drawPointsForCountry(gc);
     }
 
-    private void drawPointsForCountry(GraphicsContext gc) {
+    /*private void drawPointsForCountry(GraphicsContext gc) {
         gc.setFill(javafx.scene.paint.Color.YELLOW);
         Coordinate[] points = geoFinder.getCountryVertices("Russia");
 
@@ -99,7 +107,7 @@ public class MapCanvas {
             gc.fillOval(screenPoint.getX(), screenPoint.getY(), 2, 2);
             //System.out.println(screenPoint.getX() + " " + screenPoint.getY());
         }
-    }
+    }*/
 
     public void setNeedsRepaint(boolean needsRepaint) {
         this.needsRepaint = needsRepaint;
@@ -211,5 +219,10 @@ public class MapCanvas {
 
     public GeoFinder getGeoFinder() {
         return geoFinder;
+    }
+
+    public synchronized void updateInfectionPointsCoordinates(ArrayList<Point2D> infectionPoints) {
+        this.infectionPoints = infectionPoints;
+        setNeedsRepaint(true);
     }
 }

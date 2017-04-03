@@ -38,9 +38,10 @@ public class World {
                 .findFirst();
     }
 
-    public List<Point2D> getInfectionPoints() {
-        List<Point2D> points = new ArrayList<>();
+    public ArrayList<Point2D> getInfectionPoints() {
+        ArrayList<Point2D> points = new ArrayList<>();
         countries.stream().forEach(country -> points.addAll(country.getInfectionPoints()));
+        //System.out.println("in world: " + points.size());
         return points;
     }
 }
