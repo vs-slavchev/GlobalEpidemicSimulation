@@ -1,5 +1,7 @@
 package sample;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -10,7 +12,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -29,15 +34,17 @@ public class Main extends Application {
         root.setMinWidth(640);
         root.setMinHeight(480);
 
+
         setUpButtonBar(primaryStage);
         root.getChildren().addAll(buttonBar);
 
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Pipe Flow Tool");
+        primaryStage.setTitle("Global Epidemic Simulation");
         primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        scene.getStylesheets().add("Style.css");
     }
 
 
@@ -75,8 +82,48 @@ public class Main extends Application {
         Button smaller = new Button("<");
         Button stop = new Button("Medicines");
         Button bigger = new Button("Medicines");
-        Button start = new Button("Medicines");
-        Button pause = new Button("Medicines");
+
+        FileInputStream playInput = null;
+        try {
+            playInput = new FileInputStream("images/play.png");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Image playImage = new Image(playInput);
+        ImageView imagePlay = new ImageView(playImage);
+        imagePlay.setFitHeight(25);
+        imagePlay.setFitWidth(25);
+        Button start = new Button();
+        start.setGraphic(imagePlay);
+        start.setId("start-button");
+
+        FileInputStream pauseInput = null;
+        try {
+            pauseInput = new FileInputStream("images/pause.png");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Image image = new Image(pauseInput);
+        ImageView imagePause = new ImageView(image);
+        imagePause.setFitHeight(25);
+        imagePause.setFitWidth(25);
+        Button pause = new Button();
+        pause.setGraphic(imagePause);
+        pause.setId("pause-button");
+
+        start.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                start.setVisible(false);
+                pause.setVisible(true);
+            }
+        });
+
+        pause.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                start.setVisible(true);
+                pause.setVisible(false);
+            }
+        });
 
         // Set up Popups
         final Popup popup = new Popup();
@@ -135,11 +182,16 @@ public class Main extends Application {
         });
 
         // addComponent the file menu, separators and the object buttons to the button bar
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(pause, start);
+        stackPane.setMaxHeight(0);
+
         buttonBar.getChildren().addAll(
-                fileMenuButton,
-                disease, medicine, smaller, stop, bigger, start, pause);
+            fileMenuButton,
+            disease, medicine, smaller, stop, bigger, stackPane);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
+
 
     }
 
