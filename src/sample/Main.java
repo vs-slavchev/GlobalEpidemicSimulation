@@ -26,6 +26,7 @@ public class Main extends Application {
 
     private HBox buttonBar;
     private VBox root;
+    private Popup popup = null;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -125,8 +126,32 @@ public class Main extends Application {
             }
         });
 
+
+        // set up functionality
+        disease.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                SetUpPopup();
+                popup.show(primaryStage);
+            }
+        });
+
+        // addComponent the file menu, separators and the object buttons to the button bar
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(pause, start);
+        stackPane.setMaxHeight(0);
+
+        buttonBar.getChildren().addAll(
+            fileMenuButton,
+            disease, medicine, smaller, stop, bigger, stackPane);
+        buttonBar.setSpacing(10);
+        buttonBar.setPadding(new Insets(10, 10, 10, 10));
+
+
+    }
+
+    private void SetUpPopup(){
         // Set up Popups
-        final Popup popup = new Popup();
+        popup = new Popup();
         Rectangle rec = new Rectangle(500, 500);
         rec.setFill(Color.AQUAMARINE);
 
@@ -143,19 +168,22 @@ public class Main extends Application {
         final Label lethalityCaption = new Label("Lethality Level:");
         final Label virulenceCaption = new Label("Virulence Level:");
 
+        lethalityCaption.setPrefWidth(85);
+        virulenceCaption.setPrefWidth(85);
+
         final Label lethalityValue = new Label("50");
         final Label virulenceValue = new Label("50");
 
         lethality.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
+                                Number old_val, Number new_val) {
                 lethalityValue.setText(String.format("%.0f", new_val));
             }
         });
 
         virulence.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
+                                Number old_val, Number new_val) {
                 virulenceValue.setText(String.format("%.0f", new_val));
             }
         });
@@ -163,36 +191,18 @@ public class Main extends Application {
         HBox first = new HBox();
         HBox second = new HBox();
         VBox test = new VBox();
+
         first.getChildren().addAll(lethalityCaption, lethality, lethalityValue);
         second.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
         test.getChildren().addAll(first, second, save);
         popup.getContent().addAll(rec, test);
-
-        // set up functionality
-        disease.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                popup.show(primaryStage);
-            }
-        });
-
+        test.setSpacing(10);
+        test.setPadding(new Insets(10, 10, 10, 10));
         save.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 popup.hide();
             }
         });
-
-        // addComponent the file menu, separators and the object buttons to the button bar
-        StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(pause, start);
-        stackPane.setMaxHeight(0);
-
-        buttonBar.getChildren().addAll(
-            fileMenuButton,
-            disease, medicine, smaller, stop, bigger, stackPane);
-        buttonBar.setSpacing(10);
-        buttonBar.setPadding(new Insets(10, 10, 10, 10));
-
-
     }
 
 }
