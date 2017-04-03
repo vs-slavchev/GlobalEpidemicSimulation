@@ -1,16 +1,14 @@
 package sample;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,12 +18,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class Main extends Application {
 
     private HBox buttonBar;
     private VBox root;
+    private Canvas canvas;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -35,8 +38,14 @@ public class Main extends Application {
         root.setMinHeight(480);
 
 
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+        int width = (int) bounds.getWidth();
+        int height = (int) bounds.getHeight();
+        canvas = new Canvas(width, height);
+
         setUpButtonBar(primaryStage);
-        root.getChildren().addAll(buttonBar);
+        root.getChildren().addAll(buttonBar, canvas);
 
         Scene scene = new Scene(root);
         primaryStage.setTitle("Global Epidemic Simulation");
@@ -56,9 +65,6 @@ public class Main extends Application {
         buttonBar = new HBox();
 
         MenuButton fileMenuButton = new MenuButton("File");
-        fileMenuButton.setMinHeight(42);
-        fileMenuButton.setPrefHeight(42);
-        fileMenuButton.setMaxHeight(42);
 
         //addComponent items to file menu button
         MenuItem newItem = new MenuItem("New simulation");
