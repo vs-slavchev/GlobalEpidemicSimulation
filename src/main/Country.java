@@ -2,8 +2,8 @@ package main;
 
 import javafx.geometry.Point2D;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Yasen on 4/2/2017.
@@ -18,7 +18,9 @@ public class Country {
     private long curedPopulation;
     private long migrationRate;
     private Environment environment;
-    private List<Point2D> infectionPoints;
+    private Queue<Point2D> infectionPoints;
+
+    public static final int QUEUE_MAX_SIZE = 10_000;
 
     public Country(String countryDescription, long unaffectedPopulation, long infectedPopulation,
                    long deadPopulation, long curedPopulation, long rateOfMigration, Environment environment) {
@@ -29,7 +31,7 @@ public class Country {
         this.curedPopulation = curedPopulation;
         this.migrationRate = rateOfMigration;
         this.environment = environment;
-        infectionPoints = new ArrayList<>();
+        infectionPoints = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE);
     }
 
     public void modifyInfectedPopulation(int value) {
@@ -81,15 +83,15 @@ public class Country {
         this.infectedPopulation = infectedPopulation;
     }
 
-    public List<Point2D> getInfectionPoints() {
+    public Queue<Point2D> getInfectionPoints() {
         return infectionPoints;
     }
 
     public void addInfectionPoint(Point2D infectionPoint) {
-        infectionPoints.add(infectionPoint);
-        if (infectionPoints.size() > 10_000) {
-            infectionPoints.remove(0);
+        if (infectionPoints.size() >= QUEUE_MAX_SIZE) {
+            infectionPoints.poll();
         }
+        infectionPoints.add(infectionPoint);
     }
 
     @Override
