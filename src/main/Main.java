@@ -11,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -33,6 +32,10 @@ import map.MapCanvas;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Random;
+
+/**
+ * Owner: Ivan
+ */
 
 public class Main extends Application {
 
@@ -78,40 +81,47 @@ public class Main extends Application {
 
         algorithmThread = new Thread(() -> {
             while (true) {
-                for (Point2D infectionPoint : world.getInfectionPoints()) {
-                    if (random.nextDouble() < infectionSpread.g) {
-                        int offsetX = random.nextInt(INFECTION_RADIUS) + INFECTION_RADIUS;
-                        int offsetY = random.nextInt(INFECTION_RADIUS) + INFECTION_RADIUS;
-                        int newPointX = random.nextBoolean()
-                                ? (int)(infectionPoint.getX() + offsetX)
-                                : (int)(infectionPoint.getX() - offsetX);
-                        int newPointY = random.nextBoolean()
-                                ? (int)(infectionPoint.getY() + offsetY)
-                                : (int)(infectionPoint.getY() - offsetY);
-                        Point2D newPoint = new Point2D(newPointX, newPointY);
-
-                        String name = mapCanvas.getGeoFinder()
-                                .getCountryName(newPoint.getX(), newPoint.getY());
-                        if (name.equals("water")) {
-                            continue;
-                        }
-
-                        if (world.getCountry("Bulgaria").isPresent()) {
-                            Country country = world.getCountry("Bulgaria").get();
-                            country.addInfectionPoint(newPoint);
-                        }
-                    }
-                }
+                applyAlgorithm();
                 mapCanvas.updateInfectionPointsCoordinates(world.getInfectionPoints());
 
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(300);
                 } catch (InterruptedException e) {
                     System.exit(0);
                 }
             }
         });
         algorithmThread.start();
+    }
+
+    private void applyAlgorithm() {
+        for (Point2D infectionPoint : world.getInfectionPoints()) {
+            if (random.nextDouble() < infectionSpread
+                    .getMainDisease()
+                    .getProperties()
+                    .getVirulence()) {
+                int offsetX = random.nextInt(INFECTION_RADIUS) + INFECTION_RADIUS;
+                int offsetY = random.nextInt(INFECTION_RADIUS) + INFECTION_RADIUS;
+                int newPointX = random.nextBoolean()
+                        ? (int)(infectionPoint.getX() + offsetX)
+                        : (int)(infectionPoint.getX() - offsetX);
+                int newPointY = random.nextBoolean()
+                        ? (int)(infectionPoint.getY() + offsetY)
+                        : (int)(infectionPoint.getY() - offsetY);
+                Point2D newPoint = new Point2D(newPointX, newPointY);
+
+                String name = mapCanvas.getGeoFinder()
+                        .getCountryName(newPoint.getX(), newPoint.getY());
+                if (name.equals("water")) {
+                    continue;
+                }
+
+                if (world.getCountry("Bulgaria").isPresent()) {
+                    Country country = world.getCountry("Bulgaria").get();
+                    country.addInfectionPoint(newPoint);
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -231,7 +241,7 @@ public class Main extends Application {
                     String clickedOnCountryName = mapCanvas
                             .getGeoFinder()
                             .getCountryName(t.getX(), t.getY());
-                    System.out.println(clickedOnCountryName);
+                    //System.out.println(clickedOnCountryName);
 
                     mapCanvas.selectStyleChange(t.getX(), t.getY());
                     mapCanvas.setNeedsRepaint(true);
@@ -241,7 +251,6 @@ public class Main extends Application {
                         Country country = world.getCountry("Bulgaria").get();
                         Point2D infectionPoint = new Point2D(t.getX(), t.getY());
                         country.addInfectionPoint(infectionPoint);
-                        //System.out.println(country);
                     }
                 }
             }
@@ -261,7 +270,7 @@ public class Main extends Application {
         final TextField tempTolerance = new TextField();
         final Slider lethality = new Slider(0, 100, 50);
         final Slider virulence = new Slider(0, 100, 50);
-        final Button save = new Button("YaskataaaaFX");
+        final Button save = new Button("Create disease");
 
         lethality.setShowTickLabels(true);
         lethality.setShowTickMarks(true);
@@ -280,20 +289,20 @@ public class Main extends Application {
         lethalityCaption.setPrefWidth(170);
         virulenceCaption.setPrefWidth(170);
 
-        final Label lethalityValue = new Label("50");
-        final Label virulenceValue = new Label("50");
+        final Label lethalityValue = new Label("50 %");
+        final Label virulenceValue = new Label("50 %");
 
         lethality.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                lethalityValue.setText(String.format("%.0f", new_val));
+                lethalityValue.setText(String.format("%.0f", new_val) + " %");
             }
         });
 
         virulence.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                virulenceValue.setText(String.format("%.0f", new_val));
+                virulenceValue.setText(String.format("%.0f", new_val) + " %");
             }
         });
 
@@ -318,10 +327,9 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
                     new DiseaseProperties((int)lethality.getValue(), Integer.parseInt(prefTemp.getText()),
-                        Integer.parseInt(tempTolerance.getText()), virulence.getValue()));
-                infectionSpread.diseaseList.add(disease);
+                        Integer.parseInt(tempTolerance.getText()), virulence.getValue()/100));
+                infectionSpread.getDiseaseList().add(disease);
                 popup.hide();
-                System.out.println(infectionSpread.diseaseList.size());
             }
         });
     }

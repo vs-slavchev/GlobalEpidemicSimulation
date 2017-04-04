@@ -41,7 +41,7 @@ public class Country {
                 infectedPopulation += value;
                 unaffectedPopulation -= value;
             }
-            System.out.println(infectedPopulation);
+            //System.out.println(infectedPopulation);
         }
     }
 

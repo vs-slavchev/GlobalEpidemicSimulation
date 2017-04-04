@@ -1,5 +1,8 @@
 package reader;
 
+/**
+ * Owner: Nikolay
+ */
 
 public class ReaderTest
 {

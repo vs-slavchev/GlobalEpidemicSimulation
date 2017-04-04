@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Scanner;
 
 
+/**
+ * Owner: Nikolay
+ */
+
+
 class FileReader {
     private List<String> Countries = new ArrayList<>();
     private List<String> Population = new ArrayList<>();

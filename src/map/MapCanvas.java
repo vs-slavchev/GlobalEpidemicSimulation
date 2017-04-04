@@ -88,8 +88,6 @@ public class MapCanvas {
         Rectangle rectangle = new Rectangle((int) canvas.getWidth(), (int) canvas.getHeight());
         draw.paint(graphics, rectangle, map.getViewport().getBounds());
 
-        System.out.println("Num infection points: " + infectionPoints.size());
-
         gc.setFill(javafx.scene.paint.Color.rgb(255, 0, 0, 0.4));
         for (Point2D point : infectionPoints) {
             gc.fillOval(point.getX(), point.getY(), 2, 2);
@@ -134,18 +132,6 @@ public class MapCanvas {
             setViewport(env);
             e.consume();
 
-        });*/
-
-        /*canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, t -> {
-            if (t.getClickCount() == 1) {
-                //System.out.println("SCREEN: " + t.getX() + "; " + t.getY());
-                String countryName = geoFinder.getCountryName(t.getX(), t.getY());
-                System.out.println(countryName);
-
-                selectStyleChange(t.getX(), t.getY());
-                setNeedsRepaint(true);
-            }
-            t.consume();
         });*/
 
         /*canvas.addEventHandler(ScrollEvent.SCROLL, e -> {
@@ -213,7 +199,6 @@ public class MapCanvas {
 
         Layer layer = map.layers().get(0);
         ((FeatureLayer) layer).setStyle(style);
-        //mapFrame.getMapPane().repaint();
     }
 
 
