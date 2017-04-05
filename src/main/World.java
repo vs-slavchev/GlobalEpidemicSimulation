@@ -16,8 +16,8 @@ public class World {
     private List<Country> infectedCountries;
 
     public World() {
-        countries = new ArrayList<Country>();
-        infectedCountries = new ArrayList<Country>();
+        countries = new ArrayList<>();
+        infectedCountries = new ArrayList<>();
 
         countries.add(
                 new Country("Bulgaria", 7_000_000, 0, 0, 0, 100,
@@ -38,10 +38,9 @@ public class World {
                 .findFirst();
     }
 
-    public ArrayList<Point2D> getInfectionPoints() {
+    public ArrayList<Point2D> getAllInfectionPoints() {
         ArrayList<Point2D> points = new ArrayList<>();
         countries.stream().forEach(country -> points.addAll(country.getInfectionPoints()));
-        //System.out.println("in world: " + points.size());
         return points;
     }
 }

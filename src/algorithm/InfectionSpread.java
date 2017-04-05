@@ -17,7 +17,7 @@ public class InfectionSpread {
     private List<Disease> diseaseList;
 
     public InfectionSpread() {
-        diseaseList = new ArrayList<Disease>();
+        diseaseList = new ArrayList<>();
     }
 
     public void infectCountry(Country country) {
@@ -26,7 +26,8 @@ public class InfectionSpread {
 
     public Disease getMainDisease() {
         diseaseList.add(new Disease("ebola", DiseaseType.BACTERIA,
-                new DiseaseProperties(10, 25, 10, 0.1)));
+                new DiseaseProperties(10, 25,
+                        10, 0.1)));
         return diseaseList.get(0);
     }
 

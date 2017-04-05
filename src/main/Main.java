@@ -5,10 +5,6 @@ import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -26,8 +22,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import map.MapCanvas;
+import reader.ConstantValues;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -73,7 +69,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        scene.getStylesheets().add("Style.css");
+        scene.getStylesheets().add(ConstantValues.CSS_STYLE_FILE);
 
         world = new World();
         random = new Random();
@@ -82,7 +78,7 @@ public class Main extends Application {
         algorithmThread = new Thread(() -> {
             while (true) {
                 applyAlgorithm();
-                mapCanvas.updateInfectionPointsCoordinates(world.getInfectionPoints());
+                mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
 
                 try {
                     Thread.sleep(300);
@@ -95,24 +91,22 @@ public class Main extends Application {
     }
 
     private void applyAlgorithm() {
-        for (Point2D infectionPoint : world.getInfectionPoints()) {
+        for (Point2D infectionPoint : world.getAllInfectionPoints()) {
             if (random.nextDouble() < infectionSpread
                     .getMainDisease()
                     .getProperties()
                     .getVirulence()) {
                 int offsetX = random.nextInt(INFECTION_RADIUS) + INFECTION_RADIUS;
                 int offsetY = random.nextInt(INFECTION_RADIUS) + INFECTION_RADIUS;
-                int newPointX = random.nextBoolean()
-                        ? (int)(infectionPoint.getX() + offsetX)
-                        : (int)(infectionPoint.getX() - offsetX);
-                int newPointY = random.nextBoolean()
-                        ? (int)(infectionPoint.getY() + offsetY)
-                        : (int)(infectionPoint.getY() - offsetY);
+                int newPointX = (int)infectionPoint.getX() +
+                        (random.nextBoolean() ? + offsetX : - offsetX);
+                int newPointY = (int)infectionPoint.getY() +
+                        (random.nextBoolean() ? offsetY : - offsetY);
                 Point2D newPoint = new Point2D(newPointX, newPointY);
 
-                String name = mapCanvas.getGeoFinder()
+                String countryName = mapCanvas.getGeoFinder()
                         .getCountryName(newPoint.getX(), newPoint.getY());
-                if (name.equals("water")) {
+                if (countryName.equals("water")) {
                     continue;
                 }
 
@@ -146,9 +140,11 @@ public class Main extends Application {
     }
 
     private void setUpButtons(MenuButton fileMenuButton, Stage primaryStage) {
+
+        // TODO: refactor the copy pasta
         FileInputStream playInput = null;
         try {
-            playInput = new FileInputStream("images/play.png");
+            playInput = new FileInputStream(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -162,7 +158,7 @@ public class Main extends Application {
 
         FileInputStream pauseInput = null;
         try {
-            pauseInput = new FileInputStream("images/pause.png");
+            pauseInput = new FileInputStream(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -173,6 +169,11 @@ public class Main extends Application {
         Button pause = new Button();
         pause.setGraphic(imagePause);
         pause.setId("pause-button");
+
+
+
+
+
 
         // set up the buttons on the buttonBar
         Button disease = new Button("Diseases");
@@ -197,65 +198,55 @@ public class Main extends Application {
 
     }
 
-    private void setUpEventHandlers(final Stage primaryStage, Button disease, final Button start, final Button pause) {
-        start.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                start.setVisible(false);
-                pause.setVisible(true);
+    private void setUpEventHandlers(final Stage primaryStage, final Button disease,
+                                    final Button start, final Button pause) {
+        start.setOnAction(event -> {
+            start.setVisible(false);
+            pause.setVisible(true);
+        });
+
+        pause.setOnAction(event -> {
+            start.setVisible(true);
+            pause.setVisible(false);
+        });
+
+        disease.setOnAction(event -> {
+            SetUpPopup();
+            popup.show(primaryStage);
+        });
+
+        primaryStage.setOnCloseRequest(event -> {
+            if (algorithmThread.isAlive()) {
+                algorithmThread.interrupt();
             }
         });
 
-        pause.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                start.setVisible(true);
-                pause.setVisible(false);
-            }
-        });
-
-
-        // set up functionality
-        disease.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                SetUpPopup();
-                popup.show(primaryStage);
-            }
-        });
-
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                if (algorithmThread.isAlive()) {
-                    algorithmThread.interrupt();
+        mapCanvas.getCanvas().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if (event.getClickCount() == 1) {
+                if (event.getButton() == MouseButton.SECONDARY) {
+                    selectCountryOnMap(event);
+                } else if (event.getButton() == MouseButton.PRIMARY) {
+                    createInfectionPoint(event);
                 }
             }
+            event.consume();
         });
+    }
 
-        mapCanvas.getCanvas().addEventHandler(MouseEvent.MOUSE_CLICKED, t -> {
-            if (t.getClickCount() == 1) {
-                if (t.getButton() == MouseButton.SECONDARY) {
+    private void createInfectionPoint(MouseEvent event) {
+        if (world.getCountry("Bulgaria").isPresent()) {
+            Country country = world.getCountry("Bulgaria").get();
+            country.addInfectionPoint(new Point2D(event.getX(), event.getY()));
+        }
+    }
 
-                    //System.out.println("SCREEN: " + t.getX() + "; " + t.getY());
-                    String clickedOnCountryName = mapCanvas
-                            .getGeoFinder()
-                            .getCountryName(t.getX(), t.getY());
-                    //System.out.println(clickedOnCountryName);
+    private void selectCountryOnMap(MouseEvent event) {
+        String clickedOnCountryName = mapCanvas
+                .getGeoFinder()
+                .getCountryName(event.getX(), event.getY());
 
-                    mapCanvas.selectStyleChange(t.getX(), t.getY());
-                    mapCanvas.setNeedsRepaint(true);
-                } else if (t.getButton() == MouseButton.PRIMARY) {
-
-                    if (world.getCountry("Bulgaria").isPresent()) {
-                        Country country = world.getCountry("Bulgaria").get();
-                        Point2D infectionPoint = new Point2D(t.getX(), t.getY());
-                        country.addInfectionPoint(infectionPoint);
-                    }
-                }
-            }
-            t.consume();
-        });
+        mapCanvas.selectStyleChange(event.getX(), event.getY());
+        mapCanvas.setNeedsRepaint(true);
     }
 
     private void SetUpPopup() {
@@ -289,22 +280,16 @@ public class Main extends Application {
         lethalityCaption.setPrefWidth(170);
         virulenceCaption.setPrefWidth(170);
 
-        final Label lethalityValue = new Label("50 %");
-        final Label virulenceValue = new Label("50 %");
+        final Label lethalityValue = new Label("50%");
+        final Label virulenceValue = new Label("50%");
 
-        lethality.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                lethalityValue.setText(String.format("%.0f", new_val) + " %");
-            }
-        });
+        lethality.valueProperty().addListener(
+                (ov, oldValue, newValue) ->
+                        lethalityValue.setText(String.format("%.0f%%", newValue)));
 
-        virulence.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                virulenceValue.setText(String.format("%.0f", new_val) + " %");
-            }
-        });
+        virulence.valueProperty().addListener(
+                (ov, oldValue, newValue) ->
+                        virulenceValue.setText(String.format("%.0f%%", newValue)));
 
         HBox nameHB = new HBox();
         HBox prefTempHB = new HBox();
@@ -318,19 +303,22 @@ public class Main extends Application {
         tempToleranceHB.getChildren().addAll(tempToleranceCaption, tempTolerance);
         lethalityHB.getChildren().addAll(lethalityCaption, lethality, lethalityValue);
         virulenceHB.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
-        test.getChildren().addAll(nameHB, prefTempHB, tempToleranceHB ,lethalityHB, virulenceHB, save);
+        test.getChildren().addAll(nameHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, save);
+
+        // TODO: auto-rename key is Shift + F6
         popup.getContent().addAll(rec, test);
         test.setSpacing(10);
         test.setPadding(new Insets(10, 10, 10, 10));
-        save.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
-                    new DiseaseProperties((int)lethality.getValue(), Integer.parseInt(prefTemp.getText()),
-                        Integer.parseInt(tempTolerance.getText()), virulence.getValue()/100));
-                infectionSpread.getDiseaseList().add(disease);
-                popup.hide();
-            }
+
+        // TODO: validate input
+        save.setOnAction(event -> {
+            Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
+                    new DiseaseProperties((int) lethality.getValue(),
+                            Integer.parseInt(prefTemp.getText()),
+                            Integer.parseInt(tempTolerance.getText()),
+                            virulence.getValue() / 100));
+            infectionSpread.getDiseaseList().add(disease);
+            popup.hide();
         });
     }
 

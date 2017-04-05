@@ -15,6 +15,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import reader.ConstantValues;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -38,32 +39,27 @@ public class GeoFinder {
 
     private final static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
-    final static public String countryFile = "maps/ne_110m_admin_0_countries.shp";
-
     public GeoFinder(int width, int height) {
         this.screenWidth = width;
         this.screenHeight = height;
 
-        URL countryURL = DataUtilities.fileToURL(new File(countryFile));
+        URL countryURL = DataUtilities.fileToURL(new File(ConstantValues.MAP_SHAPE_FILE));
         HashMap<String, Object> params = new HashMap<>();
         params.put("url", countryURL);
         try {
-            DataStore ds = DataStoreFinder.getDataStore(params);
-            if (ds == null) {
-                throw new IOException("couldn't open " + params.get("url"));
+            DataStore dataStore = DataStoreFinder.getDataStore(params);
+            if (dataStore == null) {
+                throw new IOException("Couldn't open " + params.get("url"));
             }
-            Name name = ds.getNames().get(0);
-            countries = new SpatialIndexFeatureCollection(ds.getFeatureSource(name).getFeatures());
+            Name name = dataStore.getNames().get(0);
+            countries = new SpatialIndexFeatureCollection(
+                    dataStore.getFeatureSource(name).getFeatures());
+
+            FileDataStore fileStore = FileDataStoreFinder.getDataStore(
+                    new File(ConstantValues.MAP_SHAPE_FILE));
+            featureSource = fileStore.getFeatureSource();
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-
-
-        try {
-            FileDataStore store = FileDataStoreFinder.getDataStore(new File(countryFile));
-            featureSource = store.getFeatureSource();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -124,13 +120,9 @@ public class GeoFinder {
     }
 
     public Coordinate[] getCountryVertices(String countryName) {
-        try (SimpleFeatureIterator iterator = grabSelectedName(countryName).features()) {
+        try (SimpleFeatureIterator iterator = getCountryFeatures(countryName).features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-
-                //System.out.println(array_of_coords[0].x);
-                //System.out.println(array_of_coords[0].y);
-
                 Geometry geom = (Geometry) feature.getDefaultGeometry();
                 return geom.getCoordinates();
             }
@@ -140,7 +132,7 @@ public class GeoFinder {
         return new Coordinate[0];
     }
 
-    public SimpleFeatureCollection grabSelectedName(String name) throws Exception {
+    public SimpleFeatureCollection getCountryFeatures(String name) throws Exception {
         return featureSource.getFeatures(CQL.toFilter("name = '" + name + "'"));
     }
 
