@@ -31,7 +31,7 @@ for countryRow in countriesRows:
     kilometers_clean = []
     for countryKilometers in array_of_kilometer_strings:
         clean_kilometers = extract_clean_information(countryKilometers)
-        if(clean_kilometers):
+        if (clean_kilometers):
             kilometers_clean.append(clean_kilometers)
 
     neighbours_clean = []
