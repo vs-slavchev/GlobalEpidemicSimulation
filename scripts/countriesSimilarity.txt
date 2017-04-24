@@ -1,0 +1,159 @@
+Afghanistan > Pakistan
+Albania > Greece
+Algeria > Morocco
+Andorra > Spain
+Angola > Democratic Republic of the Congo
+Argentina > Chile
+Armenia > Azerbaijan
+Austria > Germany
+Azerbaijan > Armenia
+Bangladesh > Myanmar
+Belarus > Russia
+Belgium > France
+Belize > Guatemala
+Benin > Nigeria
+Bhutan > India
+Bolivia > Brazil
+Bosnia and Herzegovina > Croatia
+Botswana > South Africa
+Brazil > Bolivia
+Brunei > Malaysia
+Bulgaria > Romania
+Burkina Faso > Mali
+Burundi > Tanzania
+Cambodia > Vietnam
+Cameroon > Nigeria
+Canada > United States
+Central African Republic > Democratic Republic of the Congo
+Chad > Sudan
+Chile > Argentina
+People's Republic of China > Macau
+Colombia > Venezuela
+Democratic Republic of the Congo > Angola
+Republic of the Congo > Democratic Republic of the Congo
+Costa Rica > Panama
+Côte d'Ivoire > Liberia
+Croatia > Bosnia and Herzegovina
+Czech Republic > Germany
+Denmark > Germany
+Djibouti > Ethiopia
+Dominican Republic > Haiti
+East Timor > Indonesia
+Ecuador > Peru
+Egypt > Libya
+El Salvador > Honduras
+Equatorial Guinea > Gabon
+Eritrea > Ethiopia
+Estonia > Latvia
+Ethiopia > Somalia
+Finland > Russia
+France > Spain
+France > Brazil
+Gabon > Republic of the Congo
+The Gambia > Senegal
+Georgia > Russia
+Germany > Czech Republic
+Ghana > Togo
+Greece > Bulgaria
+Guatemala > Mexico
+Guinea > Mali
+Guinea-Bissau > Guinea
+Guyana > Brazil
+Haiti > Dominican Republic
+Honduras > Nicaragua
+Hungary > Slovakia
+India > Bhutan
+Indonesia > Malaysia
+Iran > Iraq
+Iraq > Iran
+Ireland > United Kingdom
+Israel > Syria
+Italy > Switzerland
+Jordan > Saudi Arabia
+Kazakhstan > Russia
+Kenya > Uganda
+North Korea > People's Republic of China
+South Korea > North Korea
+Kuwait > Iraq
+Kyrgyzstan > Uzbekistan
+Laos > Vietnam
+Latvia > Lithuania
+Lebanon > Syria
+Lesotho > South Africa
+Liberia > Côte d'Ivoire
+Libya > Egypt
+Liechtenstein > Switzerland
+Lithuania > Belarus
+Luxembourg > Belgium
+Macedonia > Greece
+Malawi > Mozambique
+Malaysia > Indonesia
+Mali > Mauritania
+Mauritania > Mali
+Mexico > United States
+Moldova > Ukraine
+Monaco > France
+Mongolia > People's Republic of China
+Montenegro > Bosnia and Herzegovina
+Morocco > Algeria
+Mozambique > Malawi
+Myanmar > People's Republic of China
+Namibia > Angola
+Nepal > India
+Netherlands > Germany
+Netherlands, Kingdom of the > Germany
+Nicaragua > Honduras
+Niger > Nigeria
+Nigeria > Cameroon
+Norway > Sweden
+Oman > Saudi Arabia
+Pakistan > India
+Palestine > Israel
+Panama > Costa Rica
+Papua New Guinea > Indonesia
+Paraguay > Argentina
+Peru > Brazil
+Poland > Czech Republic
+Portugal > Spain
+Qatar > Saudi Arabia
+Romania > Bulgaria
+Russia > Kazakhstan
+Rwanda > Burundi
+San Marino > Italy
+Saudi Arabia > Yemen
+Senegal > Mauritania
+Serbia > Romania
+Sierra Leone > Guinea
+Slovakia > Hungary
+Slovenia > Croatia
+Somalia > Ethiopia
+South Africa > Botswana
+South Sudan > Sudan
+Spain > Portugal
+Sudan > South Sudan
+Suriname > France
+Swaziland > South Africa
+Sweden > Norway
+Switzerland > Italy
+Syria > Turkey
+Tajikistan > Afghanistan
+Tanzania > Kenya
+Thailand > Myanmar
+Togo > Ghana
+Tunisia > Algeria
+Turkey > Syria
+Turkmenistan > Uzbekistan
+Uganda > Kenya
+Ukraine > Russia
+United Arab Emirates > Saudi Arabia
+United Kingdom > Ireland
+United Kingdom > Ireland
+United States > Canada
+Uruguay > Brazil
+Uzbekistan > Kazakhstan
+Vatican City > Italy
+Venezuela > Brazil
+Vietnam > Laos
+Yemen > Saudi Arabia
+Zambia > Democratic Republic of the Congo
+Zimbabwe > Mozambique

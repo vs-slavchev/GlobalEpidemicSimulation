@@ -7,7 +7,8 @@ pageContent = requests.get('https://en.wikipedia.org/wiki/List_of_countries_and_
 tree = html.fromstring(pageContent.content)
 countriesRows = tree.xpath('//table/tr/td[1]/b/a/text()/ancestor::tr')
 
-find_pattern = re.compile(r"\s*([\d,.]+)\s*km")
+find_pattern = re.compile(r"\s*([\d,]+)(\.\d+)?\s*km")
+outputFile = open('countriesSimilarity.txt', 'w')
 
 for countryRow in countriesRows:
     # .// specifies a relative path
@@ -40,12 +41,25 @@ for countryRow in countriesRows:
         if (clean_neighbour):
             neighbours_clean.append(clean_neighbour)
 
-    print("\n" + name[0] + " ###")
-    infoNeighbour = ""
+    # print("\n" + name[0] + " ###")
+    # infoNeighbour = ""
+    tupleNeighbourNameKilometers = "", 0
     for neighbourName, neighbourKilometers in zip(neighbours_clean, kilometers_clean):
         # keep the digits for the kilometers only
-        neighbourKilometers = find_pattern.sub(r"\1", neighbourKilometers)
-        infoNeighbour += str(neighbourName + " " + neighbourKilometers + "\n")
+        neighbourKilometersStr = find_pattern.sub(r"\1", neighbourKilometers)
+        try:
+            neighbourKilometers = int(neighbourKilometersStr.replace(',', ''))
+        except ValueError:
+            neighbourKilometers = 0
+        # infoNeighbour += str(neighbourName + " " + str(neighbourKilometers) + "\n")
 
-    print(infoNeighbour)
+        if (tupleNeighbourNameKilometers[1] < neighbourKilometers):
+            tupleNeighbourNameKilometers = (neighbourName, neighbourKilometers)
 
+    # print(infoNeighbour + "------ closest neighbour: " + tupleNeighbourNameKilometers[0])
+    if tupleNeighbourNameKilometers[0]:
+        outputLine = name[0] + " > " + tupleNeighbourNameKilometers[0]
+        print(outputLine)
+        outputFile.write(outputLine + '\n')
+
+outputFile.close()
