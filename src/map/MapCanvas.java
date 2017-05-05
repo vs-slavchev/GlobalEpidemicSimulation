@@ -31,6 +31,8 @@ import java.util.Set;
 
 /**
  * Owner: Veselin
+ *
+ * Initializes and draws the map. Has event handlers strictly related to the map only.
  */
 
 public class MapCanvas {
@@ -59,7 +61,7 @@ public class MapCanvas {
         infectionPoints = new ArrayList<>();
         initMap();
         drawMap(graphics);
-        initEvent();
+        initializeEventHandling();
         initPaintThread();
     }
 
@@ -107,11 +109,11 @@ public class MapCanvas {
         }
     }*/
 
-    public void setNeedsRepaint(boolean needsRepaint) {
-        this.needsRepaint = needsRepaint;
+    public void setNeedsRepaint() {
+        this.needsRepaint = true;
     }
 
-    private void initEvent() {
+    private void initializeEventHandling() {
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
             dragDistanceX = e.getSceneX();
             dragDistanceY = e.getSceneY();
@@ -208,6 +210,6 @@ public class MapCanvas {
 
     public synchronized void updateInfectionPointsCoordinates(ArrayList<Point2D> infectionPoints) {
         this.infectionPoints = infectionPoints;
-        setNeedsRepaint(true);
+        setNeedsRepaint();
     }
 }

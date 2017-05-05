@@ -19,6 +19,9 @@ import static map.MapCanvas.styleFactory;
 
 /**
  * Owner: Veselin
+ *
+ * The class is only responsible for setting and initializing the different styles in which
+ * the map can be rendered. A style determines the color and width of visual elements.
  */
 
 public class StyleManager {
@@ -38,7 +41,6 @@ public class StyleManager {
     private GeomType geometryType;
     private String geometryAttributeName;
 
-    // set geometry
     public StyleManager(FeatureSource featureSource) {
         GeometryDescriptor geomDesc = featureSource.getSchema().getGeometryDescriptor();
         geometryAttributeName = geomDesc.getLocalName();

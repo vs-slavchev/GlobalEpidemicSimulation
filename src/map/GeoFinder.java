@@ -71,6 +71,10 @@ public class GeoFinder {
         return createWorldToScreenAffineTransform().transform(new Point2D.Double(x, y), null);
     }
 
+    /**
+     * Creates an object that is responsible for the matrix math to transform a point from screen
+     * to world coordinates.
+     */
     private AffineTransform createScreenToWorldAffineTransform() {
         AffineTransform worldToScreen = createWorldToScreenAffineTransform();
 
@@ -83,6 +87,10 @@ public class GeoFinder {
         return screenToWorld;
     }
 
+    /**
+     * Creates an object that is responsible for the matrix math to transform a point from world
+     * to screen coordinates.
+     */
     private AffineTransform createWorldToScreenAffineTransform() {
         AffineTransform translate = AffineTransform.getTranslateInstance(180.0, 90.0);
         AffineTransform scale = AffineTransform.
@@ -109,6 +117,10 @@ public class GeoFinder {
         return countryName.orElse("water");
     }
 
+    /**
+     * Get the collection of the coordinates of the borders of a country that contains the given
+     * point.
+     */
     public SimpleFeatureCollection getCountryFeaturesCollection(double x, double y) {
         Point2D pointInWorld = screenToMapCoordinates(x, y);
         //System.out.println(pointInWorld);
@@ -119,6 +131,9 @@ public class GeoFinder {
         return countries.subCollection(filter);
     }
 
+    /**
+     * Get an array of the coordinates of each vertex that is part of the borders of a country.
+     */
     public Coordinate[] getCountryVertices(String countryName) {
         try (SimpleFeatureIterator iterator = getCountryFeatures(countryName).features()) {
             while (iterator.hasNext()) {
@@ -132,6 +147,9 @@ public class GeoFinder {
         return new Coordinate[0];
     }
 
+    /**
+     * Using a county's name - get the collection of the coordinates of its borders.
+     */
     public SimpleFeatureCollection getCountryFeatures(String name) throws Exception {
         return featureSource.getFeatures(CQL.toFilter("name = '" + name + "'"));
     }
