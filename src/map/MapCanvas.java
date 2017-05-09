@@ -1,5 +1,6 @@
 package map;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
@@ -8,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.util.Duration;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -95,19 +97,19 @@ public class MapCanvas {
             gc.fillOval(point.getX(), point.getY(), 2, 2);
         }
 
-        //drawPointsForCountry(gc);
+        drawPointsForCountry(gc);
     }
 
-    /*private void drawPointsForCountry(GraphicsContext gc) {
+    private void drawPointsForCountry(GraphicsContext gc) {
         gc.setFill(javafx.scene.paint.Color.YELLOW);
         Coordinate[] points = geoFinder.getCountryVertices("Russia");
 
         for (Coordinate mapPoint : points) {
-            Point2D screenPoint = geoFinder.mapToScreenCoordinates(mapPoint.x, mapPoint.y);
+            java.awt.geom.Point2D screenPoint = geoFinder.mapToScreenCoordinates(mapPoint.x, mapPoint.y);
             gc.fillOval(screenPoint.getX(), screenPoint.getY(), 2, 2);
             //System.out.println(screenPoint.getX() + " " + screenPoint.getY());
         }
-    }*/
+    }
 
     public void setNeedsRepaint() {
         this.needsRepaint = true;
@@ -136,7 +138,7 @@ public class MapCanvas {
 
         });*/
 
-        /*canvas.addEventHandler(ScrollEvent.SCROLL, e -> {
+        canvas.addEventHandler(ScrollEvent.SCROLL, e -> {
             ReferencedEnvelope envelope = map.getViewport().getBounds();
             double percent = -e.getDeltaY() / canvas.getWidth();
             double width = envelope.getWidth();
@@ -145,15 +147,12 @@ public class MapCanvas {
             double deltaH = height * percent;
             envelope.expandBy(deltaW, deltaH);
 
-            *//*double refitting = (Math.abs(envelope.getMinimum(1)) - envelope.getMaximum(1)) / 2;
-            envelope.translate(0, refitting);
-
-            System.out.println(envelope.toString());
-            System.out.println(refitting);*//*
+            geoFinder.setMapWidth(envelope.getWidth());
+            geoFinder.setMapHeight(envelope.getHeight());
 
             setViewport(envelope);
             e.consume();
-        });*/
+        });
     }
 
     private void initPaintThread() {

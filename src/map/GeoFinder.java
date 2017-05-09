@@ -33,6 +33,7 @@ import java.util.Optional;
 public class GeoFinder {
 
     private int screenWidth, screenHeight;
+    private double mapWidth = 360.0, mapHeight = 173.5;
 
     private SpatialIndexFeatureCollection countries;
     private SimpleFeatureSource featureSource;
@@ -92,10 +93,12 @@ public class GeoFinder {
      * to screen coordinates.
      */
     private AffineTransform createWorldToScreenAffineTransform() {
-        AffineTransform translate = AffineTransform.getTranslateInstance(180.0, 90.0);
+        AffineTransform translate = AffineTransform.
+                getTranslateInstance(mapWidth/2, mapHeight/2 + 3.25);
         AffineTransform scale = AffineTransform.
-                getScaleInstance(screenWidth / 360.0, screenHeight / 173.5);
-        AffineTransform mirrorY_axis = new AffineTransform(1, 0, 0, -1, 0, screenHeight);
+                getScaleInstance(screenWidth / mapWidth, screenHeight / mapHeight);
+        AffineTransform mirrorY_axis =
+                new AffineTransform(1, 0, 0, -1, 0, screenHeight);
 
         AffineTransform worldToScreen = new AffineTransform(mirrorY_axis);
         worldToScreen.concatenate(scale);
@@ -156,5 +159,13 @@ public class GeoFinder {
 
     public SimpleFeatureSource getFeatureSource() {
         return featureSource;
+    }
+
+    public void setMapWidth(double mapWidth) {
+        this.mapWidth = mapWidth;
+    }
+
+    public void setMapHeight(double mapHeight) {
+        this.mapHeight = mapHeight;
     }
 }

@@ -246,7 +246,7 @@ public class Main extends Application {
                 .getCountryName(event.getX(), event.getY());
 
         mapCanvas.selectStyleChange(event.getX(), event.getY());
-        mapCanvas.setNeedsRepaint(true);
+        mapCanvas.setNeedsRepaint();
     }
 
     private void SetUpPopup() {
