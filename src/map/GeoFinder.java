@@ -34,6 +34,7 @@ public class GeoFinder {
 
     private int screenWidth, screenHeight;
     private double mapWidth = 360.0, mapHeight = 173.5;
+    private double panOffsetX = 180.0, panOffsetY = 83.75;
 
     private SpatialIndexFeatureCollection countries;
     private SimpleFeatureSource featureSource;
@@ -94,7 +95,8 @@ public class GeoFinder {
      */
     private AffineTransform createWorldToScreenAffineTransform() {
         AffineTransform translate = AffineTransform.
-                getTranslateInstance(mapWidth/2, mapHeight/2 + 3.25);
+                getTranslateInstance(mapWidth/2 - (panOffsetX - mapWidth/2),
+                        mapHeight/2 - (panOffsetY - (mapHeight/2 - 3.1)) + 3.25);
         AffineTransform scale = AffineTransform.
                 getScaleInstance(screenWidth / mapWidth, screenHeight / mapHeight);
         AffineTransform mirrorY_axis =
@@ -167,5 +169,13 @@ public class GeoFinder {
 
     public void setMapHeight(double mapHeight) {
         this.mapHeight = mapHeight;
+    }
+
+    public void setPanOffsetX(double panOffsetX) {
+        this.panOffsetX = panOffsetX;
+    }
+
+    public void setPanOffsetY(double panOffsetY) {
+        this.panOffsetY = panOffsetY;
     }
 }

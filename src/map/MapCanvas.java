@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
@@ -123,7 +124,7 @@ public class MapCanvas {
             e.consume();
         });
 
-        /*canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
+        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
             double difX = e.getSceneX() - dragDistanceX;
             double difY = e.getSceneY() - dragDistanceY;
             dragDistanceX = e.getSceneX();
@@ -132,11 +133,16 @@ public class MapCanvas {
             DirectPosition2D result = new DirectPosition2D();
             map.getViewport().getScreenToWorld().transform(newPos, result);
             ReferencedEnvelope env = new ReferencedEnvelope(map.getViewport().getBounds());
-            env.translate(env.getMinimum(0) - result.x, env.getMaximum(1) - result.y);
+            env.translate(env.getMinimum(0) - result.x,
+                    env.getMaximum(1) - result.y);
+
+            geoFinder.setPanOffsetX(env.getMaximum(0));
+            geoFinder.setPanOffsetY(env.getMaximum(1));
+
             setViewport(env);
             e.consume();
 
-        });*/
+        });
 
         canvas.addEventHandler(ScrollEvent.SCROLL, e -> {
             ReferencedEnvelope envelope = map.getViewport().getBounds();
@@ -149,6 +155,9 @@ public class MapCanvas {
 
             geoFinder.setMapWidth(envelope.getWidth());
             geoFinder.setMapHeight(envelope.getHeight());
+
+            geoFinder.setPanOffsetX(envelope.getMaximum(0));
+            geoFinder.setPanOffsetY(envelope.getMaximum(1));
 
             setViewport(envelope);
             e.consume();
