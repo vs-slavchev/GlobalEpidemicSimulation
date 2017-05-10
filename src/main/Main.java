@@ -43,6 +43,7 @@ public class Main extends Application {
     private Thread algorithmThread;
     private World world;
     private InfectionSpread infectionSpread;
+    private volatile boolean isWorking = true;
 
     public static final double INFECTION_RADIUS = 2.0;
 
@@ -73,20 +74,6 @@ public class Main extends Application {
         world = new World();
         random = new Random();
         infectionSpread = new InfectionSpread();
-
-        algorithmThread = new Thread(() -> {
-            while (true) {
-                applyAlgorithm();
-                mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    System.exit(0);
-                }
-            }
-        });
-        algorithmThread.start();
     }
 
     private void applyAlgorithm() {
@@ -204,11 +191,26 @@ public class Main extends Application {
         start.setOnAction(event -> {
             start.setVisible(false);
             pause.setVisible(true);
+            isWorking = true;
+            algorithmThread = new Thread(() -> {
+                while (isWorking) {
+                    applyAlgorithm();
+                    mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        System.exit(0);
+                    }
+                }
+            });
+            algorithmThread.start();
         });
 
         pause.setOnAction(event -> {
             start.setVisible(true);
             pause.setVisible(false);
+            isWorking = false;
         });
 
         disease.setOnAction(event -> {
