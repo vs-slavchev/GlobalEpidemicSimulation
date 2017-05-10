@@ -4,8 +4,7 @@ package main;
  * Created by Yasen on 4/3/2017.
  */
 
-import javafx.geometry.Point2D;
-
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +39,7 @@ public class World {
 
     public ArrayList<Point2D> getAllInfectionPoints() {
         ArrayList<Point2D> points = new ArrayList<>();
-        countries.stream().forEach(country -> points.addAll(country.getInfectionPoints()));
+        countries.forEach(country -> points.addAll(country.getInfectionPoints()));
         return points;
     }
 }

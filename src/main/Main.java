@@ -91,7 +91,7 @@ public class Main extends Application {
     }
 
     private void applyAlgorithm() {
-        for (Point2D infectionPoint : world.getAllInfectionPoints()) {
+        for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
             if (random.nextDouble() < infectionSpread
                     .getMainDisease()
                     .getProperties()
@@ -112,7 +112,9 @@ public class Main extends Application {
 
                 if (world.getCountry("Bulgaria").isPresent()) {
                     Country country = world.getCountry("Bulgaria").get();
-                    country.addInfectionPoint(newPoint);
+                    java.awt.geom.Point2D mapInfectionPoint = mapCanvas.getGeoFinder()
+                            .screenToMapCoordinates(newPointX, newPointY);
+                    country.addInfectionPoint(mapInfectionPoint);
                 }
             }
         }
@@ -226,17 +228,18 @@ public class Main extends Application {
                 if (event.getButton() == MouseButton.SECONDARY) {
                     selectCountryOnMap(event);
                 } else if (event.getButton() == MouseButton.PRIMARY) {
-                    createInfectionPoint(event);
+                    createInfectionPointFromClick(event);
                 }
             }
             event.consume();
         });
     }
 
-    private void createInfectionPoint(MouseEvent event) {
+    private void createInfectionPointFromClick(MouseEvent event) {
         if (world.getCountry("Bulgaria").isPresent()) {
             Country country = world.getCountry("Bulgaria").get();
-            country.addInfectionPoint(new Point2D(event.getX(), event.getY()));
+            java.awt.geom.Point2D mapInfectionPoint = mapCanvas.getGeoFinder().screenToMapCoordinates(event.getX(), event.getY());
+            country.addInfectionPoint(mapInfectionPoint);
         }
     }
 
