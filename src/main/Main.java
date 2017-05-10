@@ -6,7 +6,6 @@ import disease.DiseaseProperties;
 import disease.DiseaseType;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -45,7 +44,7 @@ public class Main extends Application {
     private World world;
     private InfectionSpread infectionSpread;
 
-    public static final int INFECTION_RADIUS = 6;
+    public static final int INFECTION_RADIUS = 2;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -102,19 +101,19 @@ public class Main extends Application {
                         (random.nextBoolean() ? + offsetX : - offsetX);
                 int newPointY = (int)infectionPoint.getY() +
                         (random.nextBoolean() ? offsetY : - offsetY);
-                Point2D newPoint = new Point2D(newPointX, newPointY);
+                java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
+                        .mapToScreenCoordinates(newPointX, newPointY);
 
-                String countryName = mapCanvas.getGeoFinder()
-                        .getCountryName(newPoint.getX(), newPoint.getY());
+                String countryName = mapCanvas.getGeoFinder().getCountryNameFromScreenCoordinates(
+                                screenNewPoint.getX(), screenNewPoint.getY());
                 if (countryName.equals("water")) {
                     continue;
                 }
 
                 if (world.getCountry("Bulgaria").isPresent()) {
                     Country country = world.getCountry("Bulgaria").get();
-                    java.awt.geom.Point2D mapInfectionPoint = mapCanvas.getGeoFinder()
-                            .screenToMapCoordinates(newPointX, newPointY);
-                    country.addInfectionPoint(mapInfectionPoint);
+                    country.addInfectionPoint(
+                            new java.awt.geom.Point2D.Double(newPointX, newPointY));
                 }
             }
         }
@@ -246,7 +245,7 @@ public class Main extends Application {
     private void selectCountryOnMap(MouseEvent event) {
         String clickedOnCountryName = mapCanvas
                 .getGeoFinder()
-                .getCountryName(event.getX(), event.getY());
+                .getCountryNameFromScreenCoordinates(event.getX(), event.getY());
 
         mapCanvas.selectStyleChange(event.getX(), event.getY());
         mapCanvas.setNeedsRepaint();

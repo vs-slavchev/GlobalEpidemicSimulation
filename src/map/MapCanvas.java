@@ -25,6 +25,7 @@ import org.jfree.fx.FXGraphics2D;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
+import reader.ConstantValues;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -96,7 +97,8 @@ public class MapCanvas {
         gc.setFill(javafx.scene.paint.Color.rgb(255, 0, 0, 0.4));
         for (Point2D point : infectionPoints) {
             Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
-            gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(), 2, 2);
+            gc.fillOval(screenInfectionPoint.getX(),screenInfectionPoint.getY(),
+                    ConstantValues.POINT_RADIUS, ConstantValues.POINT_RADIUS);
         }
 
         drawPointsForCountry(gc);
