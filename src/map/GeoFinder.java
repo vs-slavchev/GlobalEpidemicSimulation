@@ -108,7 +108,7 @@ public class GeoFinder {
         return worldToScreen;
     }
 
-    public String getCountryName(double x, double y) {
+    public String getCountryNameFromScreenCoordinates(double x, double y) {
         SimpleFeatureCollection features = getCountryFeaturesCollection(x, y);
 
         Optional<String> countryName = Optional.empty();
@@ -124,7 +124,7 @@ public class GeoFinder {
 
     /**
      * Get the collection of the coordinates of the borders of a country that contains the given
-     * point.
+     * point. Takes in screen coordinates.
      */
     public SimpleFeatureCollection getCountryFeaturesCollection(double x, double y) {
         Point2D pointInWorld = screenToMapCoordinates(x, y);

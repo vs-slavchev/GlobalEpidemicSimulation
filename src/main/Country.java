@@ -1,7 +1,7 @@
 package main;
 
-import javafx.geometry.Point2D;
 
+import java.awt.geom.Point2D;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -87,6 +87,9 @@ public class Country {
         return infectionPoints;
     }
 
+    /**
+     * Add an infection point in map coordinates.
+     */
     public void addInfectionPoint(Point2D infectionPoint) {
         if (infectionPoints.size() >= QUEUE_MAX_SIZE) {
             infectionPoints.poll();

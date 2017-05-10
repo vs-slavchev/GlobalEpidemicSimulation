@@ -4,7 +4,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -26,8 +25,10 @@ import org.jfree.fx.FXGraphics2D;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
+import reader.ConstantValues;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class MapCanvas {
     private Canvas canvas;
     private MapContent map;
     private GraphicsContext graphics;
-    private ArrayList<Point2D> infectionPoints;
+    private ArrayList<java.awt.geom.Point2D> infectionPoints;
 
     private GeoFinder geoFinder;
     private StyleManager styleManager;
@@ -95,7 +96,9 @@ public class MapCanvas {
 
         gc.setFill(javafx.scene.paint.Color.rgb(255, 0, 0, 0.4));
         for (Point2D point : infectionPoints) {
-            gc.fillOval(point.getX(), point.getY(), 2, 2);
+            Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
+            gc.fillOval(screenInfectionPoint.getX(),screenInfectionPoint.getY(),
+                    ConstantValues.POINT_RADIUS, ConstantValues.POINT_RADIUS);
         }
 
         drawPointsForCountry(gc);

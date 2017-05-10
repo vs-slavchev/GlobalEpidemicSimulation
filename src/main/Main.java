@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -48,8 +47,9 @@ public class Main extends Application {
     private Thread algorithmThread;
     private World world;
     private InfectionSpread infectionSpread;
+    private volatile boolean isWorking = true;
 
-    public static final int INFECTION_RADIUS = 6;
+    public static final int INFECTION_RADIUS = 2;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -78,24 +78,10 @@ public class Main extends Application {
         world = new World();
         random = new Random();
         infectionSpread = new InfectionSpread();
-
-        algorithmThread = new Thread(() -> {
-            while (true) {
-                applyAlgorithm();
-                mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    System.exit(0);
-                }
-            }
-        });
-        algorithmThread.start();
     }
 
     private void applyAlgorithm() {
-        for (Point2D infectionPoint : world.getAllInfectionPoints()) {
+        for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
             if (random.nextDouble() < infectionSpread
                     .getMainDisease()
                     .getProperties()
@@ -106,17 +92,19 @@ public class Main extends Application {
                         (random.nextBoolean() ? + offsetX : - offsetX);
                 int newPointY = (int)infectionPoint.getY() +
                         (random.nextBoolean() ? offsetY : - offsetY);
-                Point2D newPoint = new Point2D(newPointX, newPointY);
+                java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
+                        .mapToScreenCoordinates(newPointX, newPointY);
 
-                String countryName = mapCanvas.getGeoFinder()
-                        .getCountryName(newPoint.getX(), newPoint.getY());
+                String countryName = mapCanvas.getGeoFinder().getCountryNameFromScreenCoordinates(
+                                screenNewPoint.getX(), screenNewPoint.getY());
                 if (countryName.equals("water")) {
                     continue;
                 }
 
                 if (world.getCountry("Bulgaria").isPresent()) {
                     Country country = world.getCountry("Bulgaria").get();
-                    country.addInfectionPoint(newPoint);
+                    country.addInfectionPoint(
+                            new java.awt.geom.Point2D.Double(newPointX, newPointY));
                 }
             }
         }
@@ -207,11 +195,26 @@ public class Main extends Application {
         start.setOnAction(event -> {
             start.setVisible(false);
             pause.setVisible(true);
+            isWorking = true;
+            algorithmThread = new Thread(() -> {
+                while (isWorking) {
+                    applyAlgorithm();
+                    mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        System.exit(0);
+                    }
+                }
+            });
+            algorithmThread.start();
         });
 
         pause.setOnAction(event -> {
             start.setVisible(true);
             pause.setVisible(false);
+            isWorking = false;
         });
 
         disease.setOnAction(event -> {
@@ -230,24 +233,25 @@ public class Main extends Application {
                 if (event.getButton() == MouseButton.SECONDARY) {
                     selectCountryOnMap(event);
                 } else if (event.getButton() == MouseButton.PRIMARY) {
-                    createInfectionPoint(event);
+                    createInfectionPointFromClick(event);
                 }
             }
             event.consume();
         });
     }
 
-    private void createInfectionPoint(MouseEvent event) {
+    private void createInfectionPointFromClick(MouseEvent event) {
         if (world.getCountry("Bulgaria").isPresent()) {
             Country country = world.getCountry("Bulgaria").get();
-            country.addInfectionPoint(new Point2D(event.getX(), event.getY()));
+            java.awt.geom.Point2D mapInfectionPoint = mapCanvas.getGeoFinder().screenToMapCoordinates(event.getX(), event.getY());
+            country.addInfectionPoint(mapInfectionPoint);
         }
     }
 
     private void selectCountryOnMap(MouseEvent event) {
         String clickedOnCountryName = mapCanvas
                 .getGeoFinder()
-                .getCountryName(event.getX(), event.getY());
+                .getCountryNameFromScreenCoordinates(event.getX(), event.getY());
 
         mapCanvas.selectStyleChange(event.getX(), event.getY());
         mapCanvas.setNeedsRepaint();
