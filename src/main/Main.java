@@ -44,7 +44,7 @@ public class Main extends Application {
     private World world;
     private InfectionSpread infectionSpread;
 
-    public static final int INFECTION_RADIUS = 2;
+    public static final double INFECTION_RADIUS = 2.0;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -95,11 +95,11 @@ public class Main extends Application {
                     .getMainDisease()
                     .getProperties()
                     .getVirulence()) {
-                int offsetX = random.nextInt(INFECTION_RADIUS) + INFECTION_RADIUS;
-                int offsetY = random.nextInt(INFECTION_RADIUS) + INFECTION_RADIUS;
-                int newPointX = (int)infectionPoint.getX() +
+                double offsetX = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
+                double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
+                double newPointX = infectionPoint.getX() +
                         (random.nextBoolean() ? + offsetX : - offsetX);
-                int newPointY = (int)infectionPoint.getY() +
+                double newPointY = infectionPoint.getY() +
                         (random.nextBoolean() ? offsetY : - offsetY);
                 java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
                         .mapToScreenCoordinates(newPointX, newPointY);
