@@ -4,7 +4,10 @@ import algorithm.InfectionSpread;
 import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -22,6 +25,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javax.swing.JTextField;
 import map.MapCanvas;
 import reader.ConstantValues;
 
@@ -257,8 +261,32 @@ public class Main extends Application {
 
         //Items in popup
         final TextField name = new TextField();
-        final TextField prefTemp = new TextField();
-        final TextField tempTolerance = new TextField();
+
+        //restricting the user to type only integers for the preferred temperature
+        final TextField prefTemp = new TextField(){
+
+            @Override
+            public  void  replaceText(int i, int j, String string){
+                if(string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")){
+                    super.replaceText(i, j, string);
+                }
+            }
+            public void paste(){}
+        };
+
+        //restricting the user to type only integers for the temperature tolerance
+        final TextField tempTolerance = new TextField(){
+
+            @Override
+            public  void  replaceText(int i, int j, String string){
+                if(string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")){
+                    super.replaceText(i, j, string);
+                }
+            }
+            public void paste(){}
+        };
+
+
         final Slider lethality = new Slider(0, 100, 50);
         final Slider virulence = new Slider(0, 100, 50);
         final Button save = new Button("Create disease");
