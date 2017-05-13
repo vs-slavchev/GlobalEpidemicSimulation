@@ -1,241 +1,241 @@
-Afghanistan;AFG;33332025;52.71913282;Presidential islamic republic
-Egypt;EGY;94666993;81.49178763;Presidential republic
-Åland Islands;ALA;29013;Autonomous region of Finland
-Albania;ALB;3038594;116.9708029;parliamentary republic
-Algeria;DZA;40263711;14.89163385;Presidential republic
-American Samoa;ASM;54194;342.1;Presidential democracy (self-governing territory of the US)
-Andorra;AND;85660;180.5617021;parliamentary democracy
-Angola;AGO;20172332;15.30600786;Presidential republic
-Anguilla;AIA;16752;Parliamentary democracy (self-governing territory of the UK)
-Antarctica;ATA;0;foreign-administrated territory
-Antigua and Barbuda;ATG;93581;200;Parliamentary democracy (under constitutional monarchy)
-Equatorial Guinea;GNQ;759451;24.95543672;Presidential republic
-Argentina;ARG;43886748;14.76674377;Presidential republic
-Armenia;ARM;3051250;108.5674157;Semi-presidential republic
-Aruba;ABW;113648;600;Parliamentary democracy (territory of the Kingdom of the Netherlands)
-Azerbaijan;AZE;9872765;109.5860566;Presidential republic
-Ethiopia;ETH;102374044;82.95;Federal parliamentary republic
-Australia;AUS;22992654;2.902646343;Parliamentary democracy (under constitutional monarchy)
-Bahamas;BHS;327316;34.26573427;Parliamentary democracy (under constitutional monarchy)
-Bahrain;BHR;1378904;1660.526316;constitutional monarchy
-Bangladesh;BGD;156186882;1142.29085;parliamentary republic
-Barbados;BRB;291495;637.2093023;Parliamentary democracy (under constitutional monarchy)
-Belarus;BLR;9570376;46.79025737;Presidential republic (in fact a dictatorship)
-Belgium;BEL;11409077;359.8414795;Federal parliamentary republic (under constitutional monarchy)
-Belize;BLZ;353858;15.1249452;Parliamentary democracy (under constitutional monarchy)
-Benin;BEN;10741458;80.00361598;Presidential republic
-Bermuda;BMU;70537;1292;Parliamentary democracy (self-governing territory of the UK)
-Bhutan;BTN;750125;18.91117479;constitutional monarchy
-Bolivia;BOL;10969649;9.165512785;Presidential republic
-Bosnia and Herzegovina;BIH;3861912;73.7254902;parliamentary republic
-Botswana;BWA;2209208;3.541368906;parliamentary republic
-Bouvet Island;BVT;0;territory of Norway
-Brazil;BRA;205823665;23.04484232;Federal presidential republic
-British Indian Ocean Territory;IOT;0;British overseas territory
-Brunei;BRN;436620;75.71157495;Absolute monarchy/sultanate
-Bulgaria;BGR;7144653;69.39941046;parliamentary republic
-Burkina Faso;BFA;19512533;60.19005848;Presidential republic
-Burundi;BDI;11099298;326.4018692;Presidential republic
-Chile;CHL;17650114;23.01680901;Presidential republic
-China;CHN;1373541278;143.4792677;People's republic (communist 	one-party system)
-Cook Islands;COK;9556;parliamentary democracy
-Costa Rica;CRI;4872543;91.24559342;Presidential republic
-Denmark;DNK;5593785;130.732972;Parliamentary constitutional monarchy
-Democratic Republic of the Congo;COD;81331050;29.09728502;Semi-presidential republic
-Germany;DEU;80722792;234.5801899;Federal parliamentary republic
-Dominica;DMA;73757;90.66666667;parliamentary republic
-Dominican Republic;DOM;10606865;205.4428808;Presidential republic
-Djibouti;DJI;846687;38.35202761;Semi-presidential republic
-Ecuador;ECU;16080778;58.24206797;Presidential republic
-El Salvador;SLV;6156670;298.8899614;Presidential republic
-Ivory Coast;CIV;23740424;62.06918239;Presidential republic
-Eritrea;ERI;5869869;52.01980198;Presidential republic
-Estonia;EST;1258545;31.61122906;parliamentary republic
-Falkland Islands;FLK;2931;Parliamentary democracy (self-governing territory of the UK)
-Faroe Islands;FRO;50456;35.04172662;Parliamentary democracy (territory of the Kingdom of Denmark)
-Fiji;FJI;915303;47.07170224;parliamentary republic
-Finland;FIN;5498211;17.65054294;parliamentary republic
-France;FRA;66836154;118.4950517;Semi-presidential republic
-French Guiana;GUF;181000;overseas territory of France
-French Polynesia;PYF;285321;74.04371585;Parliamentary democracy (territory of France)
-French Southern and Antarctic Lands;ATF;0;overseas territory of France
-Gabon;GAB;1738541;5.840804129;Presidential republic
-Gambia;GMB;2009648;172.9;Presidential republic
-Georgia;GEO;4928052;77.88935932;Semi-presidential republic
-Ghana;GHA;26908262;107.1987343;Presidential republic
-Gibraltar;GIB;29328;2924.4;Parliamentary democracy (self-governing territory of the UK)
-Grenada;GRD;111219;305.8823529;parliamentary democracy
-Greece;GRC;10773253;87.78898371;parliamentary republic
-Greenland;GRL;57728;0.137736631;Parliamentary democracy (territory of the Kingdom of Denmark)
-Guadeloupe;GLP;456000;overseas territory of France
-Guam;GUM;162742;331.4814815;Presidential democracy (self-governing unincorporated territory of the US)
-Guatemala;GTM;15189958;134.2758492;Presidential republic
-Guernsey;GGY;66297;Parliamentary democracy (autonomous Crown dependency of the UK)
-Guinea;GIN;12093349;40.62347387;Presidential republic
-Guinea-Bissau;GNB;1759159;53.87624467;Semi-presidential republic
-Guyana;GUY;735909;3.835407671;parliamentary republic
-Haiti;HTI;10485800;362.5907112;Semi-presidential republic
-Heard Island and McDonald Islands;HMD;0;territory of Australia
-Honduras;HND;8893259;67.92385378;Presidential republic
-Hong Kong;HKG;7167403;6783.109405;Presidential limited democracy (special administrative region of China)
-India;IND;1266883598;411.8858869;Federal parliamentary republic
-Indonesia;IDN;258316051;132.410009;Presidential republic
-Isle of Man;IMN;88195;145.3842105;Parliamentary democracy (autonomous Crown dependency of the UK)
-Iraq;IRQ;38146025;73.74976976;Federal parliamentary republic
-Iran;IRN;82801633;45.42261521;islamic republic
-Ireland;IRL;4952473;64.9586297;parliamentary republic
-Iceland;ISL;335878;3.172069825;parliamentary republic
-Israel;ISR;8174527;352.310536;parliamentary democracy
-Italy;ITA;62007540;205.6265724;parliamentary republic
-Jamaica;JAM;2970340;249.4921514;Parliamentary democracy (under constitutional monarchy)
-Japan;JPN;126702133;349.659808;Parliamentary constitutional monarchy
-Yemen;YEM;27392779;45.55751274;republic
-Jersey;JEY;98069;Parliamentary democracy (autonomous Crown dependency of the UK)
-Jordan;JOR;8185384;68.11218743;Parliamentary constitutional monarchy
-British Virgin Islands;VGB;34232;Parliamentary democracy (self-governing territory of the UK)
-Virgin Islands;VIR;102951;314.2857143;Presidential democracy (self-governing territory of the US)
-Cayman Islands;CYM;57268;234.2916667;Parliamentary democracy (self-governing territory of the UK)
-Cambodia;KHM;15957223;80.0985724;Parliamentary constitutional monarchy
-Cameroon;CMR;24360803;41.460938;Presidential republic
-Canada;CAN;35362905;3.752786328;Federal parliamentary republic (under constitutional monarchy)
-Cape Verde;CPV;553432;123.0769231;parliamentary republic
-Kazakhstan;KAZ;18360353;6.046227359;Presidential republic
-Qatar;QAT;2258283;151.7687662;absolute monarchy
-Kenya;KEN;46790758;71.18283726;Presidential republic
-Kyrgyzstan;KGZ;5727553;28.40458811;parliamentary republic
-Kiribati;KIR;106925;123.4567901;Presidential republic
-Cocos Islands;CCK;596;(non-self-governing territory of Australia)
-Colombia;COL;47220856;41.7260027;Presidential republic
-Comoros;COM;794678;395.1612903;Federal presidential republic
-Republic of the Congo;COG;4852412;11.83894583;Presidential republic
-Croatia;HRV;4313707;78.94924946;parliamentary republic
-Cuba;CUB;11179995;105.7685081;Republic (communist one-party system)
-Kuwait;KWT;2832776;153.5353535;constitutional monarchy
-Laos;LAO;7019073;26.86741768;Republic (communist one-party system)
-Lesotho;LSO;1953070;71.5085639;Parliamentary constitutional monarchy
-Latvia;LVA;1965686;36.00836282;parliamentary republic
-Lebanon;LBN;6237738;413.1964809;parliamentary republic
-Liberia;LBR;4299944;41.46594684;Presidential republic
-Libya;LBY;6541948;3.611739432;Republic (transitional government after dictatorship)
-Liechtenstein;LIE;37937;225.2;constitutional monarchy
-Lithuania;LTU;2854235;52.4493378;Semi-presidential republic
-Luxembourg;LUX;582291;195.7528958;constitutional monarchy
-Macau;MAC;597425;19428.57143;Presidential limited democracy (special administrative region of China)
-Madagascar;MDG;24430325;35.61921794;Semi-presidential republic
-Malawi;MWI;18570321;158.0504879;Presidential republic
-Malaysia;MYS;30949962;86.4434637;Federal constitutional monarchy
-Maldives;MDV;392960;1053.333333;Presidential republic
-Mali;MLI;17467108;12.59639892;Semi-presidential republic
-Malta;MLT;415196;1300;parliamentary republic
-Morocco;MAR;33655786;71.59085817;Parliamentary constitutional monarchy
-Marshall Islands;MHL;73376;300.2111111;Presidential republic
-Martinique;MTQ;395000;overseas territory of France
-Mauritania;MRT;3677293;3.356941884;Presidential republic
-Mauritius;MUS;1348242;631.0344828;parliamentary republic
-Mayotte;MYT;223765;551.3513514;overseas territory of France
-Macedonia;MKD;2100025;81.68120539;parliamentary republic
-Mexico;MEX;123166749;58.34666529;Federal presidential republic
-Micronesia, Federated States of;FSM;104719;158.5714286;Federal republic
-Moldova;MDA;3510485;123.9948481;parliamentary republic
-Monaco;MCO;30581;17703.5;constitutional monarchy
-Mongolia;MNG;3031330;1.773990062;Semi-presidential republic
-Montenegro;MNE;644578;46.98884758;parliamentary republic
-Montserrat;MSR;5267;Parliamentary democracy (self-governing territory of the UK)
-Mozambique;MOZ;25930150;29.74388972;Presidential republic
-Burma;MMR;56890418;73.39178602;parliamentary republic
-Namibia;NAM;2436469;2.773020442;Presidential republic
-Nauru;NRU;9591;parliamentary republic
-Nepal;NPL;29033914;208.9919777;Federal parliamentary republic
-New Caledonia;NCL;275355;13.51203501;Parliamentary democracy (territory of France)
-New Zealand;NZL;4474549;16.58881167;Parliamentary democracy (under constitutional monarchy)
-Nicaragua;NIC;5966798;48.10536812;Presidential republic
-Netherlands;NLD;17016967;492.6178476;Parliamentary constitutional monarchy
-Netherlands Antilles;ANT;227049;territory of the Netherlands
-Niger;NER;18638600;12.24599353;Semi-presidential republic
-Nigeria;NGA;186053386;173.9440254;Federal presidential republic
-Niue;NIU;1190;parliamentary democracy
-North Korea;PRK;25115311;202.1925089;People's republic (communist 	one-party system)
-Northern Mariana Islands;MNP;53467;132.4282609;Presidential democracy
-Norfolk Island;NFK;2210;Parliamentary democracy (territory of Australia)
-Norway;NOR;5265158;16.00484499;Parliamentary constitutional monarchy
-Oman;OMN;3355262;8.991922456;absolute monarchy
-Austria;AUT;8711770;101.7833313;Federal parliamentary republic
-Timor-Leste;TLS;1261072;75.58843309;Semi-presidential republic
-Pakistan;PAK;201995540;225.1880967;Federal parliamentary republic
-Palau;PLW;21347;44.50434783;Presidential republic
-Panama;PAN;3705246;47.30965833;Presidential republic
-Papua New Guinea;PNG;6791317;15.14375304;Parliamentary democracy (under constitutional monarchy)
-Paraguay;PRY;6862812;16.2446514;Presidential republic
-Peru;PER;30741062;22.715625;Presidential republic
-Philippines;PHL;102624209;312.7779455;Presidential republic
-Pitcairn Islands;PCN;54;Parliamentary democracy (territory of the US)
-Poland;POL;38523261;125.5226824;parliamentary republic
-Portugal;PRT;10833816;116.3004264;Semi-presidential republic
-Puerto Rico;PRI;3578056;448.4780158;Presidential democracy
-Reunion;REU;699000;overseas territory of France
-Rwanda;RWA;12988423;430.6445075;Presidential republic
-Romania;ROU;21599736;93.18438668;Semi-presidential republic
-Russia;RUS;142355415;8.655500105;Federal republic
-Solomon Islands;SLB;635027;19.22115041;Parliamentary democracy (under constitutional monarchy)
-Zambia;ZMB;15510711;17.38925732;Presidential republic
-Samoa;WSM;198926;65.01766784;parliamentary republic
-San Marino;SMR;33285;525.5666667;parliamentary republic
-Sao Tome and Principe;STP;197541;171.875;Semi-presidential republic
-Saudi Arabia;SAU;28160273;12.76835265;absolute monarchy
-Sweden;SWE;9880604;22.85421845;Parliamentary constitutional monarchy
-Switzerland;CHE;8179294;195.65;Federal republic
-Senegal;SEN;14320055;64.58214304;Presidential republic
-Serbia;SRB;7143921;83.36382346;parliamentary republic
-Seychelles;SYC;93186;189.1304348;Presidential republic
-Sierra Leone;SLE;6018888;81.91845853;Presidential republic
-Zimbabwe;ZWE;14546961;32.49579941;Semi-presidential republic
-Singapore;SGP;5781728;7252.857143;parliamentary republic
-Slovakia;SVK;5445802;112.9132876;parliamentary republic
-Slovenia;SVN;1978029;101.7378352;parliamentary republic
-Somalia;SOM;10817354;14.87391207;Federal parliamentary republic
-Spain;ESP;48563476;92.36367281;Parliamentary constitutional monarchy
-Sri Lanka;LKA;22235000;332.6423218;Presidential republic
-Saint Helena, Ascension and Tristan da Cunha;SHN;7795;Parliamentary democracy (limited self-governing territory of the UK)
-Saint Kitts and Nevis;KNA;52329;200;Federal parliamentary republic (under constitutional monarchy)
-Saint Lucia;LCA;164464;285.2459016;Parliamentary democracy (under constitutional monarchy)
-Saint Pierre and Miquelon;SPM;5595;Parliamentary democracy (territory of France)
-Saint Vincent and the Grenadines;VCT;102350;279.4871795;Parliamentary democracy (under constitutional monarchy)
-South Africa;ZAF;54300704;41.16281176;parliamentary republic
-Sudan;SDN;36729501;18.32996633;Presidential republic
-South Georgia and South Sandwich Islands;SGS;30;British overseas territory
-South Korea;KOR;50924172;503.3470649;Presidential republic
-Suriname;SUR;585824;3.365384615;Presidential republic
-Svalbard;SJM;1872;territory of Norway
-Swaziland;SWZ;1451428;61.39534884;absolute monarchy
-Syria;SYR;17185170;111.3489081;Presidential republic
-Tajikistan;TJK;8330946;49.14975707;Presidential republic
-Taiwan;TWN;23464787;Semi-presidential republic
-Tanzania;TZA;52482726;50.62203658;Presidential republic
-Thailand;THA;68200824;135.2972264;Constitutional monarchy (interim military-government since May 2014)
-Togo;TGO;7756937;110.8291965;Presidential republic
-Tokelau;TKL;1337;Parliamentary democracy (territory of New Zealand)
-Tonga;TON;106513;144.4444444;constitutional monarchy
-Trinidad and Tobago;TTO;1220479;261.4035088;parliamentary republic
-Chad;TCD;11852462;8.915978399;Presidential republic
-Czech Republic;CZE;10644842;136.1812298;parliamentary republic
-Tunisia;TUN;11134588;67.90036045;parliamentary republic
-Turkey;TUR;80274604;94.52853969;parliamentary republic
-Turkmenistan;TKM;5291317;10.72925755;Presidential republic
-Turks and Caicos Islands;TCA;51430;40.37263158;Parliamentary democracy (self-governing territory of the UK)
-Tuvalu;TUV;10959;327.5666667;Parliamentary democracy (under constitutional monarchy)
-Uganda;UGA;38319241;167.278915;Presidential republic
-Ukraine;UKR;44209733;79.18076365;Semi-presidential republic
-Hungary;HUN;9874784;110.4606208;parliamentary republic
-Uruguay;URY;3351016;19.18066507;Presidential republic
-Uzbekistan;UZB;29473614;66.35637047;Presidential republic
-Vanuatu;VUT;277554;19.68826907;parliamentary republic
-Holy See (Vatican City);VAT;1000;absolute monarchy
-Venezuela;VEN;30912302;32.68975682;Federal presidential republic
-United Arab Emirates;ARE;5927482;89.85645933;Federation of autonomous monarchies
-United States;USA;323995528;33.81816949;Federal presidential republic
-United Kingdom;GBR;64430428;257.2314306;Parliamentary constitutional monarchy
-Vietnam;VNM;95261021;280.3495985;Republic (communist one-party system)
-Wallis and Futuna;WLF;15664;Parliamentary democracy (territory of France)
-Christmas Island;CXR;2205;(non-self-governing territory of Australia)
-Central African Republic;CAF;5507257;7.064432245;Presidential republic
-Cyprus;CYP;1205575;119.3722944;Presidential democracy
+Afghanistan;AFG;333332025;452.71913282;5Presidential islamic republic;648.01676483;735.84374939;856.57452735
+Egypt;EGY;394666993;481.49178763;5Presidential republic;6104.6666533;738.20171127;8177.76836063
+Åland Islands;ALA;329013;5Autonomous region of Finland
+Albania;ALB;33038594;4116.9708029;5parliamentary republic;617.93662454;749.91196079;8272.20429151
+Algeria;DZA;340263711;414.89163385;5Presidential republic;635.56453306;772.76281369;8361.7291743
+American Samoa;ASM;354194;4342.1;5Presidential democracy (self-governing territory of the US);63.732035944
+Andorra;AND;385660;4180.5617021;5parliamentary democracy;610.05993572;778.02805697;83746.33415672
+Angola;AGO;320172332;415.30600786;5Presidential republic;636.39542768;764.25531186;8179.35785371
+Anguilla;AIA;316752;5Parliamentary democracy (self-governing territory of the UK)
+Antarctica;ATA;30;5foreign-administrated territory
+Antigua and Barbuda;ATG;393581;4200;5Parliamentary democracy (under constitutional monarchy);613.88760103;768.29352384;8773.71224648
+Equatorial Guinea;GNQ;3759451;424.95543672;5Presidential republic;647.11721082;777.09383563;8663.05422937
+Argentina;ARG;343886748;414.76674377;5Presidential republic;613.44396548;755.42666668;8605.1878448
+Armenia;ARM;33051250;4108.5674157;5Semi-presidential republic;625.50768535;742.98239827;8161.55238559
+Aruba;ABW;3113648;4600;5Parliamentary democracy (territory of the Kingdom of the Netherlands)
+Azerbaijan;AZE;39872765;4109.5860566;5Presidential republic;630.3540129;720.39084601;8471.41439556
+Ethiopia;ETH;3102374044;482.95;5Federal parliamentary republic;635.73814656;758.7097224;826.64777614
+Australia;AUS;322992654;42.902646343;5Parliamentary democracy (under constitutional monarchy);65.897734951;767.03875378;86031.1074579
+Bahamas;BHS;3327316;434.26573427;5Parliamentary democracy (under constitutional monarchy);613.71948341;745.86031202;81720.1594667
+Bahrain;BHR;31378904;41660.526316;5constitutional monarchy;655.45435188;763.25294303;81242.84417722
+Bangladesh;BGD;3156186882;41142.29085;5parliamentary republic;689.3929096;727.901132;830.83346991
+Barbados;BRB;3291495;4637.2093023;5Parliamentary democracy (under constitutional monarchy);615.38938638;763.52175322;81146.04169074
+Belarus;BLR;39570376;446.79025737;5Presidential republic (in fact a dictatorship);620.48379252;765.78654033;8450.21395576
+Belgium;BEL;311409077;4359.8414795;5Federal parliamentary republic (under constitutional monarchy);615.63662972;777.86864974;84884.06626139
+Belize;BLZ;3353858;415.1249452;5Parliamentary democracy (under constitutional monarchy);627.04048536;767.01833352;8278.57920932
+Benin;BEN;310741458;480.00361598;5Presidential republic;635.16237337;748.99980402;837.88944806
+Bermuda;BMU;370537;41292;5Parliamentary democracy (self-governing territory of the UK);68.689651024
+Bhutan;BTN;3750125;418.91117479;5constitutional monarchy;655.72363212;773.18860382;888.79259723
+Bolivia;BOL;310969649;49.165512785;5Presidential republic;627.97140377;772.06790853;8208.78419416
+Bosnia and Herzegovina;BIH;33861912;473.7254902;5parliamentary republic;647.40090583;771.17703421;8463.63992785
+Botswana;BWA;32209208;43.541368906;5parliamentary republic;617.5393912;759.01483571;8385.31409704
+Bouvet Island;BVT;30;5territory of Norway
+Brazil;BRA;3205823665;423.04484232;5Federal presidential republic;611.36829449;746.0391265;8947.42769597
+British Indian Ocean Territory;IOT;30;5British overseas territory
+Brunei;BRN;3436620;475.71157495;5Absolute monarchy/sultanate;65.147459106;793.86008263;8957.60599801
+Bulgaria;BGR;37144653;469.39941046;5parliamentary republic;628.12871472;754.57395236;8661.84652732
+Burkina Faso;BFA;319512533;460.19005848;5Presidential republic;640.03947692;752.29508232;835.19599866
+Burundi;BDI;311099298;4326.4018692;5Presidential republic;645.53410622;752.7329716;821.55325396
+Chile;CHL;317650114;423.01680901;5Presidential republic;620.94195715;749.4654486;81137.35626532
+China;CHN;31373541278;4143.4792677;5People's republic (communist 	one-party system);658.37659937;755.78672081;8419.73424056
+Cook Islands;COK;39556;5parliamentary democracy
+Costa Rica;CRI;34872543;491.24559342;5Presidential republic;620.11774831;772.66745326;8970.00203198
+Denmark;DNK;35593785;4130.732972;5Parliamentary constitutional monarchy;611.02259277;784.76418872;86463.24321801
+Democratic Republic of the Congo;COD;381331050;429.09728502;5Semi-presidential republic;646.32237903;736.92860908;819.0536902
+Germany;DEU;380722792;4234.5801899;5Federal parliamentary republic;614.0153719;776.98713648;85410.63463897
+Dominica;DMA;373757;490.66666667;5parliamentary republic;613.55936883;768.68552414;8407.8128301
+Dominican Republic;DOM;310606865;4205.4428808;5Presidential republic;620.41796867;766.89955347;8268.9943173
+Djibouti;DJI;3846687;438.35202761;5Semi-presidential republic;651.50224365;763.87853881;8190.76010741
+Ecuador;ECU;316080778;458.24206797;5Presidential republic;612.84155358;749.20983681;8579.19244452
+El Salvador;SLV;36156670;4298.8899614;5Presidential republic;637.0047886;765.99590164;8279.64672825
+Ivory Coast;CIV;323740424;462.06918239;5Presidential republic;623.53443788;729.36420852;888.37029761
+Eritrea;ERI;35869869;452.01980198;5Presidential republic;643.49048059;745.75583753;825.20042878
+Estonia;EST;31258545;431.61122906;5parliamentary republic;69.404689495;778.8237027;81248.27963176
+Falkland Islands;FLK;32931;5Parliamentary democracy (self-governing territory of the UK)
+Faroe Islands;FRO;350456;435.04172662;5Parliamentary democracy (territory of the Kingdom of Denmark)
+Fiji;FJI;3915303;447.07170224;5parliamentary republic;67.870697243;765.80966995;8204.01121166
+Finland;FIN;35498211;417.65054294;5parliamentary republic;67.379235597;775.30870712;84612.29045597
+France;FRA;366836154;4118.4950517;5Semi-presidential republic;612.36533737;778.20528559;84958.98922627
+French Guiana;GUF;3181000;5overseas territory of France
+French Polynesia;PYF;3285321;474.04371585;5Parliamentary democracy (territory of France)
+French Southern and Antarctic Lands;ATF;30;5overseas territory of France
+Gabon;GAB;31738541;45.840804129;5Presidential republic;639.86049558;768.38110054;8321.33009074
+Gambia;GMB;32009648;4172.9;5Presidential republic;660.94814767;768.73756188;830.72368182
+Georgia;GEO;34928052;477.88935932;5Semi-presidential republic;620.4763228;720.93571372;8302.6006332
+Ghana;GHA;326908262;4107.1987343;5Presidential republic;622.98826426;759.84566773;857.89263246
+Gibraltar;GIB;329328;42924.4;5Parliamentary democracy (self-governing territory of the UK)
+Grenada;GRD;3111219;4305.8823529;5parliamentary democracy;615.1402398;746.36825813;8505.8299094
+Greece;GRC;310773253;487.78898371;5parliamentary republic;613.48711001;761.66346536;81743.03753324
+Greenland;GRL;357728;40.137736631;5Parliamentary democracy (territory of the Kingdom of Denmark);65.330841384
+Guadeloupe;GLP;3456000;5overseas territory of France
+Guam;GUM;3162742;4331.4814815;5Presidential democracy (self-governing unincorporated territory of the US);67.393453727
+Guatemala;GTM;315189958;4134.2758492;5Presidential republic;634.84767569;737.64294756;8232.62522721
+Guernsey;GGY;366297;5Parliamentary democracy (autonomous Crown dependency of the UK)
+Guinea;GIN;312093349;440.62347387;5Presidential republic;622.63592379;748.47374193;830.46022073
+Guinea-Bissau;GNB;31759159;453.87624467;5Semi-presidential republic;632.98647968;720.47370256;837.27708811
+Guyana;GUY;3735909;43.835407671;5parliamentary republic;617.3922441;759.44769257;8221.78327027
+Haiti;HTI;310485800;4362.5907112;5Semi-presidential republic;625.837657;720.64038902;861.45512168
+Heard Island and McDonald Islands;HMD;30;5territory of Australia
+Honduras;HND;38893259;467.92385378;5Presidential republic;637.59004958;750.64766811;8212.31515084
+Hong Kong;HKG;37167403;46783.109405;5Presidential limited democracy (special administrative region of China)
+India;IND;31266883598;4411.8858869;5Federal parliamentary republic;674.32984681;730.03652267;874.99460433
+Indonesia;IDN;3258316051;4132.410009;5Presidential republic;615.40820407;737.77973768;899.41035911
+Isle of Man;IMN;388195;4145.3842105;5Parliamentary democracy (autonomous Crown dependency of the UK)
+Iraq;IRQ;338146025;473.74976976;5Federal parliamentary republic;651.99596281;760.26765519;8292.00437883
+Iran;IRN;382801633;445.42261521;5islamic republic;642.98979197;741.2013656;8350.7386071
+Ireland;IRL;34952473;464.9586297;5parliamentary republic;69.799825902;766.05877199;84239.15448853
+Iceland;ISL;3335878;43.172069825;5parliamentary republic;67.78903328;781.04268501;84661.62136172
+Israel;ISR;38174527;4352.310536;5parliamentary democracy;621.09447276;760.85435871;82910.28863726
+Italy;ITA;362007540;4205.6265724;5parliamentary republic;619.86123293;775.61324789;83257.7534099
+Jamaica;JAM;32970340;4249.4921514;5Parliamentary democracy (under constitutional monarchy);616.99207352;752.38394193;8266.19011641
+Japan;JPN;3126702133;4349.659808;5Parliamentary constitutional monarchy;613.33416293;783.58877315;83702.95277544
+Yemen;YEM;327392779;445.55751274;5republic;652.8289507;722.56294482;879.93696624
+Jersey;JEY;398069;5Parliamentary democracy (autonomous Crown dependency of the UK)
+Jordan;JOR;38185384;468.11218743;5Parliamentary constitutional monarchy;638.79814209;769.67804684;8358.9124715
+British Virgin Islands;VGB;334232;5Parliamentary democracy (self-governing territory of the UK)
+Virgin Islands;VIR;3102951;4314.2857143;5Presidential democracy (self-governing territory of the US);616.34224251
+Cayman Islands;CYM;357268;4234.2916667;5Parliamentary democracy (self-governing territory of the UK)
+Cambodia;KHM;315957223;480.0985724;5Parliamentary constitutional monarchy;629.03890178;722.04231295;861.28475128
+Cameroon;CMR;324360803;441.460938;5Presidential republic;666.42837013;722.87302171;858.6522027
+Canada;CAN;335362905;43.752786328;5Federal parliamentary republic (under constitutional monarchy);67.178847511;770.93041505;85291.74613048
+Cape Verde;CPV;3553432;4123.0769231;5parliamentary republic;639.55602953;774.73642802;8173.30567196
+Kazakhstan;KAZ;318360353;46.046227359;5Presidential republic;619.66999774;754.36032588;8538.78277714
+Qatar;QAT;32258283;4151.7687662;5absolute monarchy;6107.3089368;785.74933411;82106.35550287
+Kenya;KEN;346790758;471.18283726;5Presidential republic;616.29880428;761.25328062;877.69658603
+Kyrgyzstan;KGZ;35727553;428.40458811;5parliamentary republic;616.92166624;756.13157062;881.5662616
+Kiribati;KIR;3106925;4123.4567901;5Presidential republic;63.446646019;781.18150665;8154.17174778
+Cocos Islands;CCK;3596;5(non-self-governing territory of Australia)
+Colombia;COL;347220856;441.7260027;5Presidential republic;617.99813938;775.12455034;8569.18529029
+Comoros;COM;3794678;4395.1612903;5Federal presidential republic;617.07934151;732.86066417;856.76149624
+Republic of the Congo;COG;34852412;411.83894583;5Presidential republic;653.0089847;781.76246387;8161.63860055
+Croatia;HRV;34313707;478.94924946;5parliamentary republic;621.78040386;781.86709815;81050.33439069
+Cuba;CUB;311179995;4105.7685081;5Republic (communist one-party system);617.98569778;795.6131052;8816.62353691
+Kuwait;KWT;32832776;4153.5353535;5constitutional monarchy;667.43349003;785.93379087;81385.77693451
+Laos;LAO;37019073;426.86741768;5Republic (communist one-party system);632.56943026;750.53394553;832.56967352
+Lesotho;LSO;31953070;471.5085639;5Parliamentary constitutional monarchy;624.70117006;776.11992544;8105.11275284
+Latvia;LVA;31965686;436.00836282;5parliamentary republic;620.41799195;763.17676574;8920.70376543
+Lebanon;LBN;36237738;4413.1964809;5parliamentary republic;632.60158923;747.60812042;8568.71483189
+Liberia;LBR;34299944;441.46594684;5Presidential republic;67.851815034;731.47806024;846.27042196
+Libya;LBY;36541948;43.611739432;5Republic (transitional government after dictatorship);679.20020559;773.5384773;8371.72187035
+Liechtenstein;LIE;337937;4225.2;5constitutional monarchy
+Lithuania;LTU;32854235;452.4493378;5Semi-presidential republic;619.06499459;767.86950769;81063.42118281
+Luxembourg;LUX;3582291;4195.7528958;5constitutional monarchy;616.58784625;783.92825283;88137.5208061
+Macau;MAC;3597425;419428.57143;5Presidential limited democracy (special administrative region of China)
+Madagascar;MDG;324430325;435.61921794;5Semi-presidential republic;619.67682043;748.44599186;813.67082999
+Malawi;MWI;318570321;4158.0504879;5Presidential republic;625.72702911;752.72142732;829.01885819
+Malaysia;MYS;330949962;486.4434637;5Federal constitutional monarchy;615.55640978;755.17502896;8455.82552547
+Maldives;MDV;3392960;41053.333333;5Presidential republic;629.05613639;778.32698406;81165.12515007
+Mali;MLI;317467108;412.59639892;5Semi-presidential republic;644.0063041;722.85243455;847.76513899
+Malta;MLT;3415196;41300;5parliamentary republic;615.67337266;769.1639542;82470.59850992
+Morocco;MAR;333655786;471.59085817;5Parliamentary constitutional monarchy;622.99104134;733.87612493;8190.05396963
+Marshall Islands;MHL;373376;4300.2111111;5Presidential republic;611.91659108;784.32190816;8625.20217954
+Martinique;MTQ;3395000;5overseas territory of France
+Mauritania;MRT;33677293;43.356941884;5Presidential republic;685.08515449;749.59357327;848.83750877
+Mauritius;MUS;31348242;4631.0344828;5parliamentary republic;614.95404587;749.16652038;8482.45417272
+Mayotte;MYT;3223765;4551.3513514;5overseas territory of France
+Macedonia;MKD;32100025;481.68120539;5parliamentary republic;640.4789043;763.32895964;8353.92534247
+Mexico;MEX;3123166749;458.34666529;5Federal presidential republic;620.23982419;751.76832297;8677.18998669
+Micronesia, Federated States of;FSM;3104719;4158.5714286;5Federal republic;68.058593607;790.71153126;8414.98578282
+Moldova;MDA;33510485;4123.9948481;5parliamentary republic;620.5543623;751.37703604;8228.84667106
+Monaco;MCO;330581;417703.5;5constitutional monarchy;788.55184806;88148.80835769
+Mongolia;MNG;33031330;41.773990062;5Semi-presidential republic;623.59317989;755.39922972;8195.33347873
+Montenegro;MNE;3644578;446.98884758;5parliamentary republic;623.35266451;757.15509291;8457.66493632
+Montserrat;MSR;35267;5Parliamentary democracy (self-governing territory of the UK)
+Mozambique;MOZ;325930150;429.74388972;5Presidential republic;619.53856529;756.43593402;841.99657338
+Burma;MMR;356890418;473.39178602;5parliamentary republic;654.38812189;745.91443245;820.28780579
+Namibia;NAM;32436469;42.773020442;5Presidential republic;621.44459626;759.99916116;8499.01568382
+Nauru;NRU;39591;5parliamentary republic;786.20283985;8516.4416809
+Nepal;NPL;329033914;4208.9919777;5Federal parliamentary republic;674.99780697;740.3265133;839.86817954
+New Caledonia;NCL;3275355;413.51203501;5Parliamentary democracy (territory of France)
+New Zealand;NZL;34474549;416.58881167;5Parliamentary democracy (under constitutional monarchy);65.546610811;782.34793671;84896.34802527
+Nicaragua;NIC;35966798;448.10536812;5Presidential republic;627.3819724;756.36857399;8177.46289523
+Netherlands;NLD;317016967;4492.6178476;5Parliamentary constitutional monarchy;614.63752206;787.00447612;85693.85992057
+Netherlands Antilles;ANT;3227049;5territory of the Netherlands
+Niger;NER;318638600;412.24599353;5Semi-presidential republic;662.74462018;755.21952573;824.39611462
+Nigeria;NGA;3186053386;4173.9440254;5Federal presidential republic;637.95728931;725.14542956;8117.52054496
+Niue;NIU;31190;5parliamentary democracy
+North Korea;PRK;325115311;4202.1925089;5People's republic (communist 	one-party system);634.08883481
+Northern Mariana Islands;MNP;353467;4132.4282609;5Presidential democracy;611.89636917
+Norfolk Island;NFK;32210;5Parliamentary democracy (territory of Australia)
+Norway;NOR;35265158;416.00484499;5Parliamentary constitutional monarchy;69.07633792;785.49238347;89522.22165832
+Oman;OMN;33355262;48.991922456;5absolute monarchy;653.28119972;789.7659739;8675.04339353
+Austria;AUT;38711770;4101.7833313;5Federal parliamentary republic;617.01299421;777.86396435;85580.49394331
+Timor-Leste;TLS;31261072;475.58843309;5Semi-presidential republic;618.89846158;790.39706946;857.08171056
+Pakistan;PAK;3201995540;4225.1880967;5Federal parliamentary republic;664.95375677;735.15076095;836.15485065
+Palau;PLW;321347;444.50434783;5Presidential republic;772.4042128;81150.30217177
+Panama;PAN;33705246;447.30965833;5Presidential republic;613.19621425;773.24406347;8958.98176617
+Papua New Guinea;PNG;36791317;415.14375304;5Parliamentary democracy (under constitutional monarchy);613.85807071;781.2826353;892.35819164
+Paraguay;PRY;36862812;416.2446514;5Presidential republic;614.853318;745.87372231;8464.09236338
+Peru;PER;330741062;422.715625;5Presidential republic;627.8233501;760.63822677;8358.5769444
+Philippines;PHL;3102624209;4312.7779455;5Presidential republic;623.48713422;734.28217183;8135.20222581
+Pitcairn Islands;PCN;354;5Parliamentary democracy (territory of the US)
+Poland;POL;338523261;4125.5226824;5parliamentary republic;624.28187517;770.98369638;8910.28378029
+Portugal;PRT;310833816;4116.3004264;5Semi-presidential republic;69.760644322;764.81570452;82096.82317586
+Puerto Rico;PRI;33578056;4448.4780158;5Presidential democracy;617.84794151
+Reunion;REU;3699000;5overseas territory of France
+Rwanda;RWA;312988423;4430.6445075;5Presidential republic;649.71362154;738.09840906;852.48366269
+Romania;ROU;321599736;493.18438668;5Semi-presidential republic;619.57866345;780.40377734;8556.80968473
+Russia;RUS;3142355415;48.655500105;5Federal republic;616.63374961;752.20240017;8892.85156292
+Solomon Islands;SLB;3635027;419.22115041;5Parliamentary democracy (under constitutional monarchy);66.579329957;791.87140889;8102.24312551
+Zambia;ZMB;315510711;417.38925732;5Presidential republic;626.74664908;755.34840155;885.85307416
+Samoa;WSM;3198926;465.01766784;5parliamentary republic;63.807434895;790.59972526;8301.09711263
+San Marino;SMR;333285;4525.5666667;5parliamentary republic;793.58783018;83459.0665367
+Sao Tome and Principe;STP;3197541;4171.875;5Semi-presidential republic;613.88673949;743.24258577;8165.55371735
+Saudi Arabia;SAU;328160273;412.76835265;5absolute monarchy;6106.1617369;774.52447773;81147.44557652
+Sweden;SWE;39880604;422.85421845;5Parliamentary constitutional monarchy;66.241379908;784.03041952;86807.71777756
+Switzerland;CHE;38179294;4195.65;5Federal republic;612.89019363;766;89673.5235346
+Senegal;SEN;314320055;464.58214304;5Presidential republic;637.57020675;751.83216672;849.53139304
+Serbia;SRB;37143921;483.36382346;5parliamentary republic;621.43664968;761.88274659;8632.92484151
+Seychelles;SYC;393186;4189.1304348;5Presidential republic;613.21491539;792.20805859;8494.12828419
+Sierra Leone;SLE;36018888;481.91845853;5Presidential republic;619.29960911;716.98664078;885.90729075
+Zimbabwe;ZWE;314546961;432.49579941;5Semi-presidential republic;622.86952366;738.30276114;857.71045218
+Singapore;SGP;35781728;47252.857143;5parliamentary republic;618.73785053;741.73817093;82752.32043947
+Slovakia;SVK;35445802;4112.9132876;5parliamentary republic;620.52367065;772.50514932;81454.81013033
+Slovenia;SVN;31978029;4101.7378352;5parliamentary republic;620.3499567;771.73384625;82160.7467006
+Somalia;SOM;310817354;414.87391207;5Federal parliamentary republic;619.83625362
+Spain;ESP;348563476;492.36367281;5Parliamentary constitutional monarchy;69.738283342;770.87566265;82658.27042388
+Sri Lanka;LKA;322235000;4332.6423218;5Presidential republic;627.92362221;756.05929377;8127.33174445
+Saint Helena, Ascension and Tristan da Cunha;SHN;37795;5Parliamentary democracy (limited self-governing territory of the UK)
+Saint Kitts and Nevis;KNA;352329;4200;5Federal parliamentary republic (under constitutional monarchy);742.21359858;8770.53685321
+Saint Lucia;LCA;3164464;4285.2459016;5Parliamentary democracy (under constitutional monarchy);614.00929929;753.56858226;8499.57022819
+Saint Pierre and Miquelon;SPM;35595;5Parliamentary democracy (territory of France)
+Saint Vincent and the Grenadines;VCT;3102350;4279.4871795;5Parliamentary democracy (under constitutional monarchy);614.25163381;750.81229766;8575.05734597
+South Africa;ZAF;354300704;441.16281176;5parliamentary republic;629.6286252;748.23549139;8570.20607359
+Sudan;SDN;336729501;418.32996633;5Presidential republic;650.04764327;721.38343859;8129.84387706
+South Georgia and South Sandwich Islands;SGS;330;5British overseas territory
+South Korea;KOR;350924172;4503.3470649;5Presidential republic;628.66424214;754.05109462;82060.24849705
+Suriname;SUR;3585824;43.365384615;5Presidential republic;618.47176015;751.70355434;8588.62778397
+Svalbard;SJM;31872;5territory of Norway
+Swaziland;SWZ;31451428;461.39534884;5absolute monarchy;621.60860671;775.71287582;8247.89642482
+Syria;SYR;317185170;4111.3489081;5Presidential republic;641.56628282;746.30976808;866.45497393
+Tajikistan;TJK;38330946;449.14975707;5Presidential republic;650.02908375;728.8300894;876.39130143
+Taiwan;TWN;323464787;5Semi-presidential republic
+Tanzania;TZA;352482726;450.62203658;5Presidential republic;623.3161196;746.41406654;851.71747631
+Thailand;THA;368200824;4135.2972264;5Constitutional monarchy (interim military-government since May 2014);626.35272294;777.8335072192293;8227.517154820332
+Togo;TGO;37756937;4110.8291965;5Presidential republic;632.67724465;738.44803737;833.89092289
+Tokelau;TKL;31337;5Parliamentary democracy (territory of New Zealand)
+Tonga;TON;3106513;4144.4444444;5constitutional monarchy;64.025835246;782.40077151;8212.97503549
+Trinidad and Tobago;TTO;31220479;4261.4035088;5parliamentary republic;614.19016577;753.50618802;81136.30552886
+Chad;TCD;311852462;48.915978399;5Presidential republic;646.05858564;754.64955311;837.10492956
+Czech Republic;CZE;310644842;4136.1812298;5parliamentary republic;621.40898739;784.53719019;81378.52120249
+Tunisia;TUN;311134588;467.90036045;5parliamentary republic;644.79266297;756.66614784;8305.305519
+Turkey;TUR;380274604;494.52853969;5parliamentary republic;636.40911573;777.44802111;8567.63112672
+Turkmenistan;TKM;35291317;410.72925755;5Presidential republic;631.29449247;765.22876717;8186.71622853
+Turks and Caicos Islands;TCA;351430;440.37263158;5Parliamentary democracy (self-governing territory of the UK)
+Tuvalu;TUV;310959;4327.5666667;5Parliamentary democracy (under constitutional monarchy);799.20251713;8632.84116105
+Uganda;UGA;338319241;4167.278915;5Presidential republic;660.30064052;724.94069764;852.29424027
+Ukraine;UKR;344209733;479.18076365;5Semi-presidential republic;618.87843558;750.79840999;8202.6585798
+Hungary;HUN;39874784;4110.4606208;5parliamentary republic;623.05838255;765.98063036;81036.62385868
+Uruguay;URY;33351016;419.18066507;5Presidential republic;611.48844431;771.21704164;81442.27645098
+Uzbekistan;UZB;329473614;466.35637047;5Presidential republic;639.67064264;753.28828731;8124.10909747
+Vanuatu;VUT;3277554;419.68826907;5parliamentary republic;68.52410314;789.79162466;8157.51068884
+Holy See (Vatican City);VAT;31000;5absolute monarchy
+Venezuela;VEN;330912302;432.68975682;5Federal presidential republic;623.75584614;729.34854971;8873.38432219
+United Arab Emirates;ARE;35927482;489.85645933;5Federation of autonomous monarchies;664.29012818;772.34253479;81610.79897995
+United States;USA;3323995528;433.81816949;5Federal presidential republic;68.441199408;748.2972776;89402.53697133
+United Kingdom;GBR;364430428;4257.2314306;5Parliamentary constitutional monarchy;612.41225066;783.14270947;83934.82356101
+Vietnam;VNM;395261021;4280.3495985;5Republic (communist one-party system);628.2516555;754.05601997;8142.37388905
+Wallis and Futuna;WLF;315664;5Parliamentary democracy (territory of France)
+Christmas Island;CXR;32205;5(non-self-governing territory of Australia)
+Central African Republic;CAF;35507257;47.064432245;5Presidential republic;646.46839936;748.97224289;815.5874302
+Cyprus;CYP;31205575;4119.3722944;5Presidential democracy;618.28597332;745.22522893;81819.11299603
