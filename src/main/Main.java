@@ -79,6 +79,13 @@ public class Main extends Application {
         random = new Random();
         infectionSpread = new InfectionSpread();
         world.readCountryInfo();
+        world.readTemps();
+        /**for (Country c:world.getCountries()
+             ) {
+            if(!c.getEnvironment().TempCheck()){
+            System.out.print(c.toString());
+            System.out.println("");}
+        }*/
     }
 
     private void applyAlgorithm() {

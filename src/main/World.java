@@ -51,11 +51,11 @@ public class World {
         return true;
     }
     public void readCountryInfo(){
-        String csvFile = "./scripts/Dataset consolidation/country consolidated data.txt";
+        String File = "./scripts/Dataset consolidation/country consolidated data.txt";
         String line = "";
-        String cvsSplitBy = ";";
+        String SplitBy = ";";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile)))
+        try (BufferedReader br = new BufferedReader(new FileReader(File)))
         {
             while ((line = br.readLine()) != null)
             {
@@ -70,7 +70,7 @@ public class World {
                 float PublicHealthExpenditure = 0;
                 float HealthExpenditureperCapita = 0;
                 // use semicolon as separator
-                String[] country = line.split(cvsSplitBy);
+                String[] country = line.split(SplitBy);
                 /**going through the array and checking with what every item starts and after that assigning the value to the proper one*/
                 for (String string: country
                      ) {
@@ -109,7 +109,33 @@ public class World {
                 }
                 countries.add(
                         new Country(Name, Code, Population,GovernmentForm, 0, 0, 0, 100,
-                                new Environment(PublicHealthExpenditure, 20, 29, AirPollution, 20, PopulationDensity)));
+                                new Environment(PublicHealthExpenditure, 20,0, new double[1], AirPollution, 20, PopulationDensity)));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void readTemps(){
+        String File = "./scripts/countriesAverageTemperatures.txt";
+        String line = "";
+        String SplitBy = ", ";
+        double [] alltemps = new double[12];
+        try (BufferedReader br = new BufferedReader(new FileReader(File))) {
+
+            while ((line = br.readLine()) != null) {
+                // use comma as separator
+                String[] tempFileData = line.split(SplitBy);
+                for (Country c:countries
+                     ) {
+                    if(c.getName().toUpperCase().equals(tempFileData[0].toUpperCase())){
+                        c.getEnvironment().addAvgYearlyTemp(Double.parseDouble(tempFileData[1]));
+                        for (int i = 0; i<11;i++){
+                            alltemps[i]= Double.parseDouble(tempFileData[i+2]);
+                        }
+                        c.getEnvironment().addTemperatures(alltemps);
+                    }
+                }
             }
 
         } catch (IOException e) {

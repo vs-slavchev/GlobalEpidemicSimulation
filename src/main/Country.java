@@ -112,6 +112,7 @@ public class Country {
                 ", GovernmentForm=" + GovernmentForm +
                 ", migrationRate=" + migrationRate +
                 ", infectionPoints.size()=" + infectionPoints.size() +
+                ", ENV=" + environment.toString() +
                 '}';
     }
 }
