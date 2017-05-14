@@ -8,10 +8,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Yasen on 4/2/2017.
  */
-
 public class Country {
 
     private String name;
+    private String countryID;
+    private String GovernmentForm;
     private long unaffectedPopulation;
     private long infectedPopulation;
     private long deadPopulation;
@@ -22,10 +23,12 @@ public class Country {
 
     public static final int QUEUE_MAX_SIZE = 10_000;
 
-    public Country(String countryDescription, long unaffectedPopulation, long infectedPopulation,
+    public Country(String countryName, String countryId, long unaffectedPopulation, String governmentForm, long infectedPopulation,
                    long deadPopulation, long curedPopulation, long rateOfMigration, Environment environment) {
-        this.name = countryDescription;
+        this.name = countryName;
+        this.countryID = countryId;
         this.unaffectedPopulation = unaffectedPopulation;
+        this.GovernmentForm = governmentForm;
         this.infectedPopulation = infectedPopulation;
         this.deadPopulation = deadPopulation;
         this.curedPopulation = curedPopulation;
@@ -101,10 +104,12 @@ public class Country {
     public String toString() {
         return "Country{" +
                 "name='" + name + '\'' +
+                ", countryCode=" + countryID +
                 ", unaffectedPopulation=" + unaffectedPopulation +
                 ", infectedPopulation=" + infectedPopulation +
                 ", deadPopulation=" + deadPopulation +
                 ", curedPopulation=" + curedPopulation +
+                ", GovernmentForm=" + GovernmentForm +
                 ", migrationRate=" + migrationRate +
                 ", infectionPoints.size()=" + infectionPoints.size() +
                 '}';

@@ -78,6 +78,7 @@ public class Main extends Application {
         world = new World();
         random = new Random();
         infectionSpread = new InfectionSpread();
+        world.readCountryInfo();
     }
 
     private void applyAlgorithm() {

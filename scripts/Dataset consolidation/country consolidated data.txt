@@ -1,6 +1,6 @@
 Afghanistan;AFG;333332025;452.71913282;5Presidential islamic republic;648.01676483;735.84374939;856.57452735
 Egypt;EGY;394666993;481.49178763;5Presidential republic;6104.6666533;738.20171127;8177.76836063
-Åland Islands;ALA;329013;5Autonomous region of Finland
+Aland Islands;ALA;329013;5Autonomous region of Finland
 Albania;ALB;33038594;4116.9708029;5parliamentary republic;617.93662454;749.91196079;8272.20429151
 Algeria;DZA;340263711;414.89163385;5Presidential republic;635.56453306;772.76281369;8361.7291743
 American Samoa;ASM;354194;4342.1;5Presidential democracy (self-governing territory of the US);63.732035944
