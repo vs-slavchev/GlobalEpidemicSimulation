@@ -30,6 +30,8 @@ import reader.ConstantValues;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -82,15 +84,16 @@ public class Main extends Application {
         infectionSpread = new InfectionSpread();
         world.readCountryInfo();
         world.readTemps();
-        for (Country c:world.getCountries()
-             ) {
-
-            System.out.print(c.toString());
-            System.out.println("");
-        }
+//        for (Country c:world.getCountries()
+//             ) {
+//
+//            System.out.print(c.toString());
+//            System.out.println("");
+//        }
     }
 
     private void applyAlgorithm() {
+        //NumberFormat formatter = new DecimalFormat("#0.0000");
 
         for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
             if (random.nextDouble() < infectionSpread
@@ -106,12 +109,15 @@ public class Main extends Application {
                             (random.nextBoolean() ? + offsetX : - offsetX);
                     double newPointY = infectionPoint.getY() +
                             (random.nextBoolean() ? offsetY : - offsetY);
-                    String conc = "" + newPointX +newPointY;
+                    String conc = "" + String.format("%.0f",newPointX) +String.format("%.0f",newPointY);
+
                     while (points.contains(conc)){
                         newPointX =+
                                 (random.nextBoolean() ? + offsetX/5: - offsetX/5);
+
                         newPointY =+
                                 (random.nextBoolean() ? offsetY/5 : - offsetY/5);
+                        conc = "" + String.format("%.0f",newPointX) +String.format("%.0f",newPointY);
                     }
 
 
@@ -130,6 +136,13 @@ public class Main extends Application {
                                     new java.awt.geom.Point2D.Double(newPointX, newPointY));
                         }
                         points.add(conc);
+                for (String s :
+                            points) {
+                    System.out.flush();
+                        System.out.println(s);
+
+                }
+
 
 
                 }
