@@ -48,7 +48,11 @@ public class Main extends Application {
     private InfectionSpread infectionSpread;
     private volatile boolean isWorking = true;
     private List<String> points = new ArrayList<>();
-    public static final double INFECTION_RADIUS = 2.0;
+    private static final double INFECTION_RADIUS = 2.0;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -79,13 +83,8 @@ public class Main extends Application {
         infectionSpread = new InfectionSpread();
         world.readCountryInfo();
         timer.setText(world.getTime().toString());
+        timer.setId("timer");
         world.readTemps();
-        /**for (Country c:world.getCountries()
-         ) {
-         if(!c.getEnvironment().TempCheck()){
-         System.out.print(c.toString());
-         System.out.println("");}
-         }*/
     }
 
     private void applyAlgorithm() {
@@ -128,10 +127,6 @@ public class Main extends Application {
         }
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     private void setUpButtonBar(Stage primaryStage) {
         buttonBar = new HBox();
 
@@ -160,7 +155,6 @@ public class Main extends Application {
         Button smaller = new Button("<");
         Button stop = new Button("Medicines");
         Button bigger = new Button("Medicines");
-        timer.setTranslateX(1200);
 
         setUpEventHandlers(primaryStage, disease, start, pause);
 
@@ -174,7 +168,7 @@ public class Main extends Application {
                 disease, medicine, smaller, stop, bigger, stackPane, timer);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
-        timer.relocate(10, buttonBar.getMaxWidth());
+        //timer.relocate(10, buttonBar.getMaxWidth());
     }
 
     /**
@@ -213,7 +207,7 @@ public class Main extends Application {
                 }
             });
             algorithmThread.start();
-            StartTimer(1.5).start();
+            startTimer(1.5).start();
         });
 
         pause.setOnAction(event -> {
@@ -365,7 +359,7 @@ public class Main extends Application {
     }
 
 
-    private Thread StartTimer(double speed) {
+    private Thread startTimer(double speed) {
         return new Thread(() -> {
             while (isWorking) {
                 world.getTime().setElapsedTime(speed);

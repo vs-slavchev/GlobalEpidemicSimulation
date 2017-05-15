@@ -16,7 +16,7 @@ public class Environment {
     private float airPollution;
     private float waterPollution;
     private float populationDensity;
-    private Boolean tempcheck=false;
+    private Boolean tempcheck = false;
 
     public Environment(float medInfrastructure, float humidity, double avgYearlyTemp, double[] temperature, float pollutionOfAir,
                        float pollutionOfWater, float density) {
@@ -28,27 +28,32 @@ public class Environment {
         this.waterPollution = pollutionOfWater;
         this.populationDensity = density;
     }
-    public boolean TempCheck(){
+
+    public boolean TempCheck() {
         return tempcheck;
     }
-    public String AllTemps(){
-        String temps= "";
-        for(double d:temperatures){
-            temps +=d+",";
+
+    public String AllTemps() {
+        String temps = "";
+        for (double d : temperatures) {
+            temps += d + ",";
         }
-        return "{"+temps+"}";
+        return "{" + temps + "}";
     }
-    public void addAvgYearlyTemp(double temp){
+
+    public void addAvgYearlyTemp(double temp) {
         this.AvgYearlyTemp = temp;
-        tempcheck=true;
+        tempcheck = true;
     }
-    public void addTemperatures(double[] temps){
+
+    public void addTemperatures(double[] temps) {
         this.temperatures = temps;
-        tempcheck=true;
+        tempcheck = true;
     }
-    public String toString(){
-        return "medic= "+medicalInfrastructure+ ", humidity= "+humidity+", AVGYearlyTemp= "+AvgYearlyTemp+", temps= "
-                + AllTemps()+", airPol= "
-                +airPollution+", waterPoll= "+waterPollution+", popDensity= "+populationDensity;
+
+    public String toString() {
+        return "medic= " + medicalInfrastructure + ", humidity= " + humidity + ", AVGYearlyTemp= " + AvgYearlyTemp + ", temps= "
+                + AllTemps() + ", airPol= "
+                + airPollution + ", waterPoll= " + waterPollution + ", popDensity= " + populationDensity;
     }
 }

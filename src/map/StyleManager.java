@@ -19,7 +19,7 @@ import static map.MapCanvas.styleFactory;
 
 /**
  * Owner: Veselin
- *
+ * <p>
  * The class is only responsible for setting and initializing the different styles in which
  * the map can be rendered. A style determines the color and width of visual elements.
  */
@@ -35,12 +35,8 @@ public class StyleManager {
 
     private StyleFactory sf = CommonFactoryFinder.getStyleFactory();
     private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-
-    private enum GeomType {LINE, POLYGON}
-
     private GeomType geometryType;
     private String geometryAttributeName;
-
     public StyleManager(FeatureSource featureSource) {
         GeometryDescriptor geomDesc = featureSource.getSchema().getGeometryDescriptor();
         geometryAttributeName = geomDesc.getLocalName();
@@ -101,12 +97,11 @@ public class StyleManager {
 
     private Rule createRule(Color outlineColor, Color fillColor) {
         Symbolizer symbolizer = null;
-        Fill fill = null;
-        org.geotools.styling.Stroke stroke = sf.createStroke(ff.literal(outlineColor), ff.literal(LINE_WIDTH));
+        Stroke stroke = sf.createStroke(ff.literal(outlineColor), ff.literal(LINE_WIDTH));
 
         switch (geometryType) {
             case POLYGON:
-                fill = sf.createFill(ff.literal(fillColor), ff.literal(OPACITY));
+                Fill fill = sf.createFill(ff.literal(fillColor), ff.literal(OPACITY));
                 symbolizer = sf.createPolygonSymbolizer(stroke, fill, geometryAttributeName);
                 break;
 
@@ -119,4 +114,6 @@ public class StyleManager {
         rule.symbolizers().add(symbolizer);
         return rule;
     }
+
+    private enum GeomType {LINE, POLYGON}
 }

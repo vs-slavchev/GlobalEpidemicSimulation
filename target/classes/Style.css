@@ -47,3 +47,7 @@
 .text-field {
         -fx-prompt-text-fill: #ff6666;
 }
+
+#timer{
+        -fx-padding: 8 0 0 1060;
+}

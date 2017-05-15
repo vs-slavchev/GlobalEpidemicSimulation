@@ -1,5 +1,9 @@
 package main;
 
+/**
+ * Owner: Kaloyan
+ */
+
 public class Time {
 
     private int Year = 0;

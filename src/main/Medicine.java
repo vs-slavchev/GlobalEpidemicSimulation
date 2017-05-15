@@ -4,8 +4,8 @@ package main;
  * Created by Owner on 4/2/2017.
  */
 
-import disease.DiseaseType;
 import disease.DiseaseProperties;
+import disease.DiseaseType;
 import disease.SymptomType;
 
 public class Medicine {
@@ -16,7 +16,7 @@ public class Medicine {
     private DiseaseProperties properties;
 
     public Medicine(String nameOfMedicine, DiseaseType diseaseType, SymptomType symptomType,
-        DiseaseProperties props) {
+                    DiseaseProperties props) {
         this.name = nameOfMedicine;
         this.targetedTypes = diseaseType;
         this.targetedSymptoms = symptomType;

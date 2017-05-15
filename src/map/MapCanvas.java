@@ -35,24 +35,21 @@ import java.util.Set;
 
 /**
  * Owner: Veselin
- *
+ * <p>
  * Initializes and draws the map. Has event handlers strictly related to the map only.
  */
 
 public class MapCanvas {
 
+    private static final double FPS = 60.0;
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
-
     private Canvas canvas;
     private MapContent map;
     private GraphicsContext graphics;
     private ArrayList<java.awt.geom.Point2D> infectionPoints;
-
     private GeoFinder geoFinder;
     private StyleManager styleManager;
-
-    private static final double FPS = 60.0;
     private boolean needsRepaint = true;
     private double dragDistanceX;
     private double dragDistanceY;
@@ -97,7 +94,7 @@ public class MapCanvas {
         gc.setFill(javafx.scene.paint.Color.rgb(255, 0, 0, 0.4));
         for (Point2D point : infectionPoints) {
             Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
-            gc.fillOval(screenInfectionPoint.getX(),screenInfectionPoint.getY(),
+            gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
                     ConstantValues.POINT_RADIUS, ConstantValues.POINT_RADIUS);
         }
 

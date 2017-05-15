@@ -6,10 +6,11 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Created by Yasen on 4/2/2017.
+ * Owner: Yasen
  */
 public class Country {
 
+    public static final int QUEUE_MAX_SIZE = 10_000;
     private String name;
     private String countryID;
     private String GovernmentForm;
@@ -20,8 +21,6 @@ public class Country {
     private long migrationRate;
     private Environment environment;
     private Queue<Point2D> infectionPoints;
-
-    public static final int QUEUE_MAX_SIZE = 10_000;
 
     public Country(String countryName, String countryId, long unaffectedPopulation, String governmentForm, long infectedPopulation,
                    long deadPopulation, long curedPopulation, long rateOfMigration, Environment environment) {
@@ -62,6 +61,10 @@ public class Country {
         return infectedPopulation;
     }
 
+    public void setInfectedPopulation(long infectedPopulation) {
+        this.infectedPopulation = infectedPopulation;
+    }
+
     public long getDeadPopulation() {
         return deadPopulation;
     }
@@ -80,10 +83,6 @@ public class Country {
 
     public String getName() {
         return name;
-    }
-
-    public void setInfectedPopulation(long infectedPopulation) {
-        this.infectedPopulation = infectedPopulation;
     }
 
     public Queue<Point2D> getInfectionPoints() {
