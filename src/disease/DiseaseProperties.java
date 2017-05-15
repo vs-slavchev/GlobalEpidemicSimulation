@@ -6,13 +6,13 @@ package disease;
 public class DiseaseProperties {
 
     private int lethality;
-    private double preferredTemperature;
-    private double temperatureTolerance;
+    private int preferredTemperature;
+    private int temperatureTolerance;
     private double virulence;
 
     public DiseaseProperties(int lethality,
-                             double preferredTemperature,
-                             double temperatureTolerance,
+                             int preferredTemperature,
+                             int temperatureTolerance,
                              double virulence) {
         this.lethality = lethality;
         this.preferredTemperature = preferredTemperature;
@@ -24,11 +24,11 @@ public class DiseaseProperties {
         return lethality;
     }
 
-    public double getPreferredTemperature() {
+    public int getPreferredTemperature() {
         return preferredTemperature;
     }
 
-    public double getTemperatureTolerance() {
+    public int getTemperatureTolerance() {
         return temperatureTolerance;
     }
 

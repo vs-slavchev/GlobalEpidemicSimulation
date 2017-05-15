@@ -43,7 +43,3 @@
 .popup {
         -fx-background-color: #dc143c;
 }
-
-.text-field {
-        -fx-prompt-text-fill: #ff6666;
-}

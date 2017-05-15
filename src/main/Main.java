@@ -24,9 +24,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import javax.swing.*;
-
+import javax.swing.JTextField;
 import map.MapCanvas;
 import reader.ConstantValues;
 
@@ -354,30 +352,16 @@ public class Main extends Application {
 
         // TODO: validate input
 
-
             save.setOnAction(event -> {
-             try{
                 Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
                         new DiseaseProperties((int) lethality.getValue(),
-                                Double.parseDouble(prefTemp.getText()),
-                                Double.parseDouble(tempTolerance.getText()),
+                                Integer.parseInt(prefTemp.getText()),
+                                Integer.parseInt(tempTolerance.getText()),
                                 virulence.getValue() / 100));
                 infectionSpread.getDiseaseList().add(disease);
                 popup.hide();
-            } catch (Exception ex) {
-                 name.setPromptText("not filled in");
-                 prefTemp.setPromptText("not filled in");
-                 tempTolerance.setPromptText("not filled in");
-        }});
 
-        save.setOnAction(event -> {
-            Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
-                    new DiseaseProperties((int) lethality.getValue(),
-                            Integer.parseInt(prefTemp.getText()),
-                            Integer.parseInt(tempTolerance.getText()),
-                            virulence.getValue() / 100));
-            infectionSpread.getDiseaseList().add(disease);
-            popup.hide();
+
         });
 
     }
