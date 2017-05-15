@@ -381,11 +381,11 @@ public class Main extends Application {
                                 virulence.getValue() / 100));
                 infectionSpread.getDiseaseList().add(disease);
                 popup.hide();
-            } catch (Exception ex) {
+            }     catch (Exception ex) {
                  name.setPromptText("not filled in");
                  prefTemp.setPromptText("not filled in");
                  tempTolerance.setPromptText("not filled in");
-        }});
+             }});
 
     }
     private Thread StartTimer(double Speed){
@@ -400,7 +400,7 @@ public class Main extends Application {
                             timer.setText(world.GetTime());
                         }
                     });
-                    try {
+                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
