@@ -7,6 +7,7 @@ import disease.DiseaseType;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -32,10 +33,6 @@ import reader.ConstantValues;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -49,12 +46,12 @@ public class Main extends Application {
     private MapCanvas mapCanvas;
     private Popup popup = null;
     private Random random;
-
+    private Label timer = new Label("ez");
     private Thread algorithmThread;
     private World world;
     private InfectionSpread infectionSpread;
     private volatile boolean isWorking = true;
-    private List<String> points = new ArrayList<>();
+
     public static final double INFECTION_RADIUS = 2.0;
 
     @Override
@@ -81,84 +78,55 @@ public class Main extends Application {
 
         scene.getStylesheets().add(ConstantValues.CSS_STYLE_FILE);
 
+
         world = new World();
         random = new Random();
         infectionSpread = new InfectionSpread();
         world.readCountryInfo();
         world.readTemps();
-//        for (Country c:world.getCountries()
-//             ) {
-//
-//            System.out.print(c.toString());
-//            System.out.println("");
-//        }
+        timer.setText(world.GetTime());
+        /**for (Country c:world.getCountries()
+             ) {
+            if(!c.getEnvironment().TempCheck()){
+            System.out.print(c.toString());
+            System.out.println("");}
+        }*/
+
     }
 
     private void applyAlgorithm() {
-        //NumberFormat formatter = new DecimalFormat("#0.0000");
-
         for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
             if (random.nextDouble() < infectionSpread
                     .getMainDisease()
                     .getProperties()
                     .getVirulence()) {
+                double offsetX = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
+                double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
+                double newPointX = infectionPoint.getX() +
+                        (random.nextBoolean() ? + offsetX : - offsetX);
+                double newPointY = infectionPoint.getY() +
+                        (random.nextBoolean() ? offsetY : - offsetY);
+                java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
+                        .mapToScreenCoordinates(newPointX, newPointY);
 
-
-
-                    double offsetX = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-                    double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-                    double newPointX = infectionPoint.getX() +
-                            (random.nextBoolean() ? + offsetX : - offsetX);
-                    double newPointY = infectionPoint.getY() +
-                            (random.nextBoolean() ? offsetY : - offsetY);
-                    String conc = "" + String.format("%.0f",newPointX) +String.format("%.0f",newPointY);
-
-                    while (points.contains(conc)){
-                        newPointX =+
-                                (random.nextBoolean() ? + offsetX/5: - offsetX/5);
-
-                        newPointY =+
-                                (random.nextBoolean() ? offsetY/5 : - offsetY/5);
-                        conc = "" + String.format("%.0f",newPointX) +String.format("%.0f",newPointY);
-                    }
-
-
-                        java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
-                                .mapToScreenCoordinates(newPointX, newPointY);
-
-                        String countryName = mapCanvas.getGeoFinder().getCountryNameFromScreenCoordinates(
+                String countryName = mapCanvas.getGeoFinder().getCountryNameFromScreenCoordinates(
                                 screenNewPoint.getX(), screenNewPoint.getY());
-                        if (countryName.equals("water")) {
-                            continue;
-                        }
-
-                        if (world.getCountry("Bulgaria").isPresent()) {
-                            Country country = world.getCountry("Bulgaria").get();
-                            country.addInfectionPoint(
-                                    new java.awt.geom.Point2D.Double(newPointX, newPointY));
-                        }
-                        points.add(conc);
-//                for (String s :
-//                            points) {
-//                    System.out.flush();
-//                        System.out.println(s);
-//
-//                }
-
-
-
+                if (countryName.equals("water")) {
+                    continue;
                 }
 
-
-
-
-
+                if (world.getCountry("Bulgaria").isPresent()) {
+                    Country country = world.getCountry("Bulgaria").get();
+                    country.addInfectionPoint(
+                            new java.awt.geom.Point2D.Double(newPointX, newPointY));
+                }
             }
         }
-
+    }
 
     public static void main(String[] args) {
         launch(args);
+
     }
 
     private void setUpButtonBar(Stage primaryStage) {
@@ -209,18 +177,13 @@ public class Main extends Application {
         pause.setGraphic(imagePause);
         pause.setId("pause-button");
 
-
-
-
-
-
         // set up the buttons on the buttonBar
         Button disease = new Button("Diseases");
         Button medicine = new Button("Medicines");
         Button smaller = new Button("<");
         Button stop = new Button("Medicines");
         Button bigger = new Button("Medicines");
-
+        timer.setTranslateX(1200);
         setUpEventHandlers(primaryStage, disease, start, pause);
 
         // addComponent the file menu, separators and the object buttons to the button bar
@@ -230,7 +193,7 @@ public class Main extends Application {
 
         buttonBar.getChildren().addAll(
                 fileMenuButton,
-                disease, medicine, smaller, stop, bigger, stackPane);
+                disease, medicine, smaller, stop, bigger, stackPane,timer);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
 
@@ -256,6 +219,8 @@ public class Main extends Application {
                 }
             });
             algorithmThread.start();
+            StartTimer(1.5).start();
+
         });
 
         pause.setOnAction(event -> {
@@ -314,31 +279,27 @@ public class Main extends Application {
         final TextField name = new TextField();
 
         //restricting the user to type only integers for the preferred temperature
-        final TextField prefTemp = new TextField() {
+        final TextField prefTemp = new TextField(){
 
             @Override
-            public void replaceText(int i, int j, String string) {
-                if (string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")) {
+            public  void  replaceText(int i, int j, String string){
+                if(string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")){
                     super.replaceText(i, j, string);
                 }
             }
-
-            public void paste() {
-            }
+            public void paste(){}
         };
 
         //restricting the user to type only integers for the temperature tolerance
-        final TextField tempTolerance = new TextField() {
+        final TextField tempTolerance = new TextField(){
 
             @Override
-            public void replaceText(int i, int j, String string) {
-                if (string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")) {
+            public  void  replaceText(int i, int j, String string){
+                if(string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")){
                     super.replaceText(i, j, string);
                 }
             }
-
-            public void paste() {
-            }
+            public void paste(){}
         };
 
 
@@ -395,6 +356,7 @@ public class Main extends Application {
 
         // TODO: validate input
 
+
             save.setOnAction(event -> {
              try{
                 Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
@@ -410,7 +372,28 @@ public class Main extends Application {
                  tempTolerance.setPromptText("not filled in");
         }});
 
-
     }
+    private Thread StartTimer(double Speed){
+        return new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isWorking) {
+                    world.elipcedTime(Speed);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            timer.setText(world.GetTime());
+                        }
+                    });
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
 }
 
