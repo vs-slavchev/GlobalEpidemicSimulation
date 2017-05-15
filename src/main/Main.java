@@ -83,6 +83,7 @@ public class Main extends Application {
         infectionSpread = new InfectionSpread();
         world.readCountryInfo();
         timer.setText(world.GetTime());
+        timer.setId("timer");
         world.readTemps();
         /**for (Country c:world.getCountries()
              ) {
@@ -198,7 +199,6 @@ public class Main extends Application {
         Button smaller = new Button("<");
         Button stop = new Button("Medicines");
         Button bigger = new Button("Medicines");
-        timer.setTranslateX(1200);
 
         setUpEventHandlers(primaryStage, disease, start, pause);
 
@@ -212,8 +212,6 @@ public class Main extends Application {
                 disease, medicine, smaller, stop, bigger, stackPane,timer);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
-        timer.relocate(10,buttonBar.getMaxWidth());
-
 
     }
 
