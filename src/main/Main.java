@@ -7,7 +7,6 @@ import disease.DiseaseType;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -46,7 +45,7 @@ public class Main extends Application {
     private MapCanvas mapCanvas;
     private Popup popup = null;
     private Random random;
-    private Label timer = new Label("ez");
+
     private Thread algorithmThread;
     private World world;
     private InfectionSpread infectionSpread;
@@ -78,20 +77,17 @@ public class Main extends Application {
 
         scene.getStylesheets().add(ConstantValues.CSS_STYLE_FILE);
 
-
         world = new World();
         random = new Random();
         infectionSpread = new InfectionSpread();
         world.readCountryInfo();
         world.readTemps();
-        timer.setText(world.GetTime());
         /**for (Country c:world.getCountries()
              ) {
             if(!c.getEnvironment().TempCheck()){
             System.out.print(c.toString());
             System.out.println("");}
         }*/
-
     }
 
     private void applyAlgorithm() {
@@ -126,7 +122,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-
     }
 
     private void setUpButtonBar(Stage primaryStage) {
@@ -177,13 +172,18 @@ public class Main extends Application {
         pause.setGraphic(imagePause);
         pause.setId("pause-button");
 
+
+
+
+
+
         // set up the buttons on the buttonBar
         Button disease = new Button("Diseases");
         Button medicine = new Button("Medicines");
         Button smaller = new Button("<");
         Button stop = new Button("Medicines");
         Button bigger = new Button("Medicines");
-        timer.setTranslateX(1200);
+
         setUpEventHandlers(primaryStage, disease, start, pause);
 
         // addComponent the file menu, separators and the object buttons to the button bar
@@ -193,7 +193,7 @@ public class Main extends Application {
 
         buttonBar.getChildren().addAll(
                 fileMenuButton,
-                disease, medicine, smaller, stop, bigger, stackPane,timer);
+                disease, medicine, smaller, stop, bigger, stackPane);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
 
@@ -219,8 +219,6 @@ public class Main extends Application {
                 }
             });
             algorithmThread.start();
-            StartTimer(1.5).start();
-
         });
 
         pause.setOnAction(event -> {
@@ -372,27 +370,6 @@ public class Main extends Application {
                  tempTolerance.setPromptText("not filled in");
         }});
 
-    }
-    private Thread StartTimer(double Speed){
-        return new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isWorking) {
-                    world.elipcedTime(Speed);
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            timer.setText(world.GetTime());
-                        }
-                    });
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
     }
 
 }

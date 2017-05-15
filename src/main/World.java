@@ -4,8 +4,6 @@ package main;
  * Created by Yasen on 4/3/2017.
  */
 
-import org.omg.PortableInterceptor.HOLDING;
-
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -19,12 +17,6 @@ public class World {
 
     private List<Country> countries;
     private List<Country> infectedCountries;
-    private int Year=0;
-    private int Month = 0;
-    private int Day = 0;
-    private int Hour = 0;
-    private int Minutes = 0;
-    private int Sec= 1 ;
 
     public World() {
         countries = new ArrayList<>();
@@ -149,54 +141,5 @@ public class World {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    public void elipcedTime(double speed){
-                    Sec++;
-                    Sec*=speed;
-                    if(Sec >=60){
-                        Sec = 0;
-                        Minutes++;
-                        if(Minutes>=60){
-                            Minutes = 0;
-                            Hour++;
-                            if(Hour>=24){
-                                Hour=0;
-                                Day++;
-                                if(Day>=30){
-                                    Month++;
-                                    Day=0;
-                                    if(Month>=12){
-                                        Month=0;
-                                        Year++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-    }
-    public String GetTime(){
-        if(Minutes<10 && Sec<10 && Hour<10){
-            return "0"+Hour+":0"+Minutes+":0"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Sec<10 & Minutes<10){
-            return Hour+":0"+Minutes+":0"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Sec<10 && Hour<10){
-            return "0"+Hour+":"+Minutes+":0"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Minutes<10 && Hour<10){
-            return "0"+Hour+":0"+Minutes+":"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Sec<10){
-            return Hour+":"+Minutes+":0"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Minutes<10){
-            return Hour+":0"+Minutes+":"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Hour<10){
-            return "0"+Hour+":"+Minutes+":"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else
-            return Hour+":"+Minutes+":"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
     }
 }
