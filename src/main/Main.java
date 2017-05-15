@@ -30,6 +30,8 @@ import reader.ConstantValues;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -48,7 +50,7 @@ public class Main extends Application {
     private World world;
     private InfectionSpread infectionSpread;
     private volatile boolean isWorking = true;
-
+    private List<String> points = new ArrayList<>();
     public static final double INFECTION_RADIUS = 2.0;
 
     @Override
@@ -95,13 +97,25 @@ public class Main extends Application {
                     .getProperties()
                     .getVirulence()) {
                 double offsetX = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-                double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-                double newPointX = infectionPoint.getX() +
-                        (random.nextBoolean() ? + offsetX : - offsetX);
-                double newPointY = infectionPoint.getY() +
-                        (random.nextBoolean() ? offsetY : - offsetY);
-                java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
-                        .mapToScreenCoordinates(newPointX, newPointY);
+                                    double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
+                                    double newPointX = infectionPoint.getX() +
+                                                    (random.nextBoolean() ? + offsetX : - offsetX);
+                                    double newPointY = infectionPoint.getY() +
+                                                    (random.nextBoolean() ? offsetY : - offsetY);
+                                    String conc = "" + String.format("%.0f",newPointX) +String.format("%.0f",newPointY);
+
+                                    while (points.contains(conc)){
+                                        newPointX =+
+                                                (random.nextBoolean() ? + offsetX/5: - offsetX/5);
+
+                                        newPointY =+
+                                                (random.nextBoolean() ? offsetY/5 : - offsetY/5);
+                                        conc = "" + String.format("%.0f",newPointX) +String.format("%.0f",newPointY);
+                                    }
+
+
+                                        java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
+                                               .mapToScreenCoordinates(newPointX, newPointY);
 
                 String countryName = mapCanvas.getGeoFinder().getCountryNameFromScreenCoordinates(
                                 screenNewPoint.getX(), screenNewPoint.getY());
@@ -114,6 +128,7 @@ public class Main extends Application {
                     country.addInfectionPoint(
                             new java.awt.geom.Point2D.Double(newPointX, newPointY));
                 }
+                points.add(conc);
             }
         }
     }
