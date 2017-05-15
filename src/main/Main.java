@@ -7,6 +7,7 @@ import disease.DiseaseType;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -45,7 +46,7 @@ public class Main extends Application {
     private MapCanvas mapCanvas;
     private Popup popup = null;
     private Random random;
-
+    private Label timer = new Label();
     private Thread algorithmThread;
     private World world;
     private InfectionSpread infectionSpread;
@@ -81,6 +82,7 @@ public class Main extends Application {
         random = new Random();
         infectionSpread = new InfectionSpread();
         world.readCountryInfo();
+        timer.setText(world.GetTime());
         world.readTemps();
         /**for (Country c:world.getCountries()
              ) {
@@ -196,7 +198,7 @@ public class Main extends Application {
         Button smaller = new Button("<");
         Button stop = new Button("Medicines");
         Button bigger = new Button("Medicines");
-
+        timer.setTranslateX(1200);
         setUpEventHandlers(primaryStage, disease, start, pause);
 
         // addComponent the file menu, separators and the object buttons to the button bar
@@ -206,7 +208,7 @@ public class Main extends Application {
 
         buttonBar.getChildren().addAll(
                 fileMenuButton,
-                disease, medicine, smaller, stop, bigger, stackPane);
+                disease, medicine, smaller, stop, bigger, stackPane,timer);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
 
@@ -232,6 +234,7 @@ public class Main extends Application {
                 }
             });
             algorithmThread.start();
+            StartTimer(1.5).start();
         });
 
         pause.setOnAction(event -> {
@@ -368,14 +371,43 @@ public class Main extends Application {
         // TODO: validate input
 
             save.setOnAction(event -> {
+                try{
+
                 Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
                         new DiseaseProperties((int) lethality.getValue(),
-                                Integer.parseInt(prefTemp.getText()),
-                                Integer.parseInt(tempTolerance.getText()),
+                                Double.parseDouble(prefTemp.getText()),
+                                Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
                 infectionSpread.getDiseaseList().add(disease);
                 popup.hide();
 
+            }     catch (Exception ex) {
+                 name.setPromptText("not filled in");
+                 prefTemp.setPromptText("not filled in");
+                 tempTolerance.setPromptText("not filled in");
+             }});
+    }
+
+
+    private Thread StartTimer(double Speed){
+        return new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isWorking) {
+                    world.elipcedTime(Speed);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            timer.setText(world.GetTime());
+                        }
+                    });
+                     try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
         });
 
