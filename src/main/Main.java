@@ -275,27 +275,31 @@ public class Main extends Application {
         final TextField name = new TextField();
 
         //restricting the user to type only integers for the preferred temperature
-        final TextField prefTemp = new TextField(){
+        final TextField prefTemp = new TextField() {
 
             @Override
-            public  void  replaceText(int i, int j, String string){
-                if(string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")){
+            public void replaceText(int i, int j, String string) {
+                if (string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")) {
                     super.replaceText(i, j, string);
                 }
             }
-            public void paste(){}
+
+            public void paste() {
+            }
         };
 
         //restricting the user to type only integers for the temperature tolerance
-        final TextField tempTolerance = new TextField(){
+        final TextField tempTolerance = new TextField() {
 
             @Override
-            public  void  replaceText(int i, int j, String string){
-                if(string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")){
+            public void replaceText(int i, int j, String string) {
+                if (string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")) {
                     super.replaceText(i, j, string);
                 }
             }
-            public void paste(){}
+
+            public void paste() {
+            }
         };
 
 
@@ -351,16 +355,18 @@ public class Main extends Application {
         test.setPadding(new Insets(10, 10, 10, 10));
 
         // TODO: validate input
-        save.setOnAction(event -> {
-            Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
-                    new DiseaseProperties((int) lethality.getValue(),
-                            Integer.parseInt(prefTemp.getText()),
-                            Integer.parseInt(tempTolerance.getText()),
-                            virulence.getValue() / 100));
-            infectionSpread.getDiseaseList().add(disease);
-            popup.hide();
-        });
+        try {
+            save.setOnAction(event -> {
+                Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
+                        new DiseaseProperties((int) lethality.getValue(),
+                                Integer.parseInt(prefTemp.getText()),
+                                Integer.parseInt(tempTolerance.getText()),
+                                virulence.getValue() / 100));
+                infectionSpread.getDiseaseList().add(disease);
+                popup.hide();
+            });
+        } catch (Exception ex) {
+        }
     }
-
 }
 
