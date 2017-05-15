@@ -8,5 +8,4 @@ public class ConstantValues {
     public static final String MAP_SHAPE_FILE = "maps/ne_110m_admin_0_countries.shp";
     public static final int POINT_RADIUS = 6;
 
-
 }
