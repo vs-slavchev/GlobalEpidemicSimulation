@@ -199,6 +199,7 @@ public class Main extends Application {
         Button stop = new Button("Medicines");
         Button bigger = new Button("Medicines");
         timer.setTranslateX(1200);
+
         setUpEventHandlers(primaryStage, disease, start, pause);
 
         // addComponent the file menu, separators and the object buttons to the button bar
@@ -211,6 +212,7 @@ public class Main extends Application {
                 disease, medicine, smaller, stop, bigger, stackPane,timer);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
+        timer.relocate(10,buttonBar.getMaxWidth());
 
 
     }
