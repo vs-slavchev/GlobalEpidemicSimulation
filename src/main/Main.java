@@ -370,6 +370,16 @@ public class Main extends Application {
                  tempTolerance.setPromptText("not filled in");
         }});
 
+        save.setOnAction(event -> {
+            Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
+                    new DiseaseProperties((int) lethality.getValue(),
+                            Integer.parseInt(prefTemp.getText()),
+                            Integer.parseInt(tempTolerance.getText()),
+                            virulence.getValue() / 100));
+            infectionSpread.getDiseaseList().add(disease);
+            popup.hide();
+        });
+
     }
 
 }
