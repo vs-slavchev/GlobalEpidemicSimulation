@@ -4,11 +4,8 @@ import algorithm.InfectionSpread;
 import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -25,7 +22,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javax.swing.JTextField;
 import map.MapCanvas;
 import reader.ConstantValues;
 
@@ -82,14 +78,14 @@ public class Main extends Application {
         random = new Random();
         infectionSpread = new InfectionSpread();
         world.readCountryInfo();
-        timer.setText(world.GetTime());
+        timer.setText(world.getTime().toString());
         world.readTemps();
         /**for (Country c:world.getCountries()
-             ) {
-            if(!c.getEnvironment().TempCheck()){
-            System.out.print(c.toString());
-            System.out.println("");}
-        }*/
+         ) {
+         if(!c.getEnvironment().TempCheck()){
+         System.out.print(c.toString());
+         System.out.println("");}
+         }*/
     }
 
     private void applyAlgorithm() {
@@ -99,28 +95,25 @@ public class Main extends Application {
                     .getProperties()
                     .getVirulence()) {
                 double offsetX = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-                                    double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-                                    double newPointX = infectionPoint.getX() +
-                                                    (random.nextBoolean() ? + offsetX : - offsetX);
-                                    double newPointY = infectionPoint.getY() +
-                                                    (random.nextBoolean() ? offsetY : - offsetY);
-                                    String conc = "" + String.format("%.0f",newPointX) +String.format("%.0f",newPointY);
+                double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
+                double newPointX = infectionPoint.getX() +
+                        (random.nextBoolean() ? +offsetX : -offsetX);
+                double newPointY = infectionPoint.getY() +
+                        (random.nextBoolean() ? offsetY : -offsetY);
+                String conc = "" + String.format("%.0f", newPointX) + String.format("%.0f", newPointY);
 
-                                    while (points.contains(conc)){
-                                        newPointX =+
-                                                (random.nextBoolean() ? + offsetX/5: - offsetX/5);
+                while (points.contains(conc)) {
+                    newPointX = random.nextBoolean() ? +offsetX / 5 : -offsetX / 5;
 
-                                        newPointY =+
-                                                (random.nextBoolean() ? offsetY/5 : - offsetY/5);
-                                        conc = "" + String.format("%.0f",newPointX) +String.format("%.0f",newPointY);
-                                    }
+                    newPointY = random.nextBoolean() ? offsetY / 5 : -offsetY / 5;
+                    conc = "" + String.format("%.0f", newPointX) + String.format("%.0f", newPointY);
+                }
 
-
-                                        java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
-                                               .mapToScreenCoordinates(newPointX, newPointY);
+                java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
+                        .mapToScreenCoordinates(newPointX, newPointY);
 
                 String countryName = mapCanvas.getGeoFinder().getCountryNameFromScreenCoordinates(
-                                screenNewPoint.getX(), screenNewPoint.getY());
+                        screenNewPoint.getX(), screenNewPoint.getY());
                 if (countryName.equals("water")) {
                     continue;
                 }
@@ -158,39 +151,8 @@ public class Main extends Application {
 
     private void setUpButtons(MenuButton fileMenuButton, Stage primaryStage) {
 
-        // TODO: refactor the copy pasta
-        FileInputStream playInput = null;
-        try {
-            playInput = new FileInputStream(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Image playImage = new Image(playInput);
-        ImageView imagePlay = new ImageView(playImage);
-        imagePlay.setFitHeight(25);
-        imagePlay.setFitWidth(25);
-        Button start = new Button();
-        start.setGraphic(imagePlay);
-        start.setId("start-button");
-
-        FileInputStream pauseInput = null;
-        try {
-            pauseInput = new FileInputStream(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Image image = new Image(pauseInput);
-        ImageView imagePause = new ImageView(image);
-        imagePause.setFitHeight(25);
-        imagePause.setFitWidth(25);
-        Button pause = new Button();
-        pause.setGraphic(imagePause);
-        pause.setId("pause-button");
-
-
-
-
-
+        Button start = setUpImageButton(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
+        Button pause = setUpImageButton(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
 
         // set up the buttons on the buttonBar
         Button disease = new Button("Diseases");
@@ -209,12 +171,28 @@ public class Main extends Application {
 
         buttonBar.getChildren().addAll(
                 fileMenuButton,
-                disease, medicine, smaller, stop, bigger, stackPane,timer);
+                disease, medicine, smaller, stop, bigger, stackPane, timer);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
-        timer.relocate(10,buttonBar.getMaxWidth());
+        timer.relocate(10, buttonBar.getMaxWidth());
+    }
 
-
+    /**
+     * Creates an image button, sets it up and sets its id properly.
+     */
+    private Button setUpImageButton(String buttonId) {
+        ImageView imagePlay = new ImageView();
+        try {
+            imagePlay = new ImageView(new Image(new FileInputStream("images/" + buttonId + ".png")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        imagePlay.setFitHeight(25);
+        imagePlay.setFitWidth(25);
+        Button start = new Button();
+        start.setGraphic(imagePlay);
+        start.setId(buttonId);
+        return start;
     }
 
     private void setUpEventHandlers(final Stage primaryStage, final Button disease,
@@ -227,7 +205,6 @@ public class Main extends Application {
                 while (isWorking) {
                     applyAlgorithm();
                     mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-
                     try {
                         Thread.sleep(300);
                     } catch (InterruptedException e) {
@@ -251,7 +228,7 @@ public class Main extends Application {
         });
 
         primaryStage.setOnCloseRequest(event -> {
-            if (algorithmThread.isAlive()) {
+            if (algorithmThread != null && algorithmThread.isAlive()) {
                 algorithmThread.interrupt();
             }
         });
@@ -276,47 +253,33 @@ public class Main extends Application {
         }
     }
 
-    private void selectCountryOnMap(MouseEvent event) {
-        String clickedOnCountryName = mapCanvas
-                .getGeoFinder()
-                .getCountryNameFromScreenCoordinates(event.getX(), event.getY());
-
+    /**
+     * Changes the rendering style of the clicked on country.
+     *
+     * @return The name of the country that was clicked on.
+     */
+    private String selectCountryOnMap(MouseEvent event) {
         mapCanvas.selectStyleChange(event.getX(), event.getY());
         mapCanvas.setNeedsRepaint();
+        return mapCanvas
+                .getGeoFinder()
+                .getCountryNameFromScreenCoordinates(event.getX(), event.getY());
     }
 
     private void SetUpPopup() {
         // Set up Popups
         popup = new Popup();
-        Rectangle rec = new Rectangle(500, 500);
-        rec.setFill(Color.AQUAMARINE);
+        Rectangle popUpRectangleBackground = new Rectangle(500, 500);
+        popUpRectangleBackground.setFill(Color.AQUAMARINE);
 
         //Items in popup
         final TextField name = new TextField();
 
         //restricting the user to type only integers for the preferred temperature
-        final TextField prefTemp = new TextField(){
-
-            @Override
-            public  void  replaceText(int i, int j, String string){
-                if(string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")){
-                    super.replaceText(i, j, string);
-                }
-            }
-            public void paste(){}
-        };
+        final TextField preferredTemp = createFractionTextField();
 
         //restricting the user to type only integers for the temperature tolerance
-        final TextField tempTolerance = new TextField(){
-
-            @Override
-            public  void  replaceText(int i, int j, String string){
-                if(string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")){
-                    super.replaceText(i, j, string);
-                }
-            }
-            public void paste(){}
-        };
+        final TextField tempTolerance = createFractionTextField();
 
 
         final Slider lethality = new Slider(0, 100, 50);
@@ -356,61 +319,63 @@ public class Main extends Application {
         HBox tempToleranceHB = new HBox();
         HBox lethalityHB = new HBox();
         HBox virulenceHB = new HBox();
-        VBox test = new VBox();
+        VBox buttonsAndFieldsVB = new VBox();
 
         nameHB.getChildren().addAll(nameCaption, name);
-        prefTempHB.getChildren().addAll(prefTempCaption, prefTemp);
+        prefTempHB.getChildren().addAll(prefTempCaption, preferredTemp);
         tempToleranceHB.getChildren().addAll(tempToleranceCaption, tempTolerance);
         lethalityHB.getChildren().addAll(lethalityCaption, lethality, lethalityValue);
         virulenceHB.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
-        test.getChildren().addAll(nameHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, save);
+        buttonsAndFieldsVB.getChildren().addAll(nameHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, save);
 
-        // TODO: auto-rename key is Shift + F6
-        popup.getContent().addAll(rec, test);
-        test.setSpacing(10);
-        test.setPadding(new Insets(10, 10, 10, 10));
+        popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
+        buttonsAndFieldsVB.setSpacing(10);
+        buttonsAndFieldsVB.setPadding(new Insets(10, 10, 10, 10));
 
-        // TODO: validate input
-
-            save.setOnAction(event -> {
-                try{
-
+        save.setOnAction(event -> {
+            try {
                 Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
                         new DiseaseProperties((int) lethality.getValue(),
-                                Double.parseDouble(prefTemp.getText()),
+                                Double.parseDouble(preferredTemp.getText()),
                                 Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
                 infectionSpread.getDiseaseList().add(disease);
                 popup.hide();
+            } catch (Exception ex) {
+                name.setPromptText("not filled in");
+                preferredTemp.setPromptText("not filled in");
+                tempTolerance.setPromptText("not filled in");
+            }
+        });
+    }
 
-            }     catch (Exception ex) {
-                 name.setPromptText("not filled in");
-                 prefTemp.setPromptText("not filled in");
-                 tempTolerance.setPromptText("not filled in");
-             }});
+    /**
+     * Creates a text field which only takes input in the format: digits followed by a single comma or dot
+     * followed by more digits.
+     */
+    private TextField createFractionTextField() {
+        return new TextField() {
+            @Override
+            public void replaceText(int i, int j, String string) {
+                if (string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")) {
+                    super.replaceText(i, j, string);
+                }
+            }
+        };
     }
 
 
-    private Thread StartTimer(double Speed){
-        return new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isWorking) {
-                    world.elipcedTime(Speed);
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            timer.setText(world.GetTime());
-                        }
-                    });
-                     try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+    private Thread StartTimer(double speed) {
+        return new Thread(() -> {
+            while (isWorking) {
+                world.getTime().setElapsedTime(speed);
+                Platform.runLater(() -> timer.setText(world.getTime().toString()));
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-
         });
 
     }

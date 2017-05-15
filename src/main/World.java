@@ -4,31 +4,24 @@ package main;
  * Created by Yasen on 4/3/2017.
  */
 
-import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class World {
 
     private List<Country> countries;
     private List<Country> infectedCountries;
-    private int Year=0;
-    private int Month = 0;
-    private int Day = 0;
-    private int Hour = 0;
-    private int Minutes = 0;
-    private int Sec= 1 ;
-
-
+    private Time time;
 
     public World() {
         countries = new ArrayList<>();
         infectedCountries = new ArrayList<>();
+        time = new Time();
     }
 
     private void migrate() {
@@ -129,7 +122,7 @@ public class World {
         String File = "./scripts/countriesAverageTemperatures.txt";
         String line = "";
         String SplitBy = ", ";
-        double [] alltemps = new double[12];
+        double [] monthTemperatures = new double[12];
         try (BufferedReader br = new BufferedReader(new FileReader(File))) {
 
             while ((line = br.readLine()) != null) {
@@ -140,9 +133,9 @@ public class World {
                     if(c.getName().toUpperCase().equals(tempFileData[0].toUpperCase())){
                         c.getEnvironment().addAvgYearlyTemp(Double.parseDouble(tempFileData[1]));
                         for (int i = 0; i<11;i++){
-                            alltemps[i]= Double.parseDouble(tempFileData[i+2]);
+                            monthTemperatures[i]= Double.parseDouble(tempFileData[i+2]);
                         }
-                        c.getEnvironment().addTemperatures(alltemps);
+                        c.getEnvironment().addTemperatures(monthTemperatures);
                     }
                 }
             }
@@ -151,54 +144,8 @@ public class World {
             e.printStackTrace();
         }
     }
-    public void elipcedTime(double speed){
-        Sec++;
-        Sec*=speed;
-        if(Sec >=60){
-            Sec = 0;
-            Minutes++;
-            if(Minutes>=60){
-                Minutes = 0;
-                Hour++;
-                if(Hour>=24){
-                    Hour=0;
-                    Day++;
-                    if(Day>=30){
-                        Month++;
-                        Day=0;
-                        if(Month>=12){
-                            Month=0;
-                            Year++;
-                        }
-                    }
-                }
-            }
-        }
-    }
 
-    public String GetTime(){
-        if(Minutes<10 && Sec<10 && Hour<10){
-            return "0"+Hour+":0"+Minutes+":0"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Sec<10 & Minutes<10){
-            return Hour+":0"+Minutes+":0"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Sec<10 && Hour<10){
-            return "0"+Hour+":"+Minutes+":0"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Minutes<10 && Hour<10){
-            return "0"+Hour+":0"+Minutes+":"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Sec<10){
-            return Hour+":"+Minutes+":0"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Minutes<10){
-            return Hour+":0"+Minutes+":"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else if (Hour<10){
-            return "0"+Hour+":"+Minutes+":"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
-        }
-        else
-            return Hour+":"+Minutes+":"+Sec+", "+Day+" Day(s)"+", "+Month+" Month(s)"+", "+Year+" Year(s)";
+    public Time getTime() {
+        return time;
     }
 }
