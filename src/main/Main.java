@@ -136,12 +136,12 @@ public class Main extends Application {
                                     new java.awt.geom.Point2D.Double(newPointX, newPointY));
                         }
                         points.add(conc);
-                for (String s :
-                            points) {
-                    System.out.flush();
-                        System.out.println(s);
-
-                }
+//                for (String s :
+//                            points) {
+//                    System.out.flush();
+//                        System.out.println(s);
+//
+//                }
 
 
 
