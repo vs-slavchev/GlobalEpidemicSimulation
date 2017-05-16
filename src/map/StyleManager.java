@@ -30,7 +30,7 @@ public class StyleManager {
     private static final Color FILL_COLOUR = Color.CYAN;
     private static final Color SELECTED_COLOUR = Color.YELLOW;
     private static final Color SELECTED_LINE_COLOUR = Color.RED;
-    private static final float OPACITY = 1.0f;
+    private static final float OPACITY = 0.1f;
     private static final float LINE_WIDTH = 1.0f;
 
     private StyleFactory sf = CommonFactoryFinder.getStyleFactory();

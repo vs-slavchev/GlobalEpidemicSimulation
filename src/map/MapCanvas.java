@@ -98,7 +98,6 @@ public class MapCanvas {
                     ConstantValues.POINT_RADIUS, ConstantValues.POINT_RADIUS);
         }
 
-        drawPointsForCountry(gc);
     }
 
     private void drawPointsForCountry(GraphicsContext gc) {
@@ -136,10 +135,16 @@ public class MapCanvas {
             env.translate(env.getMinimum(0) - result.x,
                     env.getMaximum(1) - result.y);
 
-            geoFinder.setPanOffsetX(env.getMaximum(0));
-            geoFinder.setPanOffsetY(env.getMaximum(1));
+            System.out.println(env.getMaximum(0));
 
-            setViewport(env);
+            if (env.getMinimum(0) >= -180
+                    && env.getMaximum(0) <= 180
+                    && env.getMinimum(1) >= -90
+                    && env.getMaximum(1) <= 90) {
+                geoFinder.setPanOffsetX(env.getMaximum(0));
+                geoFinder.setPanOffsetY(env.getMaximum(1));
+                setViewport(env);
+            }
             e.consume();
 
         });
@@ -153,13 +158,15 @@ public class MapCanvas {
             double deltaH = height * percent;
             envelope.expandBy(deltaW, deltaH);
 
-            geoFinder.setMapWidth(envelope.getWidth());
-            geoFinder.setMapHeight(envelope.getHeight());
+            if (envelope.getWidth() <= 360 && envelope.getHeight() <= 180) {
+                geoFinder.setMapWidth(envelope.getWidth());
+                geoFinder.setMapHeight(envelope.getHeight());
 
-            geoFinder.setPanOffsetX(envelope.getMaximum(0));
-            geoFinder.setPanOffsetY(envelope.getMaximum(1));
+                geoFinder.setPanOffsetX(envelope.getMaximum(0));
+                geoFinder.setPanOffsetY(envelope.getMaximum(1));
 
-            setViewport(envelope);
+                setViewport(envelope);
+            }
             e.consume();
         });
     }
