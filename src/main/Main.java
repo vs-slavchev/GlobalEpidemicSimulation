@@ -43,10 +43,9 @@ public class Main extends Application {
     private Popup popup = null;
     private Random random;
     private Label timer = new Label();
+    private Label speedLabel = new Label();
     private World world;
     private InfectionSpread infectionSpread;
-    private Thread timerThread = startTimer(60);
-    private Thread algorithmThread = AlgorithmThread();
     private volatile boolean isWorking = true;
 
     public static void main(String[] args) {
@@ -82,6 +81,8 @@ public class Main extends Application {
         infectionSpread = new InfectionSpread(random,world,mapCanvas);
         timer.setText(world.getTime().toString());
         timer.setId("timer");
+        speedLabel.setText("x"+world.getTime().getRunSpeed());
+
     }
 
 
@@ -107,9 +108,7 @@ public class Main extends Application {
         Button start = setUpImageButton(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
         Button pause = setUpImageButton(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
         Button fastForward = setUpImageButton(ConstantValues.FAST_FORWARD_BUTTON_IMAGE_FILE);
-        Button fastForward2 = setUpImageButton(ConstantValues.FAST_FORWARD_BUTTON_IMAGE_FILE2);
         Button backForward = setUpImageButton(ConstantValues.BACK_FORWARD_BUTTON_IMAGE_FILE);
-        Button backForward2 = setUpImageButton(ConstantValues.BACK_FORWARD_BUTTON_IMAGE_FILE2);
         // set up the buttons on the buttonBar
         Button disease = new Button("Diseases");
         Button medicine = new Button("Medicines");
@@ -117,26 +116,20 @@ public class Main extends Application {
         Button stop = new Button("Medicines");
         Button bigger = new Button("Medicines");
 
-        setUpEventHandlers(primaryStage, disease, start, pause,fastForward,fastForward2,backForward,backForward2);
+        setUpEventHandlers(primaryStage, disease, start, pause,fastForward,backForward);
 
         // addComponent the file menu, separators and the object buttons to the button bar
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(pause, start);
         stackPane.setMaxHeight(0);
 
-        StackPane stackPaneFast = new StackPane();
-        stackPaneFast.getChildren().addAll(fastForward2,fastForward);
-        stackPaneFast.setMaxHeight(0);
-
-        StackPane stackPaneBack = new StackPane();
-        stackPaneBack.getChildren().addAll(backForward2,backForward);
-        stackPaneBack.setMaxHeight(0);
-
         buttonBar.getChildren().addAll(
                 fileMenuButton,
-                disease, medicine, smaller, stop, bigger, stackPaneBack,stackPane,stackPaneFast, timer);
+                disease, medicine, smaller, stop, bigger, backForward,stackPane,fastForward, speedLabel, timer);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
+        fastForward.setDisable(true);
+        backForward.setDisable(true);
         //timer.relocate(10, buttonBar.getMaxWidth());
     }
 
@@ -160,20 +153,32 @@ public class Main extends Application {
 
     private void setUpEventHandlers(final Stage primaryStage, final Button disease,
                                     final Button start, final Button pause, final Button fastForwardbutton,
-                                    final Button fastForwardbutton2, final Button backForwardbutton,
-                                    final Button backForwardbutton2) {
+                                    final Button backForwardbutton) {
         start.setOnAction(event -> {
+            AlgorithmThread().start();
+            startTimer().start();
             start.setVisible(false);
             pause.setVisible(true);
+            backForwardbutton.setDisable(false);
+            fastForwardbutton.setDisable(false);
             isWorking = true;
-            algorithmThread.start();
-            timerThread.start();
+            world.getTime().setRunSpeed(1);
+            if(world.getTime().getSavedRunSpeed()!=0){
+               world.getTime().setRunSpeed(world.getTime().getSavedRunSpeed());
+            }
+            speedLabel.setText("x"+world.getTime().getRunSpeed());
+
         });
 
         pause.setOnAction(event -> {
             start.setVisible(true);
             pause.setVisible(false);
+            backForwardbutton.setDisable(true);
+            fastForwardbutton.setDisable(true);
             isWorking = false;
+            world.getTime().saveRunSpeed();
+            world.getTime().setRunSpeed(0);
+            speedLabel.setText("x"+world.getTime().getRunSpeed());
         });
 
         disease.setOnAction(event -> {
@@ -182,31 +187,29 @@ public class Main extends Application {
         });
 
         fastForwardbutton.setOnAction(event ->{
-            fastForwardbutton.setVisible(false);
-            fastForwardbutton2.setVisible(true);
-        });
-
-        fastForwardbutton2.setOnAction(event ->{
-            fastForwardbutton.setVisible(true);
-            fastForwardbutton2.setVisible(false);
+            backForwardbutton.setDisable(false);
+            world.getTime().addRunSpeed();
+            if(world.getTime().getRunSpeed()>=70){
+                fastForwardbutton.setDisable(true);
+            }
+            speedLabel.setText("x"+world.getTime().getRunSpeed());
         });
 
         backForwardbutton.setOnAction(event ->{
-            backForwardbutton.setVisible(false);
-            backForwardbutton2.setVisible(true);
-        });
-
-        backForwardbutton2.setOnAction(event ->{
-            backForwardbutton.setVisible(false);
-            backForwardbutton2.setVisible(true);
+            fastForwardbutton.setDisable(false);
+            world.getTime().substract();
+            if(world.getTime().getRunSpeed()<=1){
+                backForwardbutton.setDisable(true);
+            }
+            speedLabel.setText("x"+world.getTime().getRunSpeed());
         });
 
         primaryStage.setOnCloseRequest(event -> {
-            if (algorithmThread != null && algorithmThread.isAlive()) {
-                algorithmThread.interrupt();
+            if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
+                AlgorithmThread().interrupt();
             }
-            if (timerThread != null && timerThread.isAlive()) {
-                timerThread.interrupt();
+            if (startTimer() != null && startTimer().isAlive()) {
+                startTimer().interrupt();
             }
             System.exit(1);
         });
@@ -343,15 +346,14 @@ public class Main extends Application {
     }
 
 
-    private Thread startTimer(double speed) {
+    private Thread startTimer() {
         return new Thread(() -> {
             while (isWorking) {
-                world.getTime().setElapsedTime(speed);
+                world.getTime().setElapsedTime();
                 Platform.runLater(() -> timer.setText(world.getTime().toString()));
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(world.getTime().timerSleepTime());
                 } catch (InterruptedException e) {
-
                 }
             }
         });
@@ -359,16 +361,15 @@ public class Main extends Application {
     }
     private Thread AlgorithmThread(){
         return new Thread(() -> {
-                    while (isWorking) {
-                        infectionSpread.applyAlgorithm();
-                        mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                        }
-                    }
-                });
+            while (isWorking) {
+                infectionSpread.applyAlgorithm();
+                mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                try {
+                    Thread.sleep(world.getTime().algorithmSleepTime());
+                } catch (InterruptedException e) {
+                }
+            }
+        });
     }
 
 }
-
