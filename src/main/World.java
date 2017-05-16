@@ -22,6 +22,8 @@ public class World {
         countries = new ArrayList<>();
         infectedCountries = new ArrayList<>();
         time = new Time();
+        readCountryInfo();
+        readTemps();
     }
 
     private static boolean isAllUpper(String s) {

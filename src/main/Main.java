@@ -45,9 +45,9 @@ public class Main extends Application {
     private Label timer = new Label();
     private World world;
     private InfectionSpread infectionSpread;
+    private Thread timerThread = startTimer(60);
+    private Thread algorithmThread = AlgorithmThread();
     private volatile boolean isWorking = true;
-    private List<String> points = new ArrayList<>();
-    private static final double INFECTION_RADIUS = 2.0;
 
     public static void main(String[] args) {
         launch(args);
@@ -79,52 +79,11 @@ public class Main extends Application {
 
         world = new World();
         random = new Random();
-        infectionSpread = new InfectionSpread();
-        world.readCountryInfo();
+        infectionSpread = new InfectionSpread(random,world,mapCanvas);
         timer.setText(world.getTime().toString());
         timer.setId("timer");
-        world.readTemps();
     }
 
-    private void applyAlgorithm() {
-        for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
-            if (random.nextDouble() < infectionSpread
-                    .getMainDisease()
-                    .getProperties()
-                    .getVirulence()) {
-                double offsetX = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-                double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-                double newPointX = infectionPoint.getX() +
-                        (random.nextBoolean() ? +offsetX : -offsetX);
-                double newPointY = infectionPoint.getY() +
-                        (random.nextBoolean() ? offsetY : -offsetY);
-                String conc = "" + String.format("%.0f", newPointX) + String.format("%.0f", newPointY);
-
-                while (points.contains(conc)) {
-                    newPointX = random.nextBoolean() ? +offsetX / 5 : -offsetX / 5;
-
-                    newPointY = random.nextBoolean() ? offsetY / 5 : -offsetY / 5;
-                    conc = "" + String.format("%.0f", newPointX) + String.format("%.0f", newPointY);
-                }
-
-                java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
-                        .mapToScreenCoordinates(newPointX, newPointY);
-
-                String countryName = mapCanvas.getGeoFinder().getCountryNameFromScreenCoordinates(
-                        screenNewPoint.getX(), screenNewPoint.getY());
-                if (countryName.equals("water")) {
-                    continue;
-                }
-
-                if (world.getCountry("Bulgaria").isPresent()) {
-                    Country country = world.getCountry("Bulgaria").get();
-                    country.addInfectionPoint(
-                            new java.awt.geom.Point2D.Double(newPointX, newPointY));
-                }
-                points.add(conc);
-            }
-        }
-    }
 
     private void setUpButtonBar(Stage primaryStage) {
         buttonBar = new HBox();
@@ -147,7 +106,10 @@ public class Main extends Application {
 
         Button start = setUpImageButton(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
         Button pause = setUpImageButton(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
-
+        Button fastForward = setUpImageButton(ConstantValues.FAST_FORWARD_BUTTON_IMAGE_FILE);
+        Button fastForward2 = setUpImageButton(ConstantValues.FAST_FORWARD_BUTTON_IMAGE_FILE2);
+        Button backForward = setUpImageButton(ConstantValues.BACK_FORWARD_BUTTON_IMAGE_FILE);
+        Button backForward2 = setUpImageButton(ConstantValues.BACK_FORWARD_BUTTON_IMAGE_FILE2);
         // set up the buttons on the buttonBar
         Button disease = new Button("Diseases");
         Button medicine = new Button("Medicines");
@@ -155,16 +117,24 @@ public class Main extends Application {
         Button stop = new Button("Medicines");
         Button bigger = new Button("Medicines");
 
-        setUpEventHandlers(primaryStage, disease, start, pause);
+        setUpEventHandlers(primaryStage, disease, start, pause,fastForward,fastForward2,backForward,backForward2);
 
         // addComponent the file menu, separators and the object buttons to the button bar
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(pause, start);
         stackPane.setMaxHeight(0);
 
+        StackPane stackPaneFast = new StackPane();
+        stackPaneFast.getChildren().addAll(fastForward2,fastForward);
+        stackPaneFast.setMaxHeight(0);
+
+        StackPane stackPaneBack = new StackPane();
+        stackPaneBack.getChildren().addAll(backForward2,backForward);
+        stackPaneBack.setMaxHeight(0);
+
         buttonBar.getChildren().addAll(
                 fileMenuButton,
-                disease, medicine, smaller, stop, bigger, stackPane, timer);
+                disease, medicine, smaller, stop, bigger, stackPaneBack,stackPane,stackPaneFast, timer);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
         //timer.relocate(10, buttonBar.getMaxWidth());
@@ -189,13 +159,15 @@ public class Main extends Application {
     }
 
     private void setUpEventHandlers(final Stage primaryStage, final Button disease,
-                                    final Button start, final Button pause) {
+                                    final Button start, final Button pause, final Button fastForwardbutton,
+                                    final Button fastForwardbutton2, final Button backForwardbutton,
+                                    final Button backForwardbutton2) {
         start.setOnAction(event -> {
             start.setVisible(false);
             pause.setVisible(true);
             isWorking = true;
-            AlgorithmThread().start();
-            startTimer(70).start();
+            algorithmThread.start();
+            timerThread.start();
         });
 
         pause.setOnAction(event -> {
@@ -209,10 +181,34 @@ public class Main extends Application {
             popup.show(primaryStage);
         });
 
+        fastForwardbutton.setOnAction(event ->{
+            fastForwardbutton.setVisible(false);
+            fastForwardbutton2.setVisible(true);
+        });
+
+        fastForwardbutton2.setOnAction(event ->{
+            fastForwardbutton.setVisible(true);
+            fastForwardbutton2.setVisible(false);
+        });
+
+        backForwardbutton.setOnAction(event ->{
+            backForwardbutton.setVisible(false);
+            backForwardbutton2.setVisible(true);
+        });
+
+        backForwardbutton2.setOnAction(event ->{
+            backForwardbutton.setVisible(false);
+            backForwardbutton2.setVisible(true);
+        });
+
         primaryStage.setOnCloseRequest(event -> {
-            if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
-                AlgorithmThread().interrupt();
+            if (algorithmThread != null && algorithmThread.isAlive()) {
+                algorithmThread.interrupt();
             }
+            if (timerThread != null && timerThread.isAlive()) {
+                timerThread.interrupt();
+            }
+            System.exit(1);
         });
 
         mapCanvas.getCanvas().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -355,7 +351,7 @@ public class Main extends Application {
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+
                 }
             }
         });
@@ -364,12 +360,11 @@ public class Main extends Application {
     private Thread AlgorithmThread(){
         return new Thread(() -> {
                     while (isWorking) {
-                        applyAlgorithm();
+                        infectionSpread.applyAlgorithm();
                         mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
-                            System.exit(0);
                         }
                     }
                 });
