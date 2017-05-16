@@ -16,6 +16,10 @@ public class Time {
     public void setElapsedTime(double speed) {
         Sec++;
         Sec *= speed;
+        if(speed>60){
+            Minutes++;
+            Sec=Sec%59;
+        }
         if (Sec >= 60) {
             Sec = 0;
             Minutes++;

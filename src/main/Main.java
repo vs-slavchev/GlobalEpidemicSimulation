@@ -43,7 +43,6 @@ public class Main extends Application {
     private Popup popup = null;
     private Random random;
     private Label timer = new Label();
-    private Thread algorithmThread;
     private World world;
     private InfectionSpread infectionSpread;
     private volatile boolean isWorking = true;
@@ -195,19 +194,8 @@ public class Main extends Application {
             start.setVisible(false);
             pause.setVisible(true);
             isWorking = true;
-            algorithmThread = new Thread(() -> {
-                while (isWorking) {
-                    applyAlgorithm();
-                    mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-                    try {
-                        Thread.sleep(300);
-                    } catch (InterruptedException e) {
-                        System.exit(0);
-                    }
-                }
-            });
-            algorithmThread.start();
-            startTimer(1.5).start();
+            AlgorithmThread().start();
+            startTimer(70).start();
         });
 
         pause.setOnAction(event -> {
@@ -222,8 +210,8 @@ public class Main extends Application {
         });
 
         primaryStage.setOnCloseRequest(event -> {
-            if (algorithmThread != null && algorithmThread.isAlive()) {
-                algorithmThread.interrupt();
+            if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
+                AlgorithmThread().interrupt();
             }
         });
 
@@ -372,6 +360,19 @@ public class Main extends Application {
             }
         });
 
+    }
+    private Thread AlgorithmThread(){
+        return new Thread(() -> {
+                    while (isWorking) {
+                        applyAlgorithm();
+                        mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            System.exit(0);
+                        }
+                    }
+                });
     }
 
 }
