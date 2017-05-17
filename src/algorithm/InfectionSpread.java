@@ -42,12 +42,12 @@ public class InfectionSpread {
     {
         diseaseList.add(new Disease("ebola", DiseaseType.BACTERIA,
                 new DiseaseProperties(10, 10,
-                        10, 0.1)));
+                        10, 0.6)));
     }
-    public void addDisease(String name,int diseaseType,int lethality,int prefTemp,int tempTolerence,double virulence){
+    public void addDisease(String name,int diseaseType,int lethality,int prefTemp,int tempTolerance,double virulence){
         diseaseList.add(new Disease(name, DiseaseType.values()[diseaseType-1],
                 new DiseaseProperties(lethality, prefTemp,
-                        tempTolerence, virulence)));
+                        tempTolerance, virulence)));
     }
     public void addDisease(Disease disease){
         diseaseList.add(disease);
@@ -71,7 +71,7 @@ public class InfectionSpread {
 
     public void applyAlgorithm()
     {
-        if (this.getMainDisease() == null){
+        if (this.diseaseList.isEmpty()){
             this.addDisease();
         }
         for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
