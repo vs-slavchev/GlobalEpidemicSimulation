@@ -34,27 +34,46 @@ public class InfectionSpread {
         this.mapCanvas = mapCanvas;
     }
 
-    public void infectCountry(Country country) {
+    public void infectCountry(Country country)
+    {
 
     }
-
-    public Disease getMainDisease() {
+    public void addDisease()
+    {
         diseaseList.add(new Disease("ebola", DiseaseType.BACTERIA,
-                new DiseaseProperties(10, 25,
+                new DiseaseProperties(10, 10,
                         10, 0.1)));
+    }
+    public void addDisease(String name,int diseaseType,int lethality,int prefTemp,int tempTolerence,double virulence){
+        diseaseList.add(new Disease(name, DiseaseType.values()[diseaseType-1],
+                new DiseaseProperties(lethality, prefTemp,
+                        tempTolerence, virulence)));
+    }
+    public void addDisease(Disease disease){
+        diseaseList.add(disease);
+    }
+
+    public Disease getMainDisease()
+    {
         return diseaseList.get(0);
     }
 
-    public void multiplyCountry(Country country) {
+    public void multiplyCountry(Country country)
+    {
 
     }
 
-    public List<Disease> getDiseaseList() {
+    public List<Disease> getDiseaseList()
+    {
 
         return diseaseList;
     }
 
-    public void applyAlgorithm() {
+    public void applyAlgorithm()
+    {
+        if (this.getMainDisease() == null){
+            this.addDisease();
+        }
         for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
             if (random.nextDouble() < this
                     .getMainDisease()

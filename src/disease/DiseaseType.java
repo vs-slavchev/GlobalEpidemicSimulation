@@ -5,5 +5,7 @@ package disease;
  */
 public enum DiseaseType {
     VIRUS,
-    BACTERIA
+    BACTERIA,
+    FUNGUS,
+    PARASITE
 }

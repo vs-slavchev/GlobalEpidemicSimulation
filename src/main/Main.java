@@ -320,7 +320,7 @@ public class Main extends Application {
                                 Double.parseDouble(preferredTemp.getText()),
                                 Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
-                infectionSpread.getDiseaseList().add(disease);
+                infectionSpread.addDisease(disease);
                 popup.hide();
             } catch (Exception ex) {
                 name.setPromptText("not filled in");
