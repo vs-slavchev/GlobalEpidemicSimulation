@@ -25,4 +25,7 @@ public class Medicine {
     public String getName(){
         return name;
     }
+    public String toString(){
+        return name+", "+ targetedTypes+", "+targetedSymptoms+", "+properties.toString();
+    }
 }

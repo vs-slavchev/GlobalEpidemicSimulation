@@ -5,6 +5,7 @@ import algorithm.MedicineSpread;
 import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
+import disease.SymptomType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -126,7 +127,7 @@ public class Main extends Application {
         Button disease = new Button("Create Disease");
         Button medicine = new Button("Create Medicine");
 
-        setUpEventHandlers(primaryStage, disease, start, pause,fastForward,backForward);
+        setUpEventHandlers(primaryStage, disease, medicine, start,  pause,fastForward,backForward);
 
         // addComponent the file menu, separators and the object buttons to the button bar
         StackPane stackPane = new StackPane();
@@ -162,7 +163,7 @@ public class Main extends Application {
         return start;
     }
 
-    private void setUpEventHandlers(final Stage primaryStage, final Button disease,
+    private void setUpEventHandlers(final Stage primaryStage, final Button disease, final Button medicine,
                                     final Button start, final Button pause, final Button fastForwardbutton,
                                     final Button backForwardbutton) {
         start.setOnAction(event -> {
@@ -195,6 +196,10 @@ public class Main extends Application {
 
         disease.setOnAction(event -> {
             SetUpPopup();
+            popup.show(primaryStage);
+        });
+        medicine.setOnAction(event -> {
+            SetUpPopupMedicine();
             popup.show(primaryStage);
         });
 
@@ -278,6 +283,8 @@ public class Main extends Application {
         final Slider lethality = new Slider(0, 100, 50);
         final Slider virulence = new Slider(0, 100, 50);
         final Button save = new Button("Create disease");
+        final ComboBox diseaseType = new ComboBox();
+        diseaseType.getItems().addAll(DiseaseType.BACTERIA,DiseaseType.FUNGUS,DiseaseType.PARASITE,DiseaseType.VIRUS);
 
         lethality.setShowTickLabels(true);
         lethality.setShowTickMarks(true);
@@ -285,12 +292,14 @@ public class Main extends Application {
         virulence.setShowTickMarks(true);
 
         final Label nameCaption = new Label("Name:");
+        final Label virusType = new Label("Virus type:");
         final Label prefTempCaption = new Label("Preferred temperature:");
         final Label tempToleranceCaption = new Label("Temperature tolerance:");
         final Label lethalityCaption = new Label("Lethality Level:");
         final Label virulenceCaption = new Label("Virulence Level:");
 
         nameCaption.setPrefWidth(170);
+        virusType.setPrefWidth(170);
         prefTempCaption.setPrefWidth(170);
         tempToleranceCaption.setPrefWidth(170);
         lethalityCaption.setPrefWidth(170);
@@ -308,6 +317,7 @@ public class Main extends Application {
                         virulenceValue.setText(String.format("%.0f%%", newValue)));
 
         HBox nameHB = new HBox();
+        HBox virusTypeHB = new HBox();
         HBox prefTempHB = new HBox();
         HBox tempToleranceHB = new HBox();
         HBox lethalityHB = new HBox();
@@ -315,11 +325,12 @@ public class Main extends Application {
         VBox buttonsAndFieldsVB = new VBox();
 
         nameHB.getChildren().addAll(nameCaption, name);
+        virusTypeHB.getChildren().addAll(virusType, diseaseType);
         prefTempHB.getChildren().addAll(prefTempCaption, preferredTemp);
         tempToleranceHB.getChildren().addAll(tempToleranceCaption, tempTolerance);
         lethalityHB.getChildren().addAll(lethalityCaption, lethality, lethalityValue);
         virulenceHB.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
-        buttonsAndFieldsVB.getChildren().addAll(nameHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, save);
+        buttonsAndFieldsVB.getChildren().addAll(nameHB,virusTypeHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, save);
 
         popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
         buttonsAndFieldsVB.setSpacing(10);
@@ -327,7 +338,7 @@ public class Main extends Application {
 
         save.setOnAction(event -> {
             try {
-                Disease disease = new Disease(name.getText(), DiseaseType.BACTERIA,
+                Disease disease = new Disease(name.getText(), (DiseaseType)diseaseType.getValue(),
                         new DiseaseProperties((int) lethality.getValue(),
                                 Double.parseDouble(preferredTemp.getText()),
                                 Double.parseDouble(tempTolerance.getText()),
@@ -343,6 +354,106 @@ public class Main extends Application {
         });
     }
 
+    private void SetUpPopupMedicine() {
+        // Set up Popups
+        popup = new Popup();
+        Rectangle popUpRectangleBackground = new Rectangle(500, 500);
+        popUpRectangleBackground.setFill(Color.AQUAMARINE);
+
+        //Items in popup
+        final TextField name = new TextField();
+
+        //restricting the user to type only integers for the preferred temperature
+        final TextField preferredTemp = createFractionTextField();
+
+        //restricting the user to type only integers for the temperature tolerance
+        final TextField tempTolerance = createFractionTextField();
+
+
+        final Slider lethality = new Slider(0, 100, 50);
+        final Slider virulence = new Slider(0, 100, 50);
+        final Button save = new Button("Create medicine");
+        final ComboBox diseaseType = new ComboBox();
+        diseaseType.getItems().addAll(DiseaseType.BACTERIA,DiseaseType.FUNGUS,DiseaseType.PARASITE,DiseaseType.VIRUS);
+        final ComboBox symptomType = new ComboBox();
+        symptomType.getItems().addAll(SymptomType.COUGH,SymptomType.NAUSEA);
+
+        lethality.setShowTickLabels(true);
+        lethality.setShowTickMarks(true);
+        virulence.setShowTickLabels(true);
+        virulence.setShowTickMarks(true);
+
+        final Label nameCaption = new Label("Name:");
+        final Label diseaseTypeL = new Label("Disease type:");
+        final Label symptomTypeL = new Label("Symptom type:");
+        final Label prefTempCaption = new Label("Preferred temperature:");
+        final Label tempToleranceCaption = new Label("Temperature tolerance:");
+        final Label lethalityCaption = new Label("Lethality Level:");
+        final Label virulenceCaption = new Label("Virulence Level:");
+
+        nameCaption.setPrefWidth(170);
+        diseaseTypeL.setPrefWidth(170);
+        symptomTypeL.setPrefWidth(170);
+        prefTempCaption.setPrefWidth(170);
+        tempToleranceCaption.setPrefWidth(170);
+        lethalityCaption.setPrefWidth(170);
+        virulenceCaption.setPrefWidth(170);
+
+        final Label lethalityValue = new Label("50%");
+        final Label virulenceValue = new Label("50%");
+
+        lethality.valueProperty().addListener(
+                (ov, oldValue, newValue) ->
+                        lethalityValue.setText(String.format("%.0f%%", newValue)));
+
+        virulence.valueProperty().addListener(
+                (ov, oldValue, newValue) ->
+                        virulenceValue.setText(String.format("%.0f%%", newValue)));
+
+        HBox nameHB = new HBox();
+        HBox diseaseTypeHB = new HBox();
+        HBox symptomTypeHB = new HBox();
+        HBox prefTempHB = new HBox();
+        HBox tempToleranceHB = new HBox();
+        HBox lethalityHB = new HBox();
+        HBox virulenceHB = new HBox();
+        VBox buttonsAndFieldsVB = new VBox();
+
+        nameHB.getChildren().addAll(nameCaption, name);
+        diseaseTypeHB.getChildren().addAll(diseaseTypeL,diseaseType);
+        symptomTypeHB.getChildren().addAll(symptomTypeL,symptomType);
+        prefTempHB.getChildren().addAll(prefTempCaption, preferredTemp);
+        tempToleranceHB.getChildren().addAll(tempToleranceCaption, tempTolerance);
+        lethalityHB.getChildren().addAll(lethalityCaption, lethality, lethalityValue);
+        virulenceHB.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
+        buttonsAndFieldsVB.getChildren().addAll(nameHB, diseaseTypeHB, symptomTypeHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, save);
+
+        popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
+        buttonsAndFieldsVB.setSpacing(10);
+        buttonsAndFieldsVB.setPadding(new Insets(10, 10, 10, 10));
+
+        save.setOnAction(event -> {
+            try {
+                Medicine medicine = new Medicine(name.getText(), (DiseaseType) diseaseType.getValue(),
+                        (SymptomType) symptomType.getValue(),
+                        new DiseaseProperties((int) lethality.getValue(),
+                                Double.parseDouble(preferredTemp.getText()),
+                                Double.parseDouble(tempTolerance.getText()),
+                                virulence.getValue() / 100));
+                medicineSpread.addMedicine(medicine);
+                for (Medicine m: medicineSpread.getMedicineList()
+                     ) {
+                    System.out.println(m.toString());
+                }
+                addtoListBoxes(DiseaseListBox,MedicineListBox);
+                popup.hide();
+            } catch (Exception ex) {
+                name.setPromptText("not filled in");
+                preferredTemp.setPromptText("not filled in");
+                tempTolerance.setPromptText("not filled in");
+            }
+        });
+    }
     /**
      * Creates a text field which only takes input in the format: digits followed by a single comma or dot
      * followed by more digits.
@@ -357,8 +468,6 @@ public class Main extends Application {
             }
         };
     }
-
-
     private Thread startTimer() {
         return new Thread(() -> {
             while (isWorking) {

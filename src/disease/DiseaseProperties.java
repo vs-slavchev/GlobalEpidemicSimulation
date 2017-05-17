@@ -35,4 +35,8 @@ public class DiseaseProperties {
     public double getVirulence() {
         return virulence;
     }
+
+    public String toString(){
+        return lethality+", "+ preferredTemperature+", "+temperatureTolerance+", "+ virulence;
+    }
 }
