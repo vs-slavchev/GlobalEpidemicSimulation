@@ -21,6 +21,11 @@ public class Disease {
         this.name = name;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
+
     public DiseaseType getType() {
         return type;
     }
