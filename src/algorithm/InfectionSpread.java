@@ -53,6 +53,10 @@ public class InfectionSpread {
         diseaseList.add(disease);
     }
 
+    public void removeDisease(Disease disease){
+        diseaseList.remove(disease);
+    }
+
     public Disease getMainDisease()
     {
         return diseaseList.get(0);

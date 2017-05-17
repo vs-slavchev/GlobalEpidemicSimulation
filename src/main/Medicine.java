@@ -22,4 +22,7 @@ public class Medicine {
         this.targetedSymptoms = symptomType;
         this.properties = props;
     }
+    public String getName(){
+        return name;
+    }
 }

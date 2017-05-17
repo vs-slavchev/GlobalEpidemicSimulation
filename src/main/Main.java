@@ -1,6 +1,7 @@
 package main;
 
 import algorithm.InfectionSpread;
+import algorithm.MedicineSpread;
 import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
@@ -45,6 +46,10 @@ public class Main extends Application {
     private Label timer = new Label();
     private Label speedLabel = new Label();
     private World world;
+    private MenuButton MedicineListBox;
+    private MenuButton DiseaseListBox;
+
+    private MedicineSpread medicineSpread;
     private InfectionSpread infectionSpread;
     private volatile boolean isWorking = true;
 
@@ -65,6 +70,11 @@ public class Main extends Application {
         int height = (int) bounds.getHeight();
         mapCanvas = new MapCanvas(width, height);
 
+        world = new World();
+        random = new Random();
+        infectionSpread = new InfectionSpread(random,world,mapCanvas);
+        medicineSpread = new MedicineSpread();
+
         setUpButtonBar(primaryStage);
         root.getChildren().addAll(buttonBar, mapCanvas.getCanvas());
 
@@ -75,10 +85,6 @@ public class Main extends Application {
         primaryStage.show();
 
         scene.getStylesheets().add(ConstantValues.CSS_STYLE_FILE);
-
-        world = new World();
-        random = new Random();
-        infectionSpread = new InfectionSpread(random,world,mapCanvas);
         timer.setText(world.getTime().toString());
         timer.setId("timer");
         speedLabel.setText("x"+world.getTime().getRunSpeed());
@@ -97,24 +103,28 @@ public class Main extends Application {
         SeparatorMenuItem separator = new SeparatorMenuItem();
         MenuItem saveItem = new MenuItem("Save");
         MenuItem saveAsItem = new MenuItem("Save As...");
+
         fileMenuButton.getItems().addAll(newItem, openItem, separator, saveItem, saveAsItem);
 
+
+        MedicineListBox = new MenuButton("Medicines");
+        DiseaseListBox = new MenuButton("Diseases");
+        addtoListBoxes(DiseaseListBox,MedicineListBox);
+
         // assign action handlers to the items in the file menu
-        setUpButtons(fileMenuButton, primaryStage);
+        setUpButtons(fileMenuButton, DiseaseListBox, MedicineListBox, primaryStage);
     }
 
-    private void setUpButtons(MenuButton fileMenuButton, Stage primaryStage) {
+    private void setUpButtons(MenuButton fileMenuButton, MenuButton diseaseList,MenuButton MedicineListBox,Stage primaryStage) {
 
         Button start = setUpImageButton(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
         Button pause = setUpImageButton(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
         Button fastForward = setUpImageButton(ConstantValues.FAST_FORWARD_BUTTON_IMAGE_FILE);
         Button backForward = setUpImageButton(ConstantValues.BACK_FORWARD_BUTTON_IMAGE_FILE);
         // set up the buttons on the buttonBar
-        Button disease = new Button("Diseases");
-        Button medicine = new Button("Medicines");
-        Button smaller = new Button("<");
-        Button stop = new Button("Medicines");
-        Button bigger = new Button("Medicines");
+        // set up the buttons on the buttonBar
+        Button disease = new Button("Create Disease");
+        Button medicine = new Button("Create Medicine");
 
         setUpEventHandlers(primaryStage, disease, start, pause,fastForward,backForward);
 
@@ -125,9 +135,10 @@ public class Main extends Application {
 
         buttonBar.getChildren().addAll(
                 fileMenuButton,
-                disease, medicine, smaller, stop, bigger, backForward,stackPane,fastForward, speedLabel, timer);
+                disease, medicine, diseaseList,MedicineListBox, backForward,stackPane,fastForward, speedLabel, timer);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
+
         fastForward.setDisable(true);
         backForward.setDisable(true);
         //timer.relocate(10, buttonBar.getMaxWidth());
@@ -167,6 +178,7 @@ public class Main extends Application {
                world.getTime().setRunSpeed(world.getTime().getSavedRunSpeed());
             }
             speedLabel.setText("x"+world.getTime().getRunSpeed());
+            addtoListBoxes(DiseaseListBox,MedicineListBox);
 
         });
 
@@ -321,6 +333,7 @@ public class Main extends Application {
                                 Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
                 infectionSpread.addDisease(disease);
+                addtoListBoxes(DiseaseListBox,MedicineListBox);
                 popup.hide();
             } catch (Exception ex) {
                 name.setPromptText("not filled in");
@@ -370,6 +383,19 @@ public class Main extends Application {
                 }
             }
         });
+    }
+    private void addtoListBoxes(MenuButton DiseasemenuButton, MenuButton MedicineButton){
+        DiseasemenuButton.getItems().clear();
+        MedicineButton.getItems().clear();
+        for (Disease d: infectionSpread.getDiseaseList()
+                ) {
+            DiseasemenuButton.getItems().add(new MenuItem(d.getName()));
+        }
+        for (Medicine d: medicineSpread.getMedicineList()
+                ) {
+            MedicineButton.getItems().add(new MenuItem(d.getName()));
+        }
+
     }
 
 }
