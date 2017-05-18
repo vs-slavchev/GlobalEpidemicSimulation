@@ -10,8 +10,12 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -27,6 +31,8 @@ import javafx.stage.Stage;
 import map.MapCanvas;
 import reader.ConstantValues;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -62,7 +68,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         root = new VBox();
         root.setMinWidth(640);
         root.setMinHeight(480);
@@ -184,7 +189,7 @@ public class Main extends Application {
         Button disease = new Button("Create Disease");
         Button medicine = new Button("Create Medicine");
 
-        setUpEventHandlers(primaryStage, disease, medicine, start,  pause,fastForward,backForward);
+        setUpEventHandlers(primaryStage, disease, medicine, start,  pause,fastForward,backForward,diseaseList,MedicineListBox);
 
         // addComponent the file menu, separators and the object buttons to the button bar
         StackPane stackPane = new StackPane();
@@ -222,7 +227,7 @@ public class Main extends Application {
 
     private void setUpEventHandlers(final Stage primaryStage, final Button disease, final Button medicine,
                                     final Button start, final Button pause, final Button fastForwardbutton,
-                                    final Button backForwardbutton) {
+                                    final Button backForwardbutton,final MenuButton diseaseListBox, final MenuButton medicineListBox) {
         start.setOnAction(event -> {
             AlgorithmThread().start();
             startTimer().start();
@@ -253,11 +258,11 @@ public class Main extends Application {
         });
 
         disease.setOnAction(event -> {
-            SetUpPopupDisease();
+            SetUpPopupDisease(diseaseListBox,medicineListBox,primaryStage);
             popup.show(primaryStage);
         });
         medicine.setOnAction(event -> {
-            SetUpPopupMedicine();
+            SetUpPopupMedicine(diseaseListBox,medicineListBox,primaryStage);
             popup.show(primaryStage);
         });
 
@@ -279,9 +284,10 @@ public class Main extends Application {
             speedLabel.setText("x"+world.getTime().getRunSpeed());
         });
 
+        setPointers(diseaseListBox,medicineListBox,primaryStage);
         primaryStage.setOnCloseRequest(event -> {
             if(isStarted){
-                Alert a = new Alert(Alert.AlertType.CONFIRMATION,"Simulation is already started, do you wish to exit? If yes all progress will be lost.");
+                Alert a = new Alert(Alert.AlertType.CONFIRMATION,"Simulation is started, do you wish to exit? If yes all progress will be lost.");
                 a.setHeaderText(null);
                 ButtonType buttonTypeYes = new ButtonType("Yes");
                 ButtonType buttonTypeNo = new ButtonType("Cancel");
@@ -329,18 +335,20 @@ public class Main extends Application {
                 if (event.getButton() == MouseButton.SECONDARY) {
                     selectCountryOnMap(event);
                 } else if (event.getButton() == MouseButton.PRIMARY) {
-                    createInfectionPointFromClick(event);
+                    createInfectionPointFromClick(event,primaryStage);
                 }
             }
             event.consume();
         });
+
     }
 
-    private void createInfectionPointFromClick(MouseEvent event) {
+    private void createInfectionPointFromClick(MouseEvent event,Stage primaryStage) {
         if (world.getCountry("Bulgaria").isPresent()) {
             Country country = world.getCountry("Bulgaria").get();
             java.awt.geom.Point2D mapInfectionPoint = mapCanvas.getGeoFinder().screenToMapCoordinates(event.getX(), event.getY());
             country.addInfectionPoint(mapInfectionPoint);
+            primaryStage.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
         }
     }
 
@@ -357,7 +365,7 @@ public class Main extends Application {
                 .getCountryNameFromScreenCoordinates(event.getX(), event.getY());
     }
 
-    private void SetUpPopupDisease() {
+    private void SetUpPopupDisease(MenuButton diseaseListBox,MenuButton medicineListBox, Stage primaryStage) {
         // Set up Popups
         popup = new Popup();
         Rectangle popUpRectangleBackground = new Rectangle(500, 500);
@@ -438,6 +446,7 @@ public class Main extends Application {
                                 virulence.getValue() / 100));
                 infectionSpread.addDisease(disease);
                 addtoListBoxes(DiseaseListBox,MedicineListBox);
+                setPointers(diseaseListBox,medicineListBox,primaryStage);
                 popup.hide();
             } catch (Exception ex) {
                 name.setPromptText("not filled in");
@@ -445,9 +454,10 @@ public class Main extends Application {
                 tempTolerance.setPromptText("not filled in");
             }
         });
+
     }
 
-    private void SetUpPopupMedicine() {
+    private void SetUpPopupMedicine(MenuButton diseaseListBox,MenuButton medicineListBox, Stage primaryStage) {
         // Set up Popups
         popup = new Popup();
         Rectangle popUpRectangleBackground = new Rectangle(500, 500);
@@ -534,6 +544,7 @@ public class Main extends Application {
                                 Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
                 medicineSpread.addMedicine(medicine);
+                setPointers(diseaseListBox,medicineListBox,primaryStage);
                 for (Medicine m: medicineSpread.getMedicineList()
                      ) {
                     System.out.println(m.toString());
@@ -546,6 +557,7 @@ public class Main extends Application {
                 tempTolerance.setPromptText("not filled in");
             }
         });
+
     }
     /**
      * Creates a text field which only takes input in the format: digits followed by a single comma or dot
@@ -598,6 +610,35 @@ public class Main extends Application {
             MedicineButton.getItems().add(new MenuItem(d.getName()));
         }
 
+    }
+    private void setPointers(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage){
+        for (MenuItem item: diseaseListBox.getItems()
+                ) {
+            item.setOnAction(event -> {
+                for (Disease d: infectionSpread.getDiseaseList()
+                        ) {
+                    if(item.getText().equals(d.getName())){
+                        Image pointer = new Image("file:./images/hazardpointer.png");
+                        primaryStage.getScene().setCursor( new ImageCursor(pointer));
+
+                    }
+                }
+
+            });
+        }
+        for (MenuItem item: medicineListBox.getItems()
+                ) {
+            item.setOnAction(event -> {
+                for (Medicine m: medicineSpread.getMedicineList()
+                        ) {
+                    if(item.getText().equals(m.getName())){
+                        Image pointer = new Image("file:./images/medicinepointer.png");
+                        primaryStage.getScene().setCursor( new ImageCursor(pointer));
+                    }
+                }
+
+            });
+        }
     }
 
 }

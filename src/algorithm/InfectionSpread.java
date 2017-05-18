@@ -30,6 +30,7 @@ public class InfectionSpread {
     private static final double INFECTION_RADIUS = 2.0;
     private MapCanvas mapCanvas;
     private List<String> points;
+    private List<String> pointsDouble;
     private File file = null;
     private String timeLog;
     private File logFile;
@@ -38,6 +39,7 @@ public class InfectionSpread {
     public InfectionSpread(Random random, World world, MapCanvas mapCanvas) {
         diseaseList = new ArrayList<>();
         points = new ArrayList<>();
+        pointsDouble = new ArrayList<>();
         this.random = random;
         this.world = world;
         this.mapCanvas = mapCanvas;
@@ -49,6 +51,9 @@ public class InfectionSpread {
     }
     public List<String> getPoints(){
         return points;
+    }
+    public List<String> getPointsDouble(){
+        return pointsDouble;
     }
     public void addDisease()
     {
@@ -81,7 +86,6 @@ public class InfectionSpread {
 
     public List<Disease> getDiseaseList()
     {
-
         return diseaseList;
     }
     public void saveInfectionSpread(Stage stage, Time time){
@@ -96,7 +100,7 @@ public class InfectionSpread {
             System.out.println(logFile.getCanonicalPath());
 
             writer = new BufferedWriter(new FileWriter(file));
-            for (String point: getPoints()
+            for (String point: getPointsDouble()
                  ) {
                 writer.write(point);
                 writer.newLine();
@@ -131,7 +135,7 @@ public class InfectionSpread {
             // This will output the full path where the file will be written to...
 
             writer = new BufferedWriter(new FileWriter(file));
-            for (String point: getPoints()
+            for (String point: getPointsDouble()
                     ) {
                 writer.write(point);
                 writer.newLine();
@@ -206,6 +210,7 @@ public class InfectionSpread {
                 double newPointY = infectionPoint.getY() +
                         (random.nextBoolean() ? offsetY : -offsetY);
                 String conc = "" + String.format("%.0f", newPointX) +","+ String.format("%.0f", newPointY);
+                String concDouble = newPointX+","+newPointY;
 
                 while (points.contains(conc)) {
                     newPointX = random.nextBoolean() ? +offsetX / 5 : -offsetX / 5;
@@ -229,6 +234,7 @@ public class InfectionSpread {
                             new java.awt.geom.Point2D.Double(newPointX, newPointY));
                 }
                 points.add(conc);
+                pointsDouble.add(concDouble);
             }
         }
     }
