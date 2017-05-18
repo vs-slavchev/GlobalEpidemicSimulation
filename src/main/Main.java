@@ -117,7 +117,7 @@ public class Main extends Application {
         addtoListBoxes(DiseaseListBox,MedicineListBox);
 
         saveItem.setOnAction(event -> {
-            infectionSpread.saveInfectionSpread(world.getTime());
+            infectionSpread.saveInfectionSpread(primaryStage,world.getTime());
             new Alert(Alert.AlertType.INFORMATION, "Saved!").showAndWait();
         });
         openItem.setOnAction(event -> {
@@ -257,13 +257,44 @@ public class Main extends Application {
         });
 
         primaryStage.setOnCloseRequest(event -> {
-            if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
-                AlgorithmThread().interrupt();
+            if(isStarted){
+                Alert a = new Alert(Alert.AlertType.CONFIRMATION,"Simulation is already started, do you wish to exit? If yes all progress will be lost.");
+                a.setHeaderText(null);
+                ButtonType buttonTypeYes = new ButtonType("Yes");
+                ButtonType buttonTypeNo = new ButtonType("No");
+                ButtonType buttonTypeSave = new ButtonType("Save and exit");
+                a.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo, buttonTypeSave);
+                Optional<ButtonType> result = a.showAndWait();
+                if(result.get() == buttonTypeYes){
+                    try {
+
+                        if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
+                            AlgorithmThread().interrupt();
+                        }
+                        if (startTimer() != null && startTimer().isAlive()) {
+                            startTimer().interrupt();
+                        }
+                        System.exit(1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(result.get() == buttonTypeSave){
+                    try {
+                        infectionSpread.saveInfectionSpread(primaryStage,world.getTime());
+                        if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
+                            AlgorithmThread().interrupt();
+                        }
+                        if (startTimer() != null && startTimer().isAlive()) {
+                            startTimer().interrupt();
+                        }
+                        System.exit(1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
-            if (startTimer() != null && startTimer().isAlive()) {
-                startTimer().interrupt();
-            }
-            System.exit(1);
         });
 
         mapCanvas.getCanvas().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {

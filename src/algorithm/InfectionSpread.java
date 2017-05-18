@@ -7,6 +7,8 @@ package algorithm;
 import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.Country;
@@ -28,6 +30,7 @@ public class InfectionSpread {
     private static final double INFECTION_RADIUS = 2.0;
     private MapCanvas mapCanvas;
     private List<String> points;
+    private File file = null;
 
     public InfectionSpread(Random random, World world, MapCanvas mapCanvas) {
         diseaseList = new ArrayList<>();
@@ -78,8 +81,9 @@ public class InfectionSpread {
 
         return diseaseList;
     }
-    public void saveInfectionSpread(Time time){
+    public void saveInfectionSpread(Stage stage, Time time){
         BufferedWriter writer = null;
+        if(file!=null){
         try {
             //create a temporary file
             String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
@@ -88,7 +92,7 @@ public class InfectionSpread {
             // This will output the full path where the file will be written to...
             System.out.println(logFile.getCanonicalPath());
 
-            writer = new BufferedWriter(new FileWriter(logFile));
+            writer = new BufferedWriter(new FileWriter(file));
             for (String point: getPoints()
                  ) {
                 writer.write(point);
@@ -105,6 +109,10 @@ public class InfectionSpread {
             } catch (Exception e) {
             }
         }
+        }
+        else {
+            saveAsInfectionSpread(stage, time);
+        }
     }
     public void saveAsInfectionSpread(Stage stage,Time time){
         BufferedWriter writer = null;
@@ -114,7 +122,7 @@ public class InfectionSpread {
             fileChooser.setInitialFileName("NewSave.txt");
             File filedir = new File(System.getProperty("user.dir"));
             fileChooser.setInitialDirectory(filedir);
-            File file = fileChooser.showOpenDialog(stage);
+            file = fileChooser.showSaveDialog(stage);
             // This will output the full path where the file will be written to...
 
             writer = new BufferedWriter(new FileWriter(file));
