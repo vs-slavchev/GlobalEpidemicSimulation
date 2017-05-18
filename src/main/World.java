@@ -17,6 +17,7 @@ public class World {
     private List<Country> countries;
     private List<Country> infectedCountries;
     private Time time;
+    ArrayList<Point2D> points;
 
     public World() {
         countries = new ArrayList<>();
@@ -52,7 +53,7 @@ public class World {
     }
 
     public ArrayList<Point2D> getAllInfectionPoints() {
-        ArrayList<Point2D> points = new ArrayList<>();
+        points = new ArrayList<>();
         countries.forEach(country -> points.addAll(country.getInfectionPoints()));
         return points;
     }

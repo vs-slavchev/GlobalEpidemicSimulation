@@ -77,7 +77,17 @@ public class Time {
     public void saveRunSpeed(){
         this.SaveRunSpeed = RunSpeed;
     }
-
+    public void setTime(int hour, int min, int sec, int day, int month, int year){
+        this.Sec = sec;
+        this.Minutes = min;
+        this.Hour = hour;
+        this.Day = day;
+        this.Month = month;
+        this.Year = year;
+    }
+    public String getTime(){
+        return Hour + "," + Minutes + "," + Sec + "," + Day+ "," + Month + "," + Year;
+    }
     public int timerSleepTime(){
         if(RunSpeed>=0 && RunSpeed<=5){
             return 1000;

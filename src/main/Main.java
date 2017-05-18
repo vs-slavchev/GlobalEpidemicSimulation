@@ -31,6 +31,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -53,6 +54,7 @@ public class Main extends Application {
     private MedicineSpread medicineSpread;
     private InfectionSpread infectionSpread;
     private volatile boolean isWorking = true;
+    private volatile boolean isStarted = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -64,6 +66,7 @@ public class Main extends Application {
         root = new VBox();
         root.setMinWidth(640);
         root.setMinHeight(480);
+        isStarted = false;
 
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
@@ -76,6 +79,10 @@ public class Main extends Application {
         infectionSpread = new InfectionSpread(random,world,mapCanvas);
         medicineSpread = new MedicineSpread();
 
+        timer.setText(world.getTime().toString());
+        timer.setId("timer");
+        speedLabel.setText("x"+world.getTime().getRunSpeed());
+
         setUpButtonBar(primaryStage);
         root.getChildren().addAll(buttonBar, mapCanvas.getCanvas());
 
@@ -86,9 +93,6 @@ public class Main extends Application {
         primaryStage.show();
 
         scene.getStylesheets().add(ConstantValues.CSS_STYLE_FILE);
-        timer.setText(world.getTime().toString());
-        timer.setId("timer");
-        speedLabel.setText("x"+world.getTime().getRunSpeed());
 
     }
 
@@ -112,6 +116,36 @@ public class Main extends Application {
         DiseaseListBox = new MenuButton("Diseases");
         addtoListBoxes(DiseaseListBox,MedicineListBox);
 
+        saveItem.setOnAction(event -> {
+            infectionSpread.saveInfectionSpread(world.getTime());
+            new Alert(Alert.AlertType.INFORMATION, "Saved!").showAndWait();
+        });
+        openItem.setOnAction(event -> {
+            infectionSpread.openInfectionSpread(primaryStage,world.getTime());
+            timer.setText(world.getTime().toString());
+        });
+        saveAsItem.setOnAction(event -> {
+            infectionSpread.saveAsInfectionSpread(primaryStage,world.getTime());
+        });
+        newItem.setOnAction(event -> {
+            if(isStarted){
+                Alert a = new Alert(Alert.AlertType.CONFIRMATION,"Simulation is already started, do you wish to proceed? If yes all progress will be lost.");
+                a.setHeaderText(null);
+                ButtonType buttonTypeYes = new ButtonType("Yes");
+                ButtonType buttonTypeNo = new ButtonType("No");
+                a.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+                Optional<ButtonType> result = a.showAndWait();
+                if(result.get() == buttonTypeYes){
+
+                    try {
+                        start(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
         // assign action handlers to the items in the file menu
         setUpButtons(fileMenuButton, DiseaseListBox, MedicineListBox, primaryStage);
     }
@@ -175,6 +209,7 @@ public class Main extends Application {
             fastForwardbutton.setDisable(false);
             isWorking = true;
             world.getTime().setRunSpeed(1);
+            isStarted = true;
             if(world.getTime().getSavedRunSpeed()!=0){
                world.getTime().setRunSpeed(world.getTime().getSavedRunSpeed());
             }
@@ -195,7 +230,7 @@ public class Main extends Application {
         });
 
         disease.setOnAction(event -> {
-            SetUpPopup();
+            SetUpPopupDisease();
             popup.show(primaryStage);
         });
         medicine.setOnAction(event -> {
@@ -264,7 +299,7 @@ public class Main extends Application {
                 .getCountryNameFromScreenCoordinates(event.getX(), event.getY());
     }
 
-    private void SetUpPopup() {
+    private void SetUpPopupDisease() {
         // Set up Popups
         popup = new Popup();
         Rectangle popUpRectangleBackground = new Rectangle(500, 500);
@@ -384,8 +419,8 @@ public class Main extends Application {
         virulence.setShowTickMarks(true);
 
         final Label nameCaption = new Label("Name:");
-        final Label diseaseTypeL = new Label("Disease type:");
-        final Label symptomTypeL = new Label("Symptom type:");
+        final Label diseaseTypeL = new Label("Targeted disease type:");
+        final Label symptomTypeL = new Label("Targeted symptom type:");
         final Label prefTempCaption = new Label("Preferred temperature:");
         final Label tempToleranceCaption = new Label("Temperature tolerance:");
         final Label lethalityCaption = new Label("Lethality Level:");
