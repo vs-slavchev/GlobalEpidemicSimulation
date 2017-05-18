@@ -31,6 +31,9 @@ public class InfectionSpread {
     private MapCanvas mapCanvas;
     private List<String> points;
     private File file = null;
+    private String timeLog;
+    private File logFile;
+    private Boolean isSavedAs = false;
 
     public InfectionSpread(Random random, World world, MapCanvas mapCanvas) {
         diseaseList = new ArrayList<>();
@@ -86,9 +89,9 @@ public class InfectionSpread {
         if(file!=null){
         try {
             //create a temporary file
-            String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-            File logFile = new File(timeLog+".txt");
-
+            if(!isSavedAs){
+            timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+            logFile = new File(timeLog+".txt");}
             // This will output the full path where the file will be written to...
             System.out.println(logFile.getCanonicalPath());
 
@@ -118,8 +121,10 @@ public class InfectionSpread {
         BufferedWriter writer = null;
         try {
             //create a temporary file
+            timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+            logFile = new File(timeLog+".txt");
             final FileChooser fileChooser = new FileChooser();
-            fileChooser.setInitialFileName("NewSave.txt");
+            fileChooser.setInitialFileName(logFile.toString());
             File filedir = new File(System.getProperty("user.dir"));
             fileChooser.setInitialDirectory(filedir);
             file = fileChooser.showSaveDialog(stage);
@@ -137,6 +142,7 @@ public class InfectionSpread {
             e.printStackTrace();
         } finally {
             try {
+                isSavedAs = true;
                 // Close the writer regardless of what happens...
                 writer.close();
             } catch (Exception e) {

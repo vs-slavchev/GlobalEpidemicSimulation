@@ -118,7 +118,9 @@ public class Main extends Application {
 
         saveItem.setOnAction(event -> {
             infectionSpread.saveInfectionSpread(primaryStage,world.getTime());
-            new Alert(Alert.AlertType.INFORMATION, "Saved!").showAndWait();
+             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Saved!");
+             alert.setHeaderText(null);
+             alert.showAndWait();
         });
         openItem.setOnAction(event -> {
             infectionSpread.openInfectionSpread(primaryStage,world.getTime());
@@ -129,14 +131,35 @@ public class Main extends Application {
         });
         newItem.setOnAction(event -> {
             if(isStarted){
-                Alert a = new Alert(Alert.AlertType.CONFIRMATION,"Simulation is already started, do you wish to proceed? If yes all progress will be lost.");
+                Alert a = new Alert(Alert.AlertType.CONFIRMATION,"Simulation is already started, do you wish to exit? If yes all progress will be lost.");
                 a.setHeaderText(null);
                 ButtonType buttonTypeYes = new ButtonType("Yes");
                 ButtonType buttonTypeNo = new ButtonType("No");
-                a.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+                ButtonType buttonTypeSave = new ButtonType("Save and exit");
+                a.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo, buttonTypeSave);
                 Optional<ButtonType> result = a.showAndWait();
                 if(result.get() == buttonTypeYes){
+                    try {
+                        try {
 
+                            if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
+                                AlgorithmThread().interrupt();
+                            }
+                            if (startTimer() != null && startTimer().isAlive()) {
+                                startTimer().interrupt();
+                            }
+
+                            start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(result.get() == buttonTypeSave){
+                    infectionSpread.saveInfectionSpread(primaryStage,world.getTime());
                     try {
                         start(primaryStage);
                     } catch (Exception e) {
@@ -261,7 +284,7 @@ public class Main extends Application {
                 Alert a = new Alert(Alert.AlertType.CONFIRMATION,"Simulation is already started, do you wish to exit? If yes all progress will be lost.");
                 a.setHeaderText(null);
                 ButtonType buttonTypeYes = new ButtonType("Yes");
-                ButtonType buttonTypeNo = new ButtonType("No");
+                ButtonType buttonTypeNo = new ButtonType("Cancel");
                 ButtonType buttonTypeSave = new ButtonType("Save and exit");
                 a.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo, buttonTypeSave);
                 Optional<ButtonType> result = a.showAndWait();
@@ -274,12 +297,13 @@ public class Main extends Application {
                         if (startTimer() != null && startTimer().isAlive()) {
                             startTimer().interrupt();
                         }
+                        System.out.print(1);
                         System.exit(1);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-                if(result.get() == buttonTypeSave){
+                else if(result.get() == buttonTypeSave){
                     try {
                         infectionSpread.saveInfectionSpread(primaryStage,world.getTime());
                         if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
@@ -288,11 +312,14 @@ public class Main extends Application {
                         if (startTimer() != null && startTimer().isAlive()) {
                             startTimer().interrupt();
                         }
+                        System.out.print(0);
                         System.exit(1);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+                else System.out.print(2);
+                event.consume();
 
             }
         });
