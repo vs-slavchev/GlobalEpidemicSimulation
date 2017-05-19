@@ -234,8 +234,9 @@ public class Main extends Application {
             if (world.getTime().getSavedRunSpeed() != 0) {
                 world.getTime().setRunSpeed(world.getTime().getSavedRunSpeed());
             }
-            speedLabel.setText("x" + world.getTime().getRunSpeed());
-            addtoListBoxes(DiseaseListBox, MedicineListBox);
+            speedLabel.setText("x"+world.getTime().getRunSpeed());
+            addtoListBoxes(DiseaseListBox,MedicineListBox);
+            setPointers(diseaseListBox,medicineListBox,primaryStage);
 
         });
 
