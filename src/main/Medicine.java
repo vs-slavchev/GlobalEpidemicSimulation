@@ -22,10 +22,12 @@ public class Medicine {
         this.targetedSymptoms = symptomType;
         this.properties = props;
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    public String toString(){
-        return name+", "+ targetedTypes+", "+targetedSymptoms+", "+properties.toString();
+
+    public String toString() {
+        return name + ", " + targetedTypes + ", " + targetedSymptoms + ", " + properties.toString();
     }
 }

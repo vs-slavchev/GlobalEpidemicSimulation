@@ -37,6 +37,7 @@ public class StyleManager {
     private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     private GeomType geometryType;
     private String geometryAttributeName;
+
     public StyleManager(FeatureSource featureSource) {
         GeometryDescriptor geomDesc = featureSource.getSchema().getGeometryDescriptor();
         geometryAttributeName = geomDesc.getLocalName();

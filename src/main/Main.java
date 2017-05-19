@@ -10,12 +10,9 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.*;
+import javafx.scene.ImageCursor;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -31,12 +28,8 @@ import javafx.stage.Stage;
 import map.MapCanvas;
 import reader.ConstantValues;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -81,12 +74,12 @@ public class Main extends Application {
 
         world = new World();
         random = new Random();
-        infectionSpread = new InfectionSpread(random,world,mapCanvas);
+        infectionSpread = new InfectionSpread(random, world, mapCanvas);
         medicineSpread = new MedicineSpread();
 
         timer.setText(world.getTime().toString());
         timer.setId("timer");
-        speedLabel.setText("x"+world.getTime().getRunSpeed());
+        speedLabel.setText("x" + world.getTime().getRunSpeed());
 
         setUpButtonBar(primaryStage);
         root.getChildren().addAll(buttonBar, mapCanvas.getCanvas());
@@ -119,31 +112,31 @@ public class Main extends Application {
 
         MedicineListBox = new MenuButton("Medicines");
         DiseaseListBox = new MenuButton("Diseases");
-        addtoListBoxes(DiseaseListBox,MedicineListBox);
+        addtoListBoxes(DiseaseListBox, MedicineListBox);
 
         saveItem.setOnAction(event -> {
-            infectionSpread.saveInfectionSpread(primaryStage,world.getTime());
-             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Saved!");
-             alert.setHeaderText(null);
-             alert.showAndWait();
+            infectionSpread.saveInfectionSpread(primaryStage, world.getTime());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Saved!");
+            alert.setHeaderText(null);
+            alert.showAndWait();
         });
         openItem.setOnAction(event -> {
-            infectionSpread.openInfectionSpread(primaryStage,world.getTime());
+            infectionSpread.openInfectionSpread(primaryStage, world.getTime());
             timer.setText(world.getTime().toString());
         });
         saveAsItem.setOnAction(event -> {
-            infectionSpread.saveAsInfectionSpread(primaryStage,world.getTime());
+            infectionSpread.saveAsInfectionSpread(primaryStage, world.getTime());
         });
         newItem.setOnAction(event -> {
-            if(isStarted){
-                Alert a = new Alert(Alert.AlertType.CONFIRMATION,"Simulation is already started, do you wish to exit? If yes all progress will be lost.");
+            if (isStarted) {
+                Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Simulation is already started, do you wish to exit? If yes all progress will be lost.");
                 a.setHeaderText(null);
                 ButtonType buttonTypeYes = new ButtonType("Yes");
                 ButtonType buttonTypeNo = new ButtonType("No");
                 ButtonType buttonTypeSave = new ButtonType("Save and exit");
                 a.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo, buttonTypeSave);
                 Optional<ButtonType> result = a.showAndWait();
-                if(result.get() == buttonTypeYes){
+                if (result.get() == buttonTypeYes) {
                     try {
                         try {
 
@@ -163,8 +156,8 @@ public class Main extends Application {
                         e.printStackTrace();
                     }
                 }
-                if(result.get() == buttonTypeSave){
-                    infectionSpread.saveInfectionSpread(primaryStage,world.getTime());
+                if (result.get() == buttonTypeSave) {
+                    infectionSpread.saveInfectionSpread(primaryStage, world.getTime());
                     try {
                         start(primaryStage);
                     } catch (Exception e) {
@@ -178,7 +171,7 @@ public class Main extends Application {
         setUpButtons(fileMenuButton, DiseaseListBox, MedicineListBox, primaryStage);
     }
 
-    private void setUpButtons(MenuButton fileMenuButton, MenuButton diseaseList,MenuButton MedicineListBox,Stage primaryStage) {
+    private void setUpButtons(MenuButton fileMenuButton, MenuButton diseaseList, MenuButton MedicineListBox, Stage primaryStage) {
 
         Button start = setUpImageButton(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
         Button pause = setUpImageButton(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
@@ -189,7 +182,7 @@ public class Main extends Application {
         Button disease = new Button("Create Disease");
         Button medicine = new Button("Create Medicine");
 
-        setUpEventHandlers(primaryStage, disease, medicine, start,  pause,fastForward,backForward,diseaseList,MedicineListBox);
+        setUpEventHandlers(primaryStage, disease, medicine, start, pause, fastForward, backForward, diseaseList, MedicineListBox);
 
         // addComponent the file menu, separators and the object buttons to the button bar
         StackPane stackPane = new StackPane();
@@ -198,7 +191,7 @@ public class Main extends Application {
 
         buttonBar.getChildren().addAll(
                 fileMenuButton,
-                disease, medicine, diseaseList,MedicineListBox, backForward,stackPane,fastForward, speedLabel, timer);
+                disease, medicine, diseaseList, MedicineListBox, backForward, stackPane, fastForward, speedLabel, timer);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
 
@@ -227,7 +220,7 @@ public class Main extends Application {
 
     private void setUpEventHandlers(final Stage primaryStage, final Button disease, final Button medicine,
                                     final Button start, final Button pause, final Button fastForwardbutton,
-                                    final Button backForwardbutton,final MenuButton diseaseListBox, final MenuButton medicineListBox) {
+                                    final Button backForwardbutton, final MenuButton diseaseListBox, final MenuButton medicineListBox) {
         start.setOnAction(event -> {
             AlgorithmThread().start();
             startTimer().start();
@@ -238,11 +231,11 @@ public class Main extends Application {
             isWorking = true;
             world.getTime().setRunSpeed(1);
             isStarted = true;
-            if(world.getTime().getSavedRunSpeed()!=0){
-               world.getTime().setRunSpeed(world.getTime().getSavedRunSpeed());
+            if (world.getTime().getSavedRunSpeed() != 0) {
+                world.getTime().setRunSpeed(world.getTime().getSavedRunSpeed());
             }
-            speedLabel.setText("x"+world.getTime().getRunSpeed());
-            addtoListBoxes(DiseaseListBox,MedicineListBox);
+            speedLabel.setText("x" + world.getTime().getRunSpeed());
+            addtoListBoxes(DiseaseListBox, MedicineListBox);
 
         });
 
@@ -254,51 +247,53 @@ public class Main extends Application {
             isWorking = false;
             world.getTime().saveRunSpeed();
             world.getTime().setRunSpeed(0);
-            speedLabel.setText("x"+world.getTime().getRunSpeed());
+            speedLabel.setText("x" + world.getTime().getRunSpeed());
         });
 
         disease.setOnAction(event -> {
-            if (popup!= null){
-            popup.hide();}
-            SetUpPopupDisease(diseaseListBox,medicineListBox,primaryStage);
+            if (popup != null) {
+                popup.hide();
+            }
+            SetUpPopupDisease(diseaseListBox, medicineListBox, primaryStage);
             popup.show(primaryStage);
         });
         medicine.setOnAction(event -> {
-            if (popup!= null){
-                popup.hide();}
-            SetUpPopupMedicine(diseaseListBox,medicineListBox,primaryStage);
+            if (popup != null) {
+                popup.hide();
+            }
+            SetUpPopupMedicine(diseaseListBox, medicineListBox, primaryStage);
             popup.show(primaryStage);
         });
 
-        fastForwardbutton.setOnAction(event ->{
+        fastForwardbutton.setOnAction(event -> {
             backForwardbutton.setDisable(false);
             world.getTime().addRunSpeed();
-            if(world.getTime().getRunSpeed()>=70){
+            if (world.getTime().getRunSpeed() >= 70) {
                 fastForwardbutton.setDisable(true);
             }
-            speedLabel.setText("x"+world.getTime().getRunSpeed());
+            speedLabel.setText("x" + world.getTime().getRunSpeed());
         });
 
-        backForwardbutton.setOnAction(event ->{
+        backForwardbutton.setOnAction(event -> {
             fastForwardbutton.setDisable(false);
             world.getTime().substract();
-            if(world.getTime().getRunSpeed()<=1){
+            if (world.getTime().getRunSpeed() <= 1) {
                 backForwardbutton.setDisable(true);
             }
-            speedLabel.setText("x"+world.getTime().getRunSpeed());
+            speedLabel.setText("x" + world.getTime().getRunSpeed());
         });
 
-        setPointers(diseaseListBox,medicineListBox,primaryStage);
+        setPointers(diseaseListBox, medicineListBox, primaryStage);
         primaryStage.setOnCloseRequest(event -> {
-            if(isStarted){
-                Alert a = new Alert(Alert.AlertType.CONFIRMATION,"Simulation is started, do you wish to exit? If yes all progress will be lost.");
+            if (isStarted) {
+                Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Simulation is started, do you wish to exit? If yes all progress will be lost.");
                 a.setHeaderText(null);
                 ButtonType buttonTypeYes = new ButtonType("Yes");
                 ButtonType buttonTypeNo = new ButtonType("Cancel");
                 ButtonType buttonTypeSave = new ButtonType("Save and exit");
                 a.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo, buttonTypeSave);
                 Optional<ButtonType> result = a.showAndWait();
-                if(result.get() == buttonTypeYes){
+                if (result.get() == buttonTypeYes) {
                     try {
 
                         if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
@@ -312,10 +307,9 @@ public class Main extends Application {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                else if(result.get() == buttonTypeSave){
+                } else if (result.get() == buttonTypeSave) {
                     try {
-                        infectionSpread.saveInfectionSpread(primaryStage,world.getTime());
+                        infectionSpread.saveInfectionSpread(primaryStage, world.getTime());
                         if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
                             AlgorithmThread().interrupt();
                         }
@@ -327,8 +321,7 @@ public class Main extends Application {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                else System.out.print(2);
+                } else System.out.print(2);
                 event.consume();
 
             }
@@ -339,7 +332,7 @@ public class Main extends Application {
                 if (event.getButton() == MouseButton.SECONDARY) {
                     selectCountryOnMap(event);
                 } else if (event.getButton() == MouseButton.PRIMARY) {
-                    createInfectionPointFromClick(event,primaryStage);
+                    createInfectionPointFromClick(event, primaryStage);
                 }
             }
             event.consume();
@@ -347,7 +340,7 @@ public class Main extends Application {
 
     }
 
-    private void createInfectionPointFromClick(MouseEvent event,Stage primaryStage) {
+    private void createInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
         if (world.getCountry("Bulgaria").isPresent()) {
             Country country = world.getCountry("Bulgaria").get();
             java.awt.geom.Point2D mapInfectionPoint = mapCanvas.getGeoFinder().screenToMapCoordinates(event.getX(), event.getY());
@@ -369,216 +362,217 @@ public class Main extends Application {
                 .getCountryNameFromScreenCoordinates(event.getX(), event.getY());
     }
 
-    private void SetUpPopupDisease(MenuButton diseaseListBox,MenuButton medicineListBox, Stage primaryStage) {
+    private void SetUpPopupDisease(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
         // Set up Popups
 
-            popup = new Popup();
-            Rectangle popUpRectangleBackground = new Rectangle(360, 350);
-            popUpRectangleBackground.setFill(Color.AQUAMARINE);
+        popup = new Popup();
+        Rectangle popUpRectangleBackground = new Rectangle(360, 350);
+        popUpRectangleBackground.setFill(Color.AQUAMARINE);
 
-            //Items in popup
-            final TextField name = new TextField();
+        //Items in popup
+        final TextField name = new TextField();
 
-            //restricting the user to type only integers for the preferred temperature
-            final TextField preferredTemp = createFractionTextField();
+        //restricting the user to type only integers for the preferred temperature
+        final TextField preferredTemp = createFractionTextField();
 
-            //restricting the user to type only integers for the temperature tolerance
-            final TextField tempTolerance = createFractionTextField();
+        //restricting the user to type only integers for the temperature tolerance
+        final TextField tempTolerance = createFractionTextField();
 
 
-            final Slider lethality = new Slider(0, 100, 50);
-            final Slider virulence = new Slider(0, 100, 50);
-            final Button save = new Button("Create disease");
-            final Button cancel = new Button("Cancel");
-            final ComboBox diseaseType = new ComboBox();
-            diseaseType.getItems().addAll(DiseaseType.BACTERIA, DiseaseType.FUNGUS, DiseaseType.PARASITE, DiseaseType.VIRUS);
+        final Slider lethality = new Slider(0, 100, 50);
+        final Slider virulence = new Slider(0, 100, 50);
+        final Button save = new Button("Create disease");
+        final Button cancel = new Button("Cancel");
+        final ComboBox diseaseType = new ComboBox();
+        diseaseType.getItems().addAll(DiseaseType.BACTERIA, DiseaseType.FUNGUS, DiseaseType.PARASITE, DiseaseType.VIRUS);
 
-            lethality.setShowTickLabels(true);
-            lethality.setShowTickMarks(true);
-            virulence.setShowTickLabels(true);
-            virulence.setShowTickMarks(true);
+        lethality.setShowTickLabels(true);
+        lethality.setShowTickMarks(true);
+        virulence.setShowTickLabels(true);
+        virulence.setShowTickMarks(true);
 
-            final Label nameCaption = new Label("Name:");
-            final Label virusType = new Label("Virus type:");
-            final Label prefTempCaption = new Label("Preferred temperature:");
-            final Label tempToleranceCaption = new Label("Temperature tolerance:");
-            final Label lethalityCaption = new Label("Lethality Level:");
-            final Label virulenceCaption = new Label("Virulence Level:");
-            final Label space = new Label("      ");
+        final Label nameCaption = new Label("Name:");
+        final Label virusType = new Label("Virus type:");
+        final Label prefTempCaption = new Label("Preferred temperature:");
+        final Label tempToleranceCaption = new Label("Temperature tolerance:");
+        final Label lethalityCaption = new Label("Lethality Level:");
+        final Label virulenceCaption = new Label("Virulence Level:");
+        final Label space = new Label("      ");
 
-            nameCaption.setPrefWidth(170);
-            virusType.setPrefWidth(170);
-            prefTempCaption.setPrefWidth(170);
-            tempToleranceCaption.setPrefWidth(170);
-            lethalityCaption.setPrefWidth(170);
-            virulenceCaption.setPrefWidth(170);
+        nameCaption.setPrefWidth(170);
+        virusType.setPrefWidth(170);
+        prefTempCaption.setPrefWidth(170);
+        tempToleranceCaption.setPrefWidth(170);
+        lethalityCaption.setPrefWidth(170);
+        virulenceCaption.setPrefWidth(170);
 
-            final Label lethalityValue = new Label("50%");
-            final Label virulenceValue = new Label("50%");
+        final Label lethalityValue = new Label("50%");
+        final Label virulenceValue = new Label("50%");
 
-            lethality.valueProperty().addListener(
-                    (ov, oldValue, newValue) ->
-                            lethalityValue.setText(String.format("%.0f%%", newValue)));
+        lethality.valueProperty().addListener(
+                (ov, oldValue, newValue) ->
+                        lethalityValue.setText(String.format("%.0f%%", newValue)));
 
-            virulence.valueProperty().addListener(
-                    (ov, oldValue, newValue) ->
-                            virulenceValue.setText(String.format("%.0f%%", newValue)));
+        virulence.valueProperty().addListener(
+                (ov, oldValue, newValue) ->
+                        virulenceValue.setText(String.format("%.0f%%", newValue)));
 
-            HBox nameHB = new HBox();
-            HBox virusTypeHB = new HBox();
-            HBox prefTempHB = new HBox();
-            HBox tempToleranceHB = new HBox();
-            HBox lethalityHB = new HBox();
-            HBox virulenceHB = new HBox();
-            HBox buttonsHB = new HBox();
-            VBox buttonsAndFieldsVB = new VBox();
+        HBox nameHB = new HBox();
+        HBox virusTypeHB = new HBox();
+        HBox prefTempHB = new HBox();
+        HBox tempToleranceHB = new HBox();
+        HBox lethalityHB = new HBox();
+        HBox virulenceHB = new HBox();
+        HBox buttonsHB = new HBox();
+        VBox buttonsAndFieldsVB = new VBox();
 
-            nameHB.getChildren().addAll(nameCaption, name);
-            virusTypeHB.getChildren().addAll(virusType, diseaseType);
-            prefTempHB.getChildren().addAll(prefTempCaption, preferredTemp);
-            tempToleranceHB.getChildren().addAll(tempToleranceCaption, tempTolerance);
-            lethalityHB.getChildren().addAll(lethalityCaption, lethality, lethalityValue);
-            virulenceHB.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
-            buttonsHB.getChildren().addAll(save, space, cancel);
-            buttonsHB.setPadding(new Insets(0, 10, 0, 10));
-            buttonsAndFieldsVB.getChildren().addAll(nameHB, virusTypeHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, buttonsHB);
+        nameHB.getChildren().addAll(nameCaption, name);
+        virusTypeHB.getChildren().addAll(virusType, diseaseType);
+        prefTempHB.getChildren().addAll(prefTempCaption, preferredTemp);
+        tempToleranceHB.getChildren().addAll(tempToleranceCaption, tempTolerance);
+        lethalityHB.getChildren().addAll(lethalityCaption, lethality, lethalityValue);
+        virulenceHB.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
+        buttonsHB.getChildren().addAll(save, space, cancel);
+        buttonsHB.setPadding(new Insets(0, 10, 0, 10));
+        buttonsAndFieldsVB.getChildren().addAll(nameHB, virusTypeHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, buttonsHB);
 
-            popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
-            buttonsAndFieldsVB.setSpacing(10);
-            buttonsAndFieldsVB.setPadding(new Insets(10, 10, 10, 10));
+        popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
+        buttonsAndFieldsVB.setSpacing(10);
+        buttonsAndFieldsVB.setPadding(new Insets(10, 10, 10, 10));
 
-            save.setOnAction(event -> {
-                try {
-                    Disease disease = new Disease(name.getText(), (DiseaseType) diseaseType.getValue(),
-                            new DiseaseProperties((int) lethality.getValue(),
-                                    Double.parseDouble(preferredTemp.getText()),
-                                    Double.parseDouble(tempTolerance.getText()),
-                                    virulence.getValue() / 100));
-                    infectionSpread.addDisease(disease);
-                    addtoListBoxes(DiseaseListBox, MedicineListBox);
-                    setPointers(diseaseListBox, medicineListBox, primaryStage);
-                    popup.hide();
-                } catch (Exception ex) {
-                    name.setPromptText("not filled in");
-                    preferredTemp.setPromptText("not filled in");
-                    tempTolerance.setPromptText("not filled in");
-                }
-            });
-            cancel.setOnAction(event -> {
+        save.setOnAction(event -> {
+            try {
+                Disease disease = new Disease(name.getText(), (DiseaseType) diseaseType.getValue(),
+                        new DiseaseProperties((int) lethality.getValue(),
+                                Double.parseDouble(preferredTemp.getText()),
+                                Double.parseDouble(tempTolerance.getText()),
+                                virulence.getValue() / 100));
+                infectionSpread.addDisease(disease);
+                addtoListBoxes(DiseaseListBox, MedicineListBox);
+                setPointers(diseaseListBox, medicineListBox, primaryStage);
                 popup.hide();
-            });
+            } catch (Exception ex) {
+                name.setPromptText("not filled in");
+                preferredTemp.setPromptText("not filled in");
+                tempTolerance.setPromptText("not filled in");
+            }
+        });
+        cancel.setOnAction(event -> {
+            popup.hide();
+        });
     }
 
-    private void SetUpPopupMedicine(MenuButton diseaseListBox,MenuButton medicineListBox, Stage primaryStage) {
+    private void SetUpPopupMedicine(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
         // Set up Popups
 
-            popup = new Popup();
-            Rectangle popUpRectangleBackground = new Rectangle(360, 350);
-            popUpRectangleBackground.setFill(Color.AQUAMARINE);
+        popup = new Popup();
+        Rectangle popUpRectangleBackground = new Rectangle(360, 350);
+        popUpRectangleBackground.setFill(Color.AQUAMARINE);
 
-            //Items in popup
-            final TextField name = new TextField();
+        //Items in popup
+        final TextField name = new TextField();
 
-            //restricting the user to type only integers for the preferred temperature
-            final TextField preferredTemp = createFractionTextField();
+        //restricting the user to type only integers for the preferred temperature
+        final TextField preferredTemp = createFractionTextField();
 
-            //restricting the user to type only integers for the temperature tolerance
-            final TextField tempTolerance = createFractionTextField();
+        //restricting the user to type only integers for the temperature tolerance
+        final TextField tempTolerance = createFractionTextField();
 
 
-            final Slider lethality = new Slider(0, 100, 50);
-            final Slider virulence = new Slider(0, 100, 50);
-            final Button save = new Button("Create medicine");
-            final Button cancel = new Button("Cancel");
-            final ComboBox diseaseType = new ComboBox();
-            diseaseType.getItems().addAll(DiseaseType.BACTERIA, DiseaseType.FUNGUS, DiseaseType.PARASITE, DiseaseType.VIRUS);
-            final ComboBox symptomType = new ComboBox();
-            symptomType.getItems().addAll(SymptomType.COUGH, SymptomType.NAUSEA);
+        final Slider lethality = new Slider(0, 100, 50);
+        final Slider virulence = new Slider(0, 100, 50);
+        final Button save = new Button("Create medicine");
+        final Button cancel = new Button("Cancel");
+        final ComboBox diseaseType = new ComboBox();
+        diseaseType.getItems().addAll(DiseaseType.BACTERIA, DiseaseType.FUNGUS, DiseaseType.PARASITE, DiseaseType.VIRUS);
+        final ComboBox symptomType = new ComboBox();
+        symptomType.getItems().addAll(SymptomType.COUGH, SymptomType.NAUSEA);
 
-            lethality.setShowTickLabels(true);
-            lethality.setShowTickMarks(true);
-            virulence.setShowTickLabels(true);
-            virulence.setShowTickMarks(true);
+        lethality.setShowTickLabels(true);
+        lethality.setShowTickMarks(true);
+        virulence.setShowTickLabels(true);
+        virulence.setShowTickMarks(true);
 
-            final Label nameCaption = new Label("Name:");
-            final Label diseaseTypeL = new Label("Targeted disease type:");
-            final Label symptomTypeL = new Label("Targeted symptom type:");
-            final Label prefTempCaption = new Label("Preferred temperature:");
-            final Label tempToleranceCaption = new Label("Temperature tolerance:");
-            final Label lethalityCaption = new Label("Lethality Level:");
-            final Label virulenceCaption = new Label("Virulence Level:");
-            final Label space = new Label("      ");
+        final Label nameCaption = new Label("Name:");
+        final Label diseaseTypeL = new Label("Targeted disease type:");
+        final Label symptomTypeL = new Label("Targeted symptom type:");
+        final Label prefTempCaption = new Label("Preferred temperature:");
+        final Label tempToleranceCaption = new Label("Temperature tolerance:");
+        final Label lethalityCaption = new Label("Lethality Level:");
+        final Label virulenceCaption = new Label("Virulence Level:");
+        final Label space = new Label("      ");
 
-            nameCaption.setPrefWidth(170);
-            diseaseTypeL.setPrefWidth(170);
-            symptomTypeL.setPrefWidth(170);
-            prefTempCaption.setPrefWidth(170);
-            tempToleranceCaption.setPrefWidth(170);
-            lethalityCaption.setPrefWidth(170);
-            virulenceCaption.setPrefWidth(170);
+        nameCaption.setPrefWidth(170);
+        diseaseTypeL.setPrefWidth(170);
+        symptomTypeL.setPrefWidth(170);
+        prefTempCaption.setPrefWidth(170);
+        tempToleranceCaption.setPrefWidth(170);
+        lethalityCaption.setPrefWidth(170);
+        virulenceCaption.setPrefWidth(170);
 
-            final Label lethalityValue = new Label("50%");
-            final Label virulenceValue = new Label("50%");
+        final Label lethalityValue = new Label("50%");
+        final Label virulenceValue = new Label("50%");
 
-            lethality.valueProperty().addListener(
-                    (ov, oldValue, newValue) ->
-                            lethalityValue.setText(String.format("%.0f%%", newValue)));
+        lethality.valueProperty().addListener(
+                (ov, oldValue, newValue) ->
+                        lethalityValue.setText(String.format("%.0f%%", newValue)));
 
-            virulence.valueProperty().addListener(
-                    (ov, oldValue, newValue) ->
-                            virulenceValue.setText(String.format("%.0f%%", newValue)));
+        virulence.valueProperty().addListener(
+                (ov, oldValue, newValue) ->
+                        virulenceValue.setText(String.format("%.0f%%", newValue)));
 
-            HBox nameHB = new HBox();
-            HBox diseaseTypeHB = new HBox();
-            HBox symptomTypeHB = new HBox();
-            HBox prefTempHB = new HBox();
-            HBox tempToleranceHB = new HBox();
-            HBox lethalityHB = new HBox();
-            HBox virulenceHB = new HBox();
-            HBox buttonsHB = new HBox();
-            VBox buttonsAndFieldsVB = new VBox();
+        HBox nameHB = new HBox();
+        HBox diseaseTypeHB = new HBox();
+        HBox symptomTypeHB = new HBox();
+        HBox prefTempHB = new HBox();
+        HBox tempToleranceHB = new HBox();
+        HBox lethalityHB = new HBox();
+        HBox virulenceHB = new HBox();
+        HBox buttonsHB = new HBox();
+        VBox buttonsAndFieldsVB = new VBox();
 
-            nameHB.getChildren().addAll(nameCaption, name);
-            diseaseTypeHB.getChildren().addAll(diseaseTypeL, diseaseType);
-            symptomTypeHB.getChildren().addAll(symptomTypeL, symptomType);
-            prefTempHB.getChildren().addAll(prefTempCaption, preferredTemp);
-            tempToleranceHB.getChildren().addAll(tempToleranceCaption, tempTolerance);
-            lethalityHB.getChildren().addAll(lethalityCaption, lethality, lethalityValue);
-            virulenceHB.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
-            buttonsHB.getChildren().addAll(save, space, cancel);
-            buttonsHB.setPadding(new Insets(0, 10, 0, 10));
-            buttonsAndFieldsVB.getChildren().addAll(nameHB, diseaseTypeHB, symptomTypeHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, buttonsHB);
+        nameHB.getChildren().addAll(nameCaption, name);
+        diseaseTypeHB.getChildren().addAll(diseaseTypeL, diseaseType);
+        symptomTypeHB.getChildren().addAll(symptomTypeL, symptomType);
+        prefTempHB.getChildren().addAll(prefTempCaption, preferredTemp);
+        tempToleranceHB.getChildren().addAll(tempToleranceCaption, tempTolerance);
+        lethalityHB.getChildren().addAll(lethalityCaption, lethality, lethalityValue);
+        virulenceHB.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
+        buttonsHB.getChildren().addAll(save, space, cancel);
+        buttonsHB.setPadding(new Insets(0, 10, 0, 10));
+        buttonsAndFieldsVB.getChildren().addAll(nameHB, diseaseTypeHB, symptomTypeHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, buttonsHB);
 
-            popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
-            buttonsAndFieldsVB.setSpacing(10);
-            buttonsAndFieldsVB.setPadding(new Insets(10, 10, 10, 10));
+        popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
+        buttonsAndFieldsVB.setSpacing(10);
+        buttonsAndFieldsVB.setPadding(new Insets(10, 10, 10, 10));
 
-            save.setOnAction(event -> {
-                try {
-                    Medicine medicine = new Medicine(name.getText(), (DiseaseType) diseaseType.getValue(),
-                            (SymptomType) symptomType.getValue(),
-                            new DiseaseProperties((int) lethality.getValue(),
-                                    Double.parseDouble(preferredTemp.getText()),
-                                    Double.parseDouble(tempTolerance.getText()),
-                                    virulence.getValue() / 100));
-                    medicineSpread.addMedicine(medicine);
-                    setPointers(diseaseListBox, medicineListBox, primaryStage);
-                    for (Medicine m : medicineSpread.getMedicineList()
-                            ) {
-                        System.out.println(m.toString());
-                    }
-                    addtoListBoxes(DiseaseListBox, MedicineListBox);
-                    popup.hide();
-                } catch (Exception ex) {
-                    name.setPromptText("not filled in");
-                    preferredTemp.setPromptText("not filled in");
-                    tempTolerance.setPromptText("not filled in");
+        save.setOnAction(event -> {
+            try {
+                Medicine medicine = new Medicine(name.getText(), (DiseaseType) diseaseType.getValue(),
+                        (SymptomType) symptomType.getValue(),
+                        new DiseaseProperties((int) lethality.getValue(),
+                                Double.parseDouble(preferredTemp.getText()),
+                                Double.parseDouble(tempTolerance.getText()),
+                                virulence.getValue() / 100));
+                medicineSpread.addMedicine(medicine);
+                setPointers(diseaseListBox, medicineListBox, primaryStage);
+                for (Medicine m : medicineSpread.getMedicineList()
+                        ) {
+                    System.out.println(m.toString());
                 }
-            });
-            cancel.setOnAction(event -> {
+                addtoListBoxes(DiseaseListBox, MedicineListBox);
                 popup.hide();
-            });
+            } catch (Exception ex) {
+                name.setPromptText("not filled in");
+                preferredTemp.setPromptText("not filled in");
+                tempTolerance.setPromptText("not filled in");
+            }
+        });
+        cancel.setOnAction(event -> {
+            popup.hide();
+        });
     }
+
     /**
      * Creates a text field which only takes input in the format: digits followed by a single comma or dot
      * followed by more digits.
@@ -593,6 +587,7 @@ public class Main extends Application {
             }
         };
     }
+
     private Thread startTimer() {
         return new Thread(() -> {
             while (isWorking) {
@@ -606,7 +601,8 @@ public class Main extends Application {
         });
 
     }
-    private Thread AlgorithmThread(){
+
+    private Thread AlgorithmThread() {
         return new Thread(() -> {
             while (isWorking) {
                 infectionSpread.applyAlgorithm();
@@ -618,42 +614,44 @@ public class Main extends Application {
             }
         });
     }
-    private void addtoListBoxes(MenuButton DiseasemenuButton, MenuButton MedicineButton){
+
+    private void addtoListBoxes(MenuButton DiseasemenuButton, MenuButton MedicineButton) {
         DiseasemenuButton.getItems().clear();
         MedicineButton.getItems().clear();
-        for (Disease d: infectionSpread.getDiseaseList()
+        for (Disease d : infectionSpread.getDiseaseList()
                 ) {
             DiseasemenuButton.getItems().add(new MenuItem(d.getName()));
         }
-        for (Medicine d: medicineSpread.getMedicineList()
+        for (Medicine d : medicineSpread.getMedicineList()
                 ) {
             MedicineButton.getItems().add(new MenuItem(d.getName()));
         }
 
     }
-    private void setPointers(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage){
-        for (MenuItem item: diseaseListBox.getItems()
+
+    private void setPointers(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
+        for (MenuItem item : diseaseListBox.getItems()
                 ) {
             item.setOnAction(event -> {
-                for (Disease d: infectionSpread.getDiseaseList()
+                for (Disease d : infectionSpread.getDiseaseList()
                         ) {
-                    if(item.getText().equals(d.getName())){
+                    if (item.getText().equals(d.getName())) {
                         Image pointer = new Image("file:./images/hazardpointer.png");
-                        primaryStage.getScene().setCursor( new ImageCursor(pointer));
+                        primaryStage.getScene().setCursor(new ImageCursor(pointer));
 
                     }
                 }
 
             });
         }
-        for (MenuItem item: medicineListBox.getItems()
+        for (MenuItem item : medicineListBox.getItems()
                 ) {
             item.setOnAction(event -> {
-                for (Medicine m: medicineSpread.getMedicineList()
+                for (Medicine m : medicineSpread.getMedicineList()
                         ) {
-                    if(item.getText().equals(m.getName())){
+                    if (item.getText().equals(m.getName())) {
                         Image pointer = new Image("file:./images/medicinepointer.png");
-                        primaryStage.getScene().setCursor( new ImageCursor(pointer));
+                        primaryStage.getScene().setCursor(new ImageCursor(pointer));
                     }
                 }
 

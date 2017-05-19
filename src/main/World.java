@@ -14,10 +14,10 @@ import java.util.Optional;
 
 public class World {
 
+    ArrayList<Point2D> points;
     private List<Country> countries;
     private List<Country> infectedCountries;
     private Time time;
-    ArrayList<Point2D> points;
 
     public World() {
         countries = new ArrayList<>();
@@ -28,13 +28,6 @@ public class World {
     }
 
     private static boolean isAllUpper(String s) {
-        /*for (char c : s.toCharArray()) {
-            if (Character.isLetter(c) && Character.isLowerCase(c)) {
-                return false;
-            }
-        }
-        return true;*/
-
         return s.equals(s.toUpperCase());
     }
 

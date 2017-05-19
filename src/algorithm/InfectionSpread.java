@@ -7,27 +7,26 @@ package algorithm;
 import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.Country;
 import main.Time;
 import main.World;
+import map.MapCanvas;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.*;
-
-import map.MapCanvas;
-import reader.ConstantValues;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Random;
 
 public class InfectionSpread {
 
+    private static final double INFECTION_RADIUS = 2.0;
     private List<Disease> diseaseList;
     private Random random;
     private World world;
-    private static final double INFECTION_RADIUS = 2.0;
     private MapCanvas mapCanvas;
     private List<String> points;
     private List<String> pointsDouble;
@@ -45,88 +44,90 @@ public class InfectionSpread {
         this.mapCanvas = mapCanvas;
     }
 
-    public void infectCountry(Country country)
-    {
+    public void infectCountry(Country country) {
 
     }
-    public List<String> getPoints(){
+
+    public List<String> getPoints() {
         return points;
     }
-    public List<String> getPointsDouble(){
+
+    public List<String> getPointsDouble() {
         return pointsDouble;
     }
-    public void addDisease()
-    {
+
+    public void addDisease() {
         diseaseList.add(new Disease("ebola", DiseaseType.BACTERIA,
                 new DiseaseProperties(10, 10,
                         10, 0.6)));
     }
-    public void addDisease(String name,int diseaseType,int lethality,int prefTemp,int tempTolerance,double virulence){
-        diseaseList.add(new Disease(name, DiseaseType.values()[diseaseType-1],
+
+    public void addDisease(String name, int diseaseType, int lethality, int prefTemp, int tempTolerance, double virulence) {
+        diseaseList.add(new Disease(name, DiseaseType.values()[diseaseType - 1],
                 new DiseaseProperties(lethality, prefTemp,
                         tempTolerance, virulence)));
     }
-    public void addDisease(Disease disease){
+
+    public void addDisease(Disease disease) {
         diseaseList.add(disease);
     }
 
-    public void removeDisease(Disease disease){
+    public void removeDisease(Disease disease) {
         diseaseList.remove(disease);
     }
 
-    public Disease getMainDisease()
-    {
+    public Disease getMainDisease() {
         return diseaseList.get(0);
     }
 
-    public void multiplyCountry(Country country)
-    {
+    public void multiplyCountry(Country country) {
 
     }
 
-    public List<Disease> getDiseaseList()
-    {
+    public List<Disease> getDiseaseList() {
         return diseaseList;
     }
-    public void saveInfectionSpread(Stage stage, Time time){
-        BufferedWriter writer = null;
-        if(file!=null){
-        try {
-            //create a temporary file
-            if(!isSavedAs){
-            timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-            logFile = new File(timeLog+".txt");}
-            // This will output the full path where the file will be written to...
-            System.out.println(logFile.getCanonicalPath());
 
-            writer = new BufferedWriter(new FileWriter(file));
-            for (String point: getPointsDouble()
-                 ) {
-                writer.write(point);
-                writer.newLine();
-            }
-            writer.write(".,");
-            writer.write(time.getTime());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+    public void saveInfectionSpread(Stage stage, Time time) {
+        BufferedWriter writer = null;
+        if (file != null) {
             try {
-                // Close the writer regardless of what happens...
-                writer.close();
+                //create a temporary file
+                if (!isSavedAs) {
+                    timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+                    logFile = new File(timeLog + ".txt");
+                }
+                // This will output the full path where the file will be written to...
+                System.out.println(logFile.getCanonicalPath());
+
+                writer = new BufferedWriter(new FileWriter(file));
+                for (String point : getPointsDouble()
+                        ) {
+                    writer.write(point);
+                    writer.newLine();
+                }
+                writer.write(".,");
+                writer.write(time.getTime());
             } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    // Close the writer regardless of what happens...
+                    writer.close();
+                } catch (Exception e) {
+                }
             }
-        }
-        }
-        else {
+        } else {
             saveAsInfectionSpread(stage, time);
         }
     }
-    public void saveAsInfectionSpread(Stage stage,Time time){
+
+    public void saveAsInfectionSpread(Stage stage, Time time) {
         BufferedWriter writer = null;
         try {
             //create a temporary file
             timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-            logFile = new File(timeLog+".txt");
+            logFile = new File(timeLog + ".txt");
             final FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialFileName(logFile.toString());
             File filedir = new File(System.getProperty("user.dir"));
@@ -135,7 +136,7 @@ public class InfectionSpread {
             // This will output the full path where the file will be written to...
 
             writer = new BufferedWriter(new FileWriter(file));
-            for (String point: getPointsDouble()
+            for (String point : getPointsDouble()
                     ) {
                 writer.write(point);
                 writer.newLine();
@@ -153,7 +154,8 @@ public class InfectionSpread {
             }
         }
     }
-    public void openInfectionSpread(Stage stage,Time time){
+
+    public void openInfectionSpread(Stage stage, Time time) {
         final FileChooser fileChooser = new FileChooser();
         File filedir = new File(System.getProperty("user.dir"));
         fileChooser.setInitialDirectory(filedir);
@@ -167,22 +169,21 @@ public class InfectionSpread {
                     String[] tempFileData = line.split(SplitBy);
                     String pointX = "";
                     String pointY = "";
-                        if(tempFileData[0].startsWith(".")){
-                            time.setTime(Integer.parseInt(tempFileData[1]),Integer.parseInt(tempFileData[2]),
-                                    Integer.parseInt(tempFileData[3]),Integer.parseInt(tempFileData[4]),
-                                    Integer.parseInt(tempFileData[5]),Integer.parseInt(tempFileData[6]));
+                    if (tempFileData[0].startsWith(".")) {
+                        time.setTime(Integer.parseInt(tempFileData[1]), Integer.parseInt(tempFileData[2]),
+                                Integer.parseInt(tempFileData[3]), Integer.parseInt(tempFileData[4]),
+                                Integer.parseInt(tempFileData[5]), Integer.parseInt(tempFileData[6]));
 
+                    } else {
+                        pointX = tempFileData[0];
+                        pointY = tempFileData[1];
+                        if (world.getCountry("Bulgaria").isPresent()) {
+                            Country country = world.getCountry("Bulgaria").get();
+                            country.addInfectionPoint(
+                                    new java.awt.geom.Point2D.Double(Double.parseDouble(pointX), Double.parseDouble(pointY)));
                         }
-                        else{
-                            pointX = tempFileData[0];
-                            pointY = tempFileData[1];
-                            if (world.getCountry("Bulgaria").isPresent()) {
-                                Country country = world.getCountry("Bulgaria").get();
-                                country.addInfectionPoint(
-                                        new java.awt.geom.Point2D.Double(Double.parseDouble(pointX), Double.parseDouble(pointY)));
-                            }
-                            mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-                        }
+                        mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                    }
 
 //                    java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
 //                            .mapToScreenCoordinates(Double.parseDouble(pointX), Double.parseDouble(pointY));
@@ -193,28 +194,23 @@ public class InfectionSpread {
         }
     }
 
-    public void applyAlgorithm()
-    {
-        if (this.diseaseList.isEmpty()){
+    public void applyAlgorithm() {
+        if (this.diseaseList.isEmpty()) {
             this.addDisease();
         }
         for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
-            if (random.nextDouble() < this
-                    .getMainDisease()
-                    .getProperties()
-                    .getVirulence()) {
+            if (random.nextDouble() < getMainDisease().getProperties().getVirulence()) {
                 double offsetX = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
                 double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
                 double newPointX = infectionPoint.getX() +
                         (random.nextBoolean() ? +offsetX : -offsetX);
                 double newPointY = infectionPoint.getY() +
                         (random.nextBoolean() ? offsetY : -offsetY);
-                String conc = "" + String.format("%.0f", newPointX) +","+ String.format("%.0f", newPointY);
-                String concDouble = newPointX+","+newPointY;
+                String conc = "" + String.format("%.0f", newPointX) + "," + String.format("%.0f", newPointY);
+                String concDouble = newPointX + "," + newPointY;
 
                 while (points.contains(conc)) {
                     newPointX = random.nextBoolean() ? +offsetX / 5 : -offsetX / 5;
-
                     newPointY = random.nextBoolean() ? offsetY / 5 : -offsetY / 5;
                     conc = "" + String.format("%.0f", newPointX) + String.format("%.0f", newPointY);
                 }
@@ -222,8 +218,8 @@ public class InfectionSpread {
                 java.awt.geom.Point2D screenNewPoint = mapCanvas.getGeoFinder()
                         .mapToScreenCoordinates(newPointX, newPointY);
 
-                String countryName = mapCanvas.getGeoFinder().getCountryNameFromScreenCoordinates(
-                        screenNewPoint.getX(), screenNewPoint.getY());
+                String countryName = mapCanvas.getGeoFinder()
+                        .getCountryNameFromScreenCoordinates(screenNewPoint.getX(), screenNewPoint.getY());
                 if (countryName.equals("water")) {
                     continue;
                 }

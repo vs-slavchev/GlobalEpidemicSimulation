@@ -14,29 +14,33 @@ import java.util.List;
 public class MedicineSpread {
     private List<Medicine> medicines;
 
-    public MedicineSpread(){
+    public MedicineSpread() {
         medicines = new ArrayList<>();
         addMedicine(new Medicine("Syrup", DiseaseType.VIRUS, SymptomType.COUGH,
-                new DiseaseProperties(12,23,22,12)));
+                new DiseaseProperties(12, 23, 22, 12)));
         addMedicine(new Medicine("Syrup2", DiseaseType.VIRUS, SymptomType.COUGH,
-                new DiseaseProperties(22,33,42,22)));
+                new DiseaseProperties(22, 33, 42, 22)));
     }
-    public Medicine getMedicine(String name){
-        for (Medicine m: medicines
+
+    public Medicine getMedicine(String name) {
+        for (Medicine m : medicines
                 ) {
-            if(name.equals(m.getName())){
+            if (name.equals(m.getName())) {
                 return m;
             }
         }
         return null;
     }
-    public List<Medicine> getMedicineList(){
+
+    public List<Medicine> getMedicineList() {
         return medicines;
     }
-    public void addMedicine(Medicine medicine){
+
+    public void addMedicine(Medicine medicine) {
         medicines.add(medicine);
     }
-    public void removeMedicine(Medicine medicine){
+
+    public void removeMedicine(Medicine medicine) {
         medicines.remove(medicine);
     }
 
