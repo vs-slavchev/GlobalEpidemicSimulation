@@ -243,6 +243,7 @@ public class Main extends Application {
             }
             speedLabel.setText("x"+world.getTime().getRunSpeed());
             addtoListBoxes(DiseaseListBox,MedicineListBox);
+            setPointers(diseaseListBox,medicineListBox,primaryStage);
 
         });
 
