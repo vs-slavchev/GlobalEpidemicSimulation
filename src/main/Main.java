@@ -49,6 +49,7 @@ public class Main extends Application {
     private World world;
     private MenuButton MedicineListBox;
     private MenuButton DiseaseListBox;
+    private Disease selectedDisease;
 
     private MedicineSpread medicineSpread;
     private InfectionSpread infectionSpread;
@@ -226,8 +227,6 @@ public class Main extends Application {
             startTimer().start();
             start.setVisible(false);
             pause.setVisible(true);
-            backForwardbutton.setDisable(false);
-            fastForwardbutton.setDisable(false);
             isWorking = true;
             world.getTime().setRunSpeed(1);
             isStarted = true;
@@ -237,6 +236,12 @@ public class Main extends Application {
             speedLabel.setText("x"+world.getTime().getRunSpeed());
             addtoListBoxes(DiseaseListBox,MedicineListBox);
             setPointers(diseaseListBox,medicineListBox,primaryStage);
+            backForwardbutton.setDisable(false);
+            if(world.getTime().getRunSpeed()<70){
+                fastForwardbutton.setDisable(false);
+            }
+            else{
+                fastForwardbutton.setDisable(true);}
 
         });
 
@@ -606,11 +611,13 @@ public class Main extends Application {
     private Thread AlgorithmThread() {
         return new Thread(() -> {
             while (isWorking) {
-                infectionSpread.applyAlgorithm();
-                mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-                try {
-                    Thread.sleep(world.getTime().algorithmSleepTime());
-                } catch (InterruptedException e) {
+                if(world.getTime().checkHour()){
+                    infectionSpread.applyAlgorithm(selectedDisease);
+                    mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                    try {
+                        Thread.sleep(33);
+                    } catch (InterruptedException e) {
+                    }
                 }
             }
         });
@@ -639,7 +646,8 @@ public class Main extends Application {
                     if (item.getText().equals(d.getName())) {
                         Image pointer = new Image("file:./images/hazardpointer.png");
                         primaryStage.getScene().setCursor(new ImageCursor(pointer));
-
+                        selectedDisease = d;
+                        System.out.print(selectedDisease.toString());
                     }
                 }
 

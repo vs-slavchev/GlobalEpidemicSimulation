@@ -1,5 +1,7 @@
 package main;
 
+import javafx.scene.control.Label;
+
 /**
  * Owner: Kaloyan
  */
@@ -14,6 +16,7 @@ public class Time {
     private int Sec = 0;
     private int RunSpeed = 0;
     private int SaveRunSpeed = 0;
+    private int LastHour = 0;
 
     public void setElapsedTime() {
         Sec++;
@@ -42,6 +45,18 @@ public class Time {
             Month = 0;
             Year++;
         }
+    }
+
+    public Boolean checkHour(){
+        if(Hour == 0 && LastHour >= 23){
+            LastHour = Hour;
+            return true;
+        }
+        else if(Hour> LastHour){
+            LastHour = Hour;
+            return true;
+        }
+        else return false;
     }
 
     public int getRunSpeed() {
@@ -103,20 +118,6 @@ public class Time {
             return 250;
         } else
             return 10;
-    }
-
-    public int algorithmSleepTime() {
-        if (timerSleepTime() == 10) {
-            return 1000;
-        } else if (timerSleepTime() == 250) {
-            return 1500;
-        } else if (timerSleepTime() == 500) {
-            return 2000;
-        } else if (timerSleepTime() == 750) {
-            return 2500;
-        } else {
-            return 3000;
-        }
     }
 
     @Override

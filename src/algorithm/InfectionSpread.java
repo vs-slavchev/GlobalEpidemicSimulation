@@ -194,7 +194,7 @@ public class InfectionSpread {
         }
     }
 
-    public void applyAlgorithm() {
+    public void applyAlgorithm(Disease disease) {
         if (this.diseaseList.isEmpty()) {
             this.addDisease();
         }
