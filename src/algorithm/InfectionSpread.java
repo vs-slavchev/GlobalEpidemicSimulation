@@ -206,6 +206,14 @@ public class InfectionSpread {
                         (random.nextBoolean() ? +offsetX : -offsetX);
                 double newPointY = infectionPoint.getY() +
                         (random.nextBoolean() ? offsetY : -offsetY);
+
+                if (newPointX > 180) {
+                    newPointX = - (newPointX - 1);
+                }
+                else if (newPointX < - 180){
+                    newPointX = - (newPointX + 1);
+                }
+
                 String conc = "" + String.format("%.0f", newPointX) + "," + String.format("%.0f", newPointY);
                 String concDouble = newPointX + "," + newPointY;
 
