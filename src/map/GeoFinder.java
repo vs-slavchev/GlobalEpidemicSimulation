@@ -13,7 +13,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
-import reader.ConstantValues;
+import main.ConstantValues;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -37,7 +37,7 @@ public class GeoFinder {
     private SpatialIndexFeatureCollection countries;
     private SimpleFeatureSource featureSource;
 
-    public GeoFinder(int width, int height) {
+    GeoFinder(int width, int height) {
         this.viewportWidth = width;
         this.viewportHeight = height;
 
@@ -65,7 +65,7 @@ public class GeoFinder {
         return createScreenToWorldAffineTransform().transform(new Point2D.Double(x, y), null);
     }
 
-    public Point2D mapToScreenCoordinates(double x, double y) {
+    Point2D mapToScreenCoordinates(double x, double y) {
         return createWorldToScreenAffineTransform().transform(new Point2D.Double(x, y), null);
     }
 
@@ -146,28 +146,28 @@ public class GeoFinder {
         return countries.subCollection(filter);
     }
 
-    private SimpleFeatureCollection getCountryFeaturesCollectionFromScreenCoordinates(double x, double y) {
+    SimpleFeatureCollection getCountryFeaturesCollectionFromScreenCoordinates(double x, double y) {
         Point2D pointInWorld = screenToMapCoordinates(x, y);
         return getCountryFeaturesCollectionFromMapCoordinates(pointInWorld.getX(), pointInWorld.getY());
     }
 
-    public SimpleFeatureSource getFeatureSource() {
+    SimpleFeatureSource getFeatureSource() {
         return featureSource;
     }
 
-    public void setMapWidth(double mapWidth) {
+    void setMapWidth(double mapWidth) {
         this.mapWidth = mapWidth;
     }
 
-    public void setMapHeight(double mapHeight) {
+    void setMapHeight(double mapHeight) {
         this.mapHeight = mapHeight;
     }
 
-    public void setPanOffsetX(double panOffsetX) {
+    void setPanOffsetX(double panOffsetX) {
         this.panOffsetX = panOffsetX;
     }
 
-    public void setPanOffsetY(double panOffsetY) {
+    void setPanOffsetY(double panOffsetY) {
         this.panOffsetY = panOffsetY;
     }
 }

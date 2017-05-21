@@ -1,6 +1,5 @@
 package map;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
@@ -25,7 +24,7 @@ import org.jfree.fx.FXGraphics2D;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
-import reader.ConstantValues;
+import main.ConstantValues;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -100,17 +99,6 @@ public class MapCanvas {
 
     }
 
-    private void drawPointsForCountry(GraphicsContext gc) {
-        gc.setFill(javafx.scene.paint.Color.YELLOW);
-        Coordinate[] points = geoFinder.getCountryVertices("Russia");
-
-        for (Coordinate mapPoint : points) {
-            java.awt.geom.Point2D screenPoint = geoFinder.mapToScreenCoordinates(mapPoint.x, mapPoint.y);
-            gc.fillOval(screenPoint.getX(), screenPoint.getY(), 2, 2);
-            //System.out.println(screenPoint.getX() + " " + screenPoint.getY());
-        }
-    }
-
     public void setNeedsRepaint() {
         this.needsRepaint = true;
     }
@@ -134,8 +122,6 @@ public class MapCanvas {
             ReferencedEnvelope env = new ReferencedEnvelope(map.getViewport().getBounds());
             env.translate(env.getMinimum(0) - result.x,
                     env.getMaximum(1) - result.y);
-
-            System.out.println(env.getMaximum(0));
 
             if (env.getMinimum(0) >= -180
                     && env.getMaximum(0) <= 180
@@ -186,7 +172,7 @@ public class MapCanvas {
         svc.start();
     }
 
-    protected void setViewport(ReferencedEnvelope envelope) {
+    private void setViewport(ReferencedEnvelope envelope) {
         map.getViewport().setBounds(envelope);
         needsRepaint = true;
     }

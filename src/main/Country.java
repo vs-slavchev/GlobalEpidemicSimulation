@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Country implements Serializable {
 
-    public static final int QUEUE_MAX_SIZE = 10_000;
+    private static final int QUEUE_MAX_SIZE = 10_000;
     private String name;
     private String countryID;
     private String GovernmentForm;
@@ -46,7 +46,6 @@ public class Country implements Serializable {
                 infectedPopulation += value;
                 unaffectedPopulation -= value;
             }
-            //System.out.println(infectedPopulation);
         }
     }
 

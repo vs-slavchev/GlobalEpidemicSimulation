@@ -27,7 +27,6 @@ import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import map.MapCanvas;
-import reader.ConstantValues;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -57,7 +56,7 @@ public class Main extends Application {
     private InfectionSpread infectionSpread;
     private volatile boolean isWorking = true;
     private volatile boolean isStarted = false;
-    private Optional<String> filePath;
+    private Optional<String> filePath = Optional.empty();
 
     public static void main(String[] args) {
         launch(args);
@@ -105,24 +104,25 @@ public class Main extends Application {
         MenuButton fileMenuButton = new MenuButton("File");
 
         //addComponent items to file menu button
-        MenuItem newItem = new MenuItem("New simulation");
-        MenuItem openItem = new MenuItem("Open simulation");
+        MenuItem newSimulation = new MenuItem("New simulation");
+        MenuItem openSimulation = new MenuItem("Open simulation");
         SeparatorMenuItem separator = new SeparatorMenuItem();
-        MenuItem saveItem = new MenuItem("Save");
-        MenuItem saveAsItem = new MenuItem("Save As...");
+        MenuItem saveSimulation = new MenuItem("Save");
+        MenuItem saveSimulationAs = new MenuItem("Save As...");
 
-        fileMenuButton.getItems().addAll(newItem, openItem, separator, saveItem, saveAsItem);
+        fileMenuButton.getItems().addAll(newSimulation, openSimulation, separator,
+                saveSimulation, saveSimulationAs);
 
 
         MedicineListBox = new MenuButton("Medicines");
         DiseaseListBox = new MenuButton("Diseases");
         addToListBoxes(DiseaseListBox, MedicineListBox);
 
-        saveItem.setOnAction(event -> saveFile());
-        saveAsItem.setOnAction(event -> saveFileAs(primaryStage));
-        openItem.setOnAction(event -> openFile(primaryStage));
+        saveSimulation.setOnAction(event -> saveFile());
+        saveSimulationAs.setOnAction(event -> saveFileAs(primaryStage));
+        openSimulation.setOnAction(event -> openFile(primaryStage));
 
-        newItem.setOnAction(event -> {
+        newSimulation.setOnAction(event -> {
             if (isStarted) {
                 WindowDialog newSimulationDialog = new WindowDialog();
                 newSimulationDialog.showAndWait();
@@ -499,10 +499,6 @@ public class Main extends Application {
                                 virulence.getValue() / 100));
                 medicineSpread.addMedicine(medicine);
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
-                for (Medicine m : medicineSpread.getMedicineList()
-                        ) {
-                    System.out.println(m.toString());
-                }
                 addToListBoxes(DiseaseListBox, MedicineListBox);
                 popup.hide();
             } catch (Exception ex) {
@@ -581,7 +577,6 @@ public class Main extends Application {
                         Image pointer = new Image("file:./images/hazardpointer.png");
                         primaryStage.getScene().setCursor(new ImageCursor(pointer));
                         selectedDisease = disease;
-                        System.out.print(selectedDisease.toString());
                     }
                 }
 

@@ -1,7 +1,7 @@
 package algorithm;
 
 /**
- * Created by Kaloyan on 4/3/2017.
+ * Owner: Nikolay
  */
 
 import disease.Disease;
@@ -10,12 +10,14 @@ import disease.DiseaseType;
 import main.Country;
 import main.World;
 import map.MapCanvas;
-import reader.ConstantValues;
+import main.ConstantValues;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static main.ConstantValues.PRECISION;
 
 public class InfectionSpread {
 
@@ -38,7 +40,8 @@ public class InfectionSpread {
                         10, 0.6)));
     }
 
-    public void addDisease(String name, int diseaseType, int lethality, int prefTemp, int tempTolerance, double virulence) {
+    public void addDisease(String name, int diseaseType, int lethality,
+                           int prefTemp, int tempTolerance,double virulence) {
         diseaseList.add(new Disease(name, DiseaseType.values()[diseaseType - 1],
                 new DiseaseProperties(lethality, prefTemp,
                         tempTolerance, virulence)));
@@ -76,37 +79,41 @@ public class InfectionSpread {
                     newPointX = -(newPointX + 1);
                 }
 
-                newPointX = ConstantValues.roundPrecision(newPointX, 2);
-                newPointY = ConstantValues.roundPrecision(newPointY, 2);
-                Point2D newPoint = new Point2D.Double(newPointX, newPointY);
-
-                while (world.containsInfectionPoint(newPoint)) {
-                    System.out.println("A: " + newPoint);
-                    double newLocationOfX = newPoint.getX() + (random.nextBoolean() ? offsetX / 5 : -offsetX / 5);
-                    double newLocationOfY = newPoint.getY() + (random.nextBoolean() ? offsetY / 5 : -offsetY / 5);
-                    newPoint.setLocation(
-                            ConstantValues.roundPrecision(newLocationOfX, 2),
-                            ConstantValues.roundPrecision(newLocationOfY, 2));
-                    System.out.println("B: " + newPoint);
-                }
-
-                Point2D screenNewPoint = mapCanvas.getGeoFinder().mapToScreenCoordinates(
-                        newPoint.getX(), newPoint.getY());
-
-                // TODO: create method to get country name from map coordinates
-                String countryName = mapCanvas.getGeoFinder()
-                        .getCountryNameFromMapCoordinates(screenNewPoint.getX(), screenNewPoint.getY());
-
-                if (countryName.equals("water")) {
+                Point2D roundedPoint = findSuitablePlaceForPoint(newPointX, newPointY);
+                if (roundedPoint == null) {
                     continue;
                 }
 
-                if (world.getCountry("Bulgaria").isPresent()) {
+                String countryName = mapCanvas.getGeoFinder()
+                        .getCountryNameFromMapCoordinates(roundedPoint.getX(), roundedPoint.getY());
+
+                if (countryName.equals("water")) {
+                    continue;
+                } else if (world.getCountry("Bulgaria").isPresent()) {
                     Country country = world.getCountry("Bulgaria").get();
-                    country.addInfectionPoint(
-                            new Point2D.Double(newPoint.getX(), newPoint.getY()));
+                    double tweakedX = roundedPoint.getX() + (random.nextDouble() - 0.5) / 2;
+                    double tweakedY = roundedPoint.getY() + (random.nextDouble() - 0.5) / 2;
+                    country.addInfectionPoint(new Point2D.Double(tweakedX, tweakedY));
                 }
             }
         }
     }
+
+    private Point2D findSuitablePlaceForPoint(double newPointX, double newPointY) {
+        Point2D roundedPoint = ConstantValues.createRoundedPoint(newPointX, newPointY, PRECISION);
+        int triesLeft = 5;
+        while (world.containsInfectionPoint(roundedPoint, PRECISION)) {
+            if (triesLeft-- < 0) {
+                return null;
+            }
+            double newRoundedX = (random.nextBoolean() ? INFECTION_RADIUS / 5 : -INFECTION_RADIUS / 5);
+            double newRoundedY = (random.nextBoolean() ? INFECTION_RADIUS / 5 : -INFECTION_RADIUS / 5);
+            newRoundedX = ConstantValues.roundPrecision(newRoundedX, PRECISION);
+            newRoundedY = ConstantValues.roundPrecision(newRoundedY, PRECISION);
+            roundedPoint.setLocation(newRoundedX, newRoundedY);
+        }
+        return roundedPoint;
+    }
+
+
 }

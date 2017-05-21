@@ -4,8 +4,6 @@ package main;
  * Created by Yasen on 4/3/2017.
  */
 
-import reader.ConstantValues;
-
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -49,9 +47,9 @@ public class World implements Serializable {
         return points;
     }
 
-    public boolean containsInfectionPoint(Point2D toCheck) {
+    public boolean containsInfectionPoint(Point2D toCheck, double precision) {
         return getAllInfectionPoints().stream()
-                .anyMatch(point2D -> ConstantValues.doublePointsEqual(point2D, toCheck));
+                .anyMatch(point2D -> ConstantValues.doublePointsEqual(point2D, toCheck, precision));
     }
 
     public void readCountryInfo() {

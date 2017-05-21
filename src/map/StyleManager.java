@@ -24,7 +24,7 @@ import static map.MapCanvas.styleFactory;
  * the map can be rendered. A style determines the color and width of visual elements.
  */
 
-public class StyleManager {
+class StyleManager {
 
     private static final Color LINE_COLOUR = Color.BLACK;
     private static final Color FILL_COLOUR = Color.CYAN;
@@ -38,7 +38,7 @@ public class StyleManager {
     private GeomType geometryType;
     private String geometryAttributeName;
 
-    public StyleManager(FeatureSource featureSource) {
+    StyleManager(FeatureSource featureSource) {
         GeometryDescriptor geomDesc = featureSource.getSchema().getGeometryDescriptor();
         geometryAttributeName = geomDesc.getLocalName();
 
@@ -55,7 +55,7 @@ public class StyleManager {
         }
     }
 
-    public Style createDefaultStyle() {
+    Style createDefaultStyle() {
         Stroke stroke = styleFactory.createStroke(
                 filterFactory.literal(Color.BLACK),
                 filterFactory.literal(1),
@@ -80,7 +80,7 @@ public class StyleManager {
         return style;
     }
 
-    public Style createSelectedStyle(Set<FeatureId> IDs) {
+    Style createSelectedStyle(Set<FeatureId> IDs) {
         Rule selectedRule = createRule(SELECTED_LINE_COLOUR, SELECTED_COLOUR);
         selectedRule.setFilter(ff.id(IDs));
 
