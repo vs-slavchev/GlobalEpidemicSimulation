@@ -1,7 +1,6 @@
 package map;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import org.geotools.data.*;
@@ -10,7 +9,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.text.cql2.CQL;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
@@ -33,15 +31,15 @@ import java.util.Optional;
 public class GeoFinder {
 
     private final static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-    private int screenWidth, screenHeight;
+    private int viewportWidth, viewportHeight;
     private double mapWidth = 360.0, mapHeight = 173.5;
     private double panOffsetX = 180.0, panOffsetY = 83.75;
     private SpatialIndexFeatureCollection countries;
     private SimpleFeatureSource featureSource;
 
     public GeoFinder(int width, int height) {
-        this.screenWidth = width;
-        this.screenHeight = height;
+        this.viewportWidth = width;
+        this.viewportHeight = height;
 
         URL countryURL = DataUtilities.fileToURL(new File(ConstantValues.MAP_SHAPE_FILE));
         HashMap<String, Object> params = new HashMap<>();
@@ -90,15 +88,23 @@ public class GeoFinder {
     /**
      * Creates an object that is responsible for the matrix math to transform a point from world
      * to screen coordinates.
+     *
+     * Explanation:
+     * The translation sets both origins to the same point.
+     * The scaling makes both matrices have the same width and height.
+     * The mirroring takes care of the the fact that the screen vertical increases downward, but
+     * the map vertical increases upward.
+     * All 3 transforms take into account the offset caused by the panning and also the current
+     * viewport width and height, which are affected by the zoom.
      */
     private AffineTransform createWorldToScreenAffineTransform() {
         AffineTransform translate = AffineTransform.
                 getTranslateInstance(mapWidth / 2 - (panOffsetX - mapWidth / 2),
                         mapHeight / 2 - (panOffsetY - (mapHeight / 2 - 3.1)) + 3.25);
         AffineTransform scale = AffineTransform.
-                getScaleInstance(screenWidth / mapWidth, screenHeight / mapHeight);
+                getScaleInstance(viewportWidth / mapWidth, viewportHeight / mapHeight);
         AffineTransform mirrorY_axis =
-                new AffineTransform(1, 0, 0, -1, 0, screenHeight);
+                new AffineTransform(1, 0, 0, -1, 0, viewportHeight);
 
         AffineTransform worldToScreen = new AffineTransform(mirrorY_axis);
         worldToScreen.concatenate(scale);
@@ -108,7 +114,15 @@ public class GeoFinder {
 
     public String getCountryNameFromScreenCoordinates(double x, double y) {
         SimpleFeatureCollection features = getCountryFeaturesCollectionFromScreenCoordinates(x, y);
+        return extractCountryNameFromOptional(features);
+    }
 
+    public String getCountryNameFromMapCoordinates(double x, double y) {
+        SimpleFeatureCollection features = getCountryFeaturesCollectionFromMapCoordinates(x, y);
+        return extractCountryNameFromOptional(features);
+    }
+
+    private String extractCountryNameFromOptional(SimpleFeatureCollection features) {
         Optional<String> countryName = Optional.empty();
         try (SimpleFeatureIterator itr = features.features()) {
             while (itr.hasNext()) {
@@ -124,7 +138,7 @@ public class GeoFinder {
      * Get the collection of the coordinates of the borders of a country that contains the given
      * point.
      */
-    public SimpleFeatureCollection getCountryFeaturesCollectionFromMapCoordinates(double x, double y) {
+    private SimpleFeatureCollection getCountryFeaturesCollectionFromMapCoordinates(double x, double y) {
         GeometryFactory gf = new GeometryFactory();
         Point point = gf.createPoint(new Coordinate(x, y));
 
@@ -132,33 +146,9 @@ public class GeoFinder {
         return countries.subCollection(filter);
     }
 
-    public SimpleFeatureCollection getCountryFeaturesCollectionFromScreenCoordinates(double x, double y) {
+    private SimpleFeatureCollection getCountryFeaturesCollectionFromScreenCoordinates(double x, double y) {
         Point2D pointInWorld = screenToMapCoordinates(x, y);
         return getCountryFeaturesCollectionFromMapCoordinates(pointInWorld.getX(), pointInWorld.getY());
-    }
-
-
-    /**
-     * Get an array of the coordinates of each vertex that is part of the borders of a country.
-     */
-    public Coordinate[] getCountryVertices(String countryName) {
-        try (SimpleFeatureIterator iterator = getCountryFeatures(countryName).features()) {
-            while (iterator.hasNext()) {
-                SimpleFeature feature = iterator.next();
-                Geometry geom = (Geometry) feature.getDefaultGeometry();
-                return geom.getCoordinates();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new Coordinate[0];
-    }
-
-    /**
-     * Using a county's name - get the collection of the coordinates of its borders.
-     */
-    public SimpleFeatureCollection getCountryFeatures(String name) throws Exception {
-        return featureSource.getFeatures(CQL.toFilter("name = '" + name + "'"));
     }
 
     public SimpleFeatureSource getFeatureSource() {

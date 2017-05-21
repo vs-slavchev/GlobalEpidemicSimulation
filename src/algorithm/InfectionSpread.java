@@ -95,7 +95,7 @@ public class InfectionSpread {
 
                 // TODO: create method to get country name from map coordinates
                 String countryName = mapCanvas.getGeoFinder()
-                        .getCountryNameFromScreenCoordinates(screenNewPoint.getX(), screenNewPoint.getY());
+                        .getCountryNameFromMapCoordinates(screenNewPoint.getX(), screenNewPoint.getY());
 
                 if (countryName.equals("water")) {
                     continue;
