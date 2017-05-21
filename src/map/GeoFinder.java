@@ -107,7 +107,7 @@ public class GeoFinder {
     }
 
     public String getCountryNameFromScreenCoordinates(double x, double y) {
-        SimpleFeatureCollection features = getCountryFeaturesCollection(x, y);
+        SimpleFeatureCollection features = getCountryFeaturesCollectionFromScreenCoordinates(x, y);
 
         Optional<String> countryName = Optional.empty();
         try (SimpleFeatureIterator itr = features.features()) {
@@ -122,17 +122,21 @@ public class GeoFinder {
 
     /**
      * Get the collection of the coordinates of the borders of a country that contains the given
-     * point. Takes in screen coordinates.
+     * point.
      */
-    public SimpleFeatureCollection getCountryFeaturesCollection(double x, double y) {
-        Point2D pointInWorld = screenToMapCoordinates(x, y);
-        //System.out.println(pointInWorld);
+    public SimpleFeatureCollection getCountryFeaturesCollectionFromMapCoordinates(double x, double y) {
         GeometryFactory gf = new GeometryFactory();
-        Point point = gf.createPoint(new Coordinate(pointInWorld.getX(), pointInWorld.getY()));
+        Point point = gf.createPoint(new Coordinate(x, y));
 
         Filter filter = ff.contains(ff.property("the_geom"), ff.literal(point));
         return countries.subCollection(filter);
     }
+
+    public SimpleFeatureCollection getCountryFeaturesCollectionFromScreenCoordinates(double x, double y) {
+        Point2D pointInWorld = screenToMapCoordinates(x, y);
+        return getCountryFeaturesCollectionFromMapCoordinates(pointInWorld.getX(), pointInWorld.getY());
+    }
+
 
     /**
      * Get an array of the coordinates of each vertex that is part of the borders of a country.

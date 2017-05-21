@@ -191,8 +191,11 @@ public class MapCanvas {
         needsRepaint = true;
     }
 
+    /**
+     * Changes the style of selected (if any) countries. Takes in screen coordinates.
+     */
     public void selectStyleChange(double x, double y) {
-        SimpleFeatureCollection features = geoFinder.getCountryFeaturesCollection(x, y);
+        SimpleFeatureCollection features = geoFinder.getCountryFeaturesCollectionFromScreenCoordinates(x, y);
 
         Set<FeatureId> IDs = new HashSet<>();
         try (SimpleFeatureIterator iterator = features.features()) {
@@ -205,14 +208,8 @@ public class MapCanvas {
     }
 
     private void displaySelectedFeatures(Set<FeatureId> IDs) {
-        Style style;
-
-        if (IDs.isEmpty()) {
-            style = styleManager.createDefaultStyle();
-
-        } else {
-            style = styleManager.createSelectedStyle(IDs);
-        }
+        Style style = IDs.isEmpty() ?
+                styleManager.createDefaultStyle() : styleManager.createSelectedStyle(IDs);
 
         Layer layer = map.layers().get(0);
         ((FeatureLayer) layer).setStyle(style);
