@@ -298,9 +298,14 @@ public class Main extends Application {
     }
 
     private void createInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
+        if (mapCanvas.getGeoFinder().getCountryNameFromScreenCoordinates(event.getX(), event.getY())
+                .equals("water")){
+            return;
+        }
         if (world.getCountry("Bulgaria").isPresent()) {
             Country country = world.getCountry("Bulgaria").get();
-            java.awt.geom.Point2D mapInfectionPoint = mapCanvas.getGeoFinder().screenToMapCoordinates(event.getX(), event.getY());
+            java.awt.geom.Point2D mapInfectionPoint = mapCanvas.getGeoFinder()
+                    .screenToMapCoordinates(event.getX(), event.getY());
             country.addInfectionPoint(mapInfectionPoint);
             primaryStage.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
         }
