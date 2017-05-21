@@ -1,12 +1,12 @@
 package main;
 
-import javafx.scene.control.Label;
+import java.io.Serializable;
 
 /**
  * Owner: Kaloyan
  */
 
-public class Time {
+public class Time implements Serializable {
 
     private int Year = 0;
     private int Month = 0;

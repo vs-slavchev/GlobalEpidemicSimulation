@@ -22,14 +22,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import map.MapCanvas;
 import reader.ConstantValues;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Optional;
 import java.util.Random;
 
@@ -55,13 +57,14 @@ public class Main extends Application {
     private InfectionSpread infectionSpread;
     private volatile boolean isWorking = true;
     private volatile boolean isStarted = false;
+    private Optional<String> filePath;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         root = new VBox();
         root.setMinWidth(640);
         root.setMinHeight(480);
@@ -113,63 +116,39 @@ public class Main extends Application {
 
         MedicineListBox = new MenuButton("Medicines");
         DiseaseListBox = new MenuButton("Diseases");
-        addtoListBoxes(DiseaseListBox, MedicineListBox);
+        addToListBoxes(DiseaseListBox, MedicineListBox);
 
-        saveItem.setOnAction(event -> {
-            infectionSpread.saveInfectionSpread(primaryStage, world.getTime());
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Saved!");
-            alert.setHeaderText(null);
-            alert.showAndWait();
-        });
-        openItem.setOnAction(event -> {
-            infectionSpread.openInfectionSpread(primaryStage, world.getTime());
-            timer.setText(world.getTime().toString());
-        });
-        saveAsItem.setOnAction(event -> {
-            infectionSpread.saveAsInfectionSpread(primaryStage, world.getTime());
-        });
+        saveItem.setOnAction(event -> saveFile());
+        saveAsItem.setOnAction(event -> saveFileAs(primaryStage));
+        openItem.setOnAction(event -> openFile(primaryStage));
+
         newItem.setOnAction(event -> {
             if (isStarted) {
-                Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Simulation is already started, do you wish to exit? If yes all progress will be lost.");
-                a.setHeaderText(null);
-                ButtonType buttonTypeYes = new ButtonType("Yes");
-                ButtonType buttonTypeNo = new ButtonType("No");
-                ButtonType buttonTypeSave = new ButtonType("Save and exit");
-                a.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo, buttonTypeSave);
-                Optional<ButtonType> result = a.showAndWait();
-                if (result.get() == buttonTypeYes) {
-                    try {
-                        try {
+                WindowDialog newSimulationDialog = new WindowDialog();
+                newSimulationDialog.showAndWait();
 
-                            if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
-                                AlgorithmThread().interrupt();
-                            }
-                            if (startTimer() != null && startTimer().isAlive()) {
-                                startTimer().interrupt();
-                            }
-
-                            start(primaryStage);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                if (newSimulationDialog.isYes()) {
+                    interruptAlgoAndTimerThreads();
+                    start(primaryStage);
                 }
-                if (result.get() == buttonTypeSave) {
-                    infectionSpread.saveInfectionSpread(primaryStage, world.getTime());
-                    try {
-                        start(primaryStage);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                if (newSimulationDialog.isSaveAndExit()) {
+                    saveFile();
+                    interruptAlgoAndTimerThreads();
+                    start(primaryStage);
                 }
-
             }
         });
         // assign action handlers to the items in the file menu
         setUpButtons(fileMenuButton, DiseaseListBox, MedicineListBox, primaryStage);
+    }
+
+    private void interruptAlgoAndTimerThreads() {
+        if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
+            AlgorithmThread().interrupt();
+        }
+        if (startTimer() != null && startTimer().isAlive()) {
+            startTimer().interrupt();
+        }
     }
 
     private void setUpButtons(MenuButton fileMenuButton, MenuButton diseaseList, MenuButton MedicineListBox, Stage primaryStage) {
@@ -233,14 +212,13 @@ public class Main extends Application {
             if (world.getTime().getSavedRunSpeed() != 0) {
                 world.getTime().setRunSpeed(world.getTime().getSavedRunSpeed());
             }
-            speedLabel.setText("x"+world.getTime().getRunSpeed());
-            addtoListBoxes(DiseaseListBox,MedicineListBox);
-            setPointers(diseaseListBox,medicineListBox,primaryStage);
+            speedLabel.setText("x" + world.getTime().getRunSpeed());
+            addToListBoxes(DiseaseListBox, MedicineListBox);
+            setPointers(diseaseListBox, medicineListBox, primaryStage);
             backForwardbutton.setDisable(false);
-            if(world.getTime().getRunSpeed()<70){
+            if (world.getTime().getRunSpeed() < 70) {
                 fastForwardbutton.setDisable(false);
-            }
-            else{
+            } else {
                 fastForwardbutton.setDisable(true);}
 
         });
@@ -289,47 +267,19 @@ public class Main extends Application {
             speedLabel.setText("x" + world.getTime().getRunSpeed());
         });
 
-        setPointers(diseaseListBox, medicineListBox, primaryStage);
         primaryStage.setOnCloseRequest(event -> {
             if (isStarted) {
-                Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Simulation is started, do you wish to exit? If yes all progress will be lost.");
-                a.setHeaderText(null);
-                ButtonType buttonTypeYes = new ButtonType("Yes");
-                ButtonType buttonTypeNo = new ButtonType("Cancel");
-                ButtonType buttonTypeSave = new ButtonType("Save and exit");
-                a.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo, buttonTypeSave);
-                Optional<ButtonType> result = a.showAndWait();
-                if (result.get() == buttonTypeYes) {
-                    try {
-
-                        if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
-                            AlgorithmThread().interrupt();
-                        }
-                        if (startTimer() != null && startTimer().isAlive()) {
-                            startTimer().interrupt();
-                        }
-                        System.out.print(1);
+                WindowDialog newSimulationDialog = new WindowDialog();
+                newSimulationDialog.showAndWait();
+                if (newSimulationDialog.isYes()) {
+                        interruptAlgoAndTimerThreads();
                         System.exit(1);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else if (result.get() == buttonTypeSave) {
-                    try {
-                        infectionSpread.saveInfectionSpread(primaryStage, world.getTime());
-                        if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
-                            AlgorithmThread().interrupt();
-                        }
-                        if (startTimer() != null && startTimer().isAlive()) {
-                            startTimer().interrupt();
-                        }
-                        System.out.print(0);
+                } else if (newSimulationDialog.isSaveAndExit()) {
+                        saveFile();
+                        interruptAlgoAndTimerThreads();
                         System.exit(1);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else System.out.print(2);
+                }
                 event.consume();
-
             }
         });
 
@@ -344,6 +294,7 @@ public class Main extends Application {
             event.consume();
         });
 
+        setPointers(diseaseListBox, medicineListBox, primaryStage);
     }
 
     private void createInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
@@ -357,7 +308,6 @@ public class Main extends Application {
 
     /**
      * Changes the rendering style of the clicked on country.
-     *
      * @return The name of the country that was clicked on.
      */
     private String selectCountryOnMap(MouseEvent event) {
@@ -369,19 +319,12 @@ public class Main extends Application {
     }
 
     private void SetUpPopupDisease(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
-        // Set up Popups
-
         popup = new Popup();
         Rectangle popUpRectangleBackground = new Rectangle(360, 350);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
 
-        //Items in popup
         final TextField name = new TextField();
-
-        //restricting the user to type only integers for the preferred temperature
         final TextField preferredTemp = createFractionTextField();
-
-        //restricting the user to type only integers for the temperature tolerance
         final TextField tempTolerance = createFractionTextField();
 
 
@@ -440,7 +383,8 @@ public class Main extends Application {
         virulenceHB.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
         buttonsHB.getChildren().addAll(save, space, cancel);
         buttonsHB.setPadding(new Insets(0, 10, 0, 10));
-        buttonsAndFieldsVB.getChildren().addAll(nameHB, virusTypeHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, buttonsHB);
+        buttonsAndFieldsVB.getChildren().addAll(nameHB, virusTypeHB, prefTempHB, tempToleranceHB,
+                lethalityHB, virulenceHB, buttonsHB);
 
         popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
         buttonsAndFieldsVB.setSpacing(10);
@@ -454,7 +398,7 @@ public class Main extends Application {
                                 Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
                 infectionSpread.addDisease(disease);
-                addtoListBoxes(DiseaseListBox, MedicineListBox);
+                addToListBoxes(DiseaseListBox, MedicineListBox);
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
                 popup.hide();
             } catch (Exception ex) {
@@ -469,21 +413,9 @@ public class Main extends Application {
     }
 
     private void SetUpPopupMedicine(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
-        // Set up Popups
-
         popup = new Popup();
         Rectangle popUpRectangleBackground = new Rectangle(360, 350);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
-
-        //Items in popup
-        final TextField name = new TextField();
-
-        //restricting the user to type only integers for the preferred temperature
-        final TextField preferredTemp = createFractionTextField();
-
-        //restricting the user to type only integers for the temperature tolerance
-        final TextField tempTolerance = createFractionTextField();
-
 
         final Slider lethality = new Slider(0, 100, 50);
         final Slider virulence = new Slider(0, 100, 50);
@@ -537,6 +469,10 @@ public class Main extends Application {
         HBox buttonsHB = new HBox();
         VBox buttonsAndFieldsVB = new VBox();
 
+        final TextField name = new TextField();
+        final TextField preferredTemp = createFractionTextField();
+        final TextField tempTolerance = createFractionTextField();
+
         nameHB.getChildren().addAll(nameCaption, name);
         diseaseTypeHB.getChildren().addAll(diseaseTypeL, diseaseType);
         symptomTypeHB.getChildren().addAll(symptomTypeL, symptomType);
@@ -546,7 +482,8 @@ public class Main extends Application {
         virulenceHB.getChildren().addAll(virulenceCaption, virulence, virulenceValue);
         buttonsHB.getChildren().addAll(save, space, cancel);
         buttonsHB.setPadding(new Insets(0, 10, 0, 10));
-        buttonsAndFieldsVB.getChildren().addAll(nameHB, diseaseTypeHB, symptomTypeHB, prefTempHB, tempToleranceHB, lethalityHB, virulenceHB, buttonsHB);
+        buttonsAndFieldsVB.getChildren().addAll(nameHB, diseaseTypeHB, symptomTypeHB, prefTempHB,
+                tempToleranceHB, lethalityHB, virulenceHB, buttonsHB);
 
         popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
         buttonsAndFieldsVB.setSpacing(10);
@@ -566,7 +503,7 @@ public class Main extends Application {
                         ) {
                     System.out.println(m.toString());
                 }
-                addtoListBoxes(DiseaseListBox, MedicineListBox);
+                addToListBoxes(DiseaseListBox, MedicineListBox);
                 popup.hide();
             } catch (Exception ex) {
                 name.setPromptText("not filled in");
@@ -617,54 +554,108 @@ public class Main extends Application {
                     try {
                         Thread.sleep(33);
                     } catch (InterruptedException e) {
+                        // TODO: catch error
                     }
                 }
             }
         });
     }
 
-    private void addtoListBoxes(MenuButton DiseasemenuButton, MenuButton MedicineButton) {
-        DiseasemenuButton.getItems().clear();
+    private void addToListBoxes(MenuButton DiseaseMenuButton, MenuButton MedicineButton) {
+        DiseaseMenuButton.getItems().clear();
         MedicineButton.getItems().clear();
-        for (Disease d : infectionSpread.getDiseaseList()
-                ) {
-            DiseasemenuButton.getItems().add(new MenuItem(d.getName()));
+        for (Disease disease : infectionSpread.getDiseaseList()) {
+            DiseaseMenuButton.getItems().add(new MenuItem(disease.getName()));
         }
-        for (Medicine d : medicineSpread.getMedicineList()
-                ) {
-            MedicineButton.getItems().add(new MenuItem(d.getName()));
+        for (Medicine medicine : medicineSpread.getMedicineList()) {
+            MedicineButton.getItems().add(new MenuItem(medicine.getName()));
         }
 
     }
 
     private void setPointers(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
-        for (MenuItem item : diseaseListBox.getItems()
-                ) {
+        for (MenuItem item : diseaseListBox.getItems()) {
             item.setOnAction(event -> {
-                for (Disease d : infectionSpread.getDiseaseList()
-                        ) {
-                    if (item.getText().equals(d.getName())) {
+                for (Disease disease : infectionSpread.getDiseaseList()) {
+                    if (item.getText().equals(disease.getName())) {
                         Image pointer = new Image("file:./images/hazardpointer.png");
                         primaryStage.getScene().setCursor(new ImageCursor(pointer));
-                        selectedDisease = d;
+                        selectedDisease = disease;
                         System.out.print(selectedDisease.toString());
                     }
                 }
 
             });
         }
-        for (MenuItem item : medicineListBox.getItems()
-                ) {
+        for (MenuItem item : medicineListBox.getItems()) {
             item.setOnAction(event -> {
-                for (Medicine m : medicineSpread.getMedicineList()
-                        ) {
-                    if (item.getText().equals(m.getName())) {
+                for (Medicine medicine : medicineSpread.getMedicineList()) {
+                    if (item.getText().equals(medicine.getName())) {
                         Image pointer = new Image("file:./images/medicinepointer.png");
                         primaryStage.getScene().setCursor(new ImageCursor(pointer));
                     }
                 }
 
             });
+        }
+    }
+
+    private void saveFile() {
+            try {
+                String date = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                        .format(Calendar.getInstance().getTime()) + ".sim";
+                FileOutputStream streamOut = new FileOutputStream(filePath.orElse(date));
+                ObjectOutputStream oos = new ObjectOutputStream(streamOut);
+                oos.writeObject(world);
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Saved!");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+    }
+
+    private void saveFileAs(Stage primaryStage) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        File file = fileChooser.showSaveDialog(primaryStage);
+        if (file != null) {
+            try {
+                FileOutputStream streamOut = new FileOutputStream(file.getPath());
+                ObjectOutputStream oos = new ObjectOutputStream(streamOut);
+                oos.writeObject(world);
+                filePath = Optional.of(file.getPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private static void configureFileChooser(final FileChooser fileChooser) {
+        fileChooser.setTitle("Open file");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("SIM", "*.sim")
+        );
+    }
+
+    private void openFile(Stage primaryStage) {
+        FileChooser fileChooser = new FileChooser();
+        configureFileChooser(fileChooser);
+        File file = fileChooser.showOpenDialog(primaryStage);
+        if (file != null) {
+            try {
+                FileInputStream inputStream = new FileInputStream(file.getPath());
+                ObjectInputStream ois = new ObjectInputStream(inputStream);
+                World savedWorld = (World) ois.readObject();
+                world = savedWorld;
+                filePath = Optional.of(file.getPath());
+
+                timer.setText(world.getTime().toString());
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 

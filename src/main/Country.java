@@ -2,13 +2,14 @@ package main;
 
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Owner: Yasen
  */
-public class Country {
+public class Country implements Serializable {
 
     public static final int QUEUE_MAX_SIZE = 10_000;
     private String name;

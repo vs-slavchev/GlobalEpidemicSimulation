@@ -4,10 +4,12 @@ package main;
  * Created by Yasen on 4/2/2017.
  */
 
+import java.io.Serializable;
+
 /**
  * Owner: Kaloyan
  */
-public class Environment {
+public class Environment implements Serializable {
 
     private float medicalInfrastructure;
     private float humidity;

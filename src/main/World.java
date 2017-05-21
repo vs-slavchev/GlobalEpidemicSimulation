@@ -4,24 +4,25 @@ package main;
  * Created by Yasen on 4/3/2017.
  */
 
+import reader.ConstantValues;
+
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class World {
+public class World implements Serializable {
 
-    ArrayList<Point2D> points;
+    private ArrayList<Point2D> points;
     private List<Country> countries;
-    private List<Country> infectedCountries;
     private Time time;
 
     public World() {
         countries = new ArrayList<>();
-        infectedCountries = new ArrayList<>();
         time = new Time();
         readCountryInfo();
         readTemps();
@@ -31,9 +32,6 @@ public class World {
         return s.equals(s.toUpperCase());
     }
 
-    private void migrate() {
-
-    }
 
     public List<Country> getCountries() {
         return countries;
@@ -51,6 +49,11 @@ public class World {
         return points;
     }
 
+    public boolean containsInfectionPoint(Point2D toCheck) {
+        return getAllInfectionPoints().stream()
+                .anyMatch(point2D -> ConstantValues.doublePointsEqual(point2D, toCheck));
+    }
+
     public void readCountryInfo() {
         String File = "./scripts/Dataset consolidation/country consolidated data.txt";
         String line = "";
@@ -58,7 +61,8 @@ public class World {
 
         try (BufferedReader br = new BufferedReader(new FileReader(File))) {
             while ((line = br.readLine()) != null) {
-                /*[Name, Code, Population, Population Density, Government Form, Air Pollution, Public Health Expenditure, Health Expenditure per Capita]*/
+                /*[Name, Code, Population, Population Density, Government Form, Air Pollution,
+                Public Health Expenditure, Health Expenditure per Capita]*/
                 String Name = "";
                 String Code = "";
                 int Population = 0;
@@ -70,7 +74,8 @@ public class World {
                 float HealthExpenditureperCapita = 0;
                 // use semicolon as separator
                 String[] country = line.split(SplitBy);
-                /*going through the array and checking with what every item starts and after that assigning the value to the proper one*/
+                /*going through the array and checking with what every item starts and after that
+                assigning the value to the proper one*/
                 for (String string : country) {
 
                     if (string.startsWith("3")) {
@@ -99,8 +104,10 @@ public class World {
 
                 }
                 countries.add(
-                        new Country(Name, Code, Population, GovernmentForm, 0, 0, 0, 100,
-                                new Environment(PublicHealthExpenditure, 20, 0, new double[1], AirPollution, 20, PopulationDensity)));
+                        new Country(Name, Code, Population, GovernmentForm, 0, 0,
+                                0, 100,
+                                new Environment(PublicHealthExpenditure, 20, 0, new double[1],
+                                        AirPollution, 20, PopulationDensity)));
             }
 
         } catch (IOException e) {
