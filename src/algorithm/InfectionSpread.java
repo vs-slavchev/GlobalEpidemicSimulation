@@ -1,9 +1,6 @@
 package algorithm;
 
-/**
- * Owner: Nikolay
- */
-
+import com.sun.istack.internal.Nullable;
 import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
@@ -16,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static main.ConstantValues.PRECISION;
+/**
+ * Owner: Nikolay
+ */
 
 public class InfectionSpread {
 
@@ -33,7 +32,7 @@ public class InfectionSpread {
         this.mapCanvas = mapCanvas;
     }
 
-    public void addDisease() {
+    private void addDisease() {
         diseaseList.add(new Disease("ebola", DiseaseType.BACTERIA,
                 new DiseaseProperties(10, 10,
                         10, 0.6)));
@@ -50,7 +49,7 @@ public class InfectionSpread {
         diseaseList.add(disease);
     }
 
-    public Disease getMainDisease() {
+    private Disease getMainDisease() {
         return diseaseList.get(0);
     }
 
@@ -62,53 +61,77 @@ public class InfectionSpread {
         if (this.diseaseList.isEmpty()) {
             this.addDisease();
         }
-        // TODO: instead of all points, get the most recent in the queue for each country
+        // TODO: instead of all points, get the most recent in the queue for each country?
         for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
-            if (random.nextDouble() < getMainDisease().getProperties().getVirulence()) {
-                double offsetX = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-                double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-                double newPointX = infectionPoint.getX() +
-                        (random.nextBoolean() ? +offsetX : -offsetX);
-                double newPointY = infectionPoint.getY() +
-                        (random.nextBoolean() ? offsetY : -offsetY);
-
-                if (newPointX > 180) {
-                    newPointX = -(newPointX - 1);
-                } else if (newPointX < -180) {
-                    newPointX = -(newPointX + 1);
-                }
-
-                Point2D roundedPoint = findSuitablePlaceForPoint(newPointX, newPointY);
-                if (roundedPoint == null) {
-                    continue;
-                }
-
-                String countryName = mapCanvas.getGeoFinder()
-                        .getCountryNameFromMapCoordinates(roundedPoint.getX(), roundedPoint.getY());
-
-                if (countryName.equals("water")) {
-                    continue;
-                } else if (world.getCountry("Bulgaria").isPresent()) {
-                    Country country = world.getCountry("Bulgaria").get();
-                    //double tweakedX = roundedPoint.getX() + (random.nextDouble() - 0.5) / 1;
-                    //double tweakedY = roundedPoint.getY() + (random.nextDouble() - 0.5) / 1;
-                    country.addInfectionPoint(roundedPoint);
-                }
+            boolean pointWillSpread = random.nextDouble() < getMainDisease().getProperties().getVirulence();
+            if (!pointWillSpread) {
+                continue;
             }
+
+            Point2D newPoint = generateNewRandomPoint(infectionPoint);
+            newPoint = findSuitablePlaceForPoint(newPoint);
+            if (newPoint == null) {
+                continue;
+            }
+
+            String countryName = mapCanvas.getGeoFinder()
+                    .getCountryNameFromMapCoordinates(newPoint.getX(), newPoint.getY());
+
+            if (countryName.equals("water")) {
+                continue;
+            } else if (world.getCountry("Bulgaria").isPresent()) {
+                Country country = world.getCountry("Bulgaria").get();
+                country.addInfectionPoint(newPoint);
+            }
+
         }
     }
 
-    private Point2D findSuitablePlaceForPoint(double newPointX, double newPointY) {
+    /**
+     * Given a source point, method creates another point near it with random coordinates.
+     */
+    private Point2D generateNewRandomPoint(Point2D infectionPoint) {
+        double offsetX = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
+        double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
+        double newPointX = infectionPoint.getX() +
+                (random.nextBoolean() ? +offsetX : -offsetX);
+        double newPointY = infectionPoint.getY() +
+                (random.nextBoolean() ? offsetY : -offsetY);
 
-        Point2D point = new Point2D.Double(newPointX, newPointY);
-        int divider = 10;
+        newPointX = wrapAroundHorizontally(newPointX);
+        return new Point2D.Double(newPointX, newPointY);
+    }
+
+    /**
+     * Calculate the new horizontal coordinate of a point if it needs to wrap around.
+     * Example: Russia's Chukotka
+     */
+    private double wrapAroundHorizontally(final double newPointX) {
+        if (newPointX > 180) {
+            return -(newPointX - 1);
+        } else if (newPointX < -180) {
+            return -(newPointX + 1);
+        }
+        return newPointX;
+    }
+
+    /**
+     * Method tries to find an unoccupied place for a point. If the number of tries is
+     * exhausted then null is returned.
+     *
+     * Points which round up to different values may have a visual overlap because of the
+     * circle radius.
+     */
+    @Nullable
+    private Point2D findSuitablePlaceForPoint(Point2D point) {
+        double OFFSET = INFECTION_RADIUS / 5;
         int triesLeft = 5;
-        while (world.containsInfectionPoint(point, PRECISION)) {
+        while (world.containsInfectionPoint(point)) {
             if (triesLeft-- < 0) {
                 return null;
             }
-            double newRoundedX = (random.nextBoolean() ? INFECTION_RADIUS / divider : -INFECTION_RADIUS / divider);
-            double newRoundedY = (random.nextBoolean() ? INFECTION_RADIUS / divider : -INFECTION_RADIUS / divider);
+            double newRoundedX = (random.nextBoolean() ? OFFSET : -OFFSET);
+            double newRoundedY = (random.nextBoolean() ? OFFSET : -OFFSET);
             point.setLocation(newRoundedX, newRoundedY);
         }
         return point;

@@ -14,19 +14,19 @@ public class ConstantValues {
     public static final int POINT_RADIUS = 4;
     public static final double PRECISION = 1;
 
-    public static double roundPrecision(double value, double precision) {
-        return Math.round(value * precision) / precision;
+    public static double roundPrecision(double value) {
+        return Math.round(value * PRECISION) / PRECISION;
     }
 
-    public static Point2D createRoundedPoint(double x, double y, double precision) {
+    public static Point2D createRoundedPoint(double x, double y) {
         return new Point2D.Double(
-                ConstantValues.roundPrecision(x, precision),
-                ConstantValues.roundPrecision(y, precision));
+                ConstantValues.roundPrecision(x),
+                ConstantValues.roundPrecision(y));
     }
 
-    public static boolean doublePointsEqual(Point2D first, Point2D second, double precision) {
-        Point2D roundedFirst = createRoundedPoint(first.getX(), first.getY(), precision);
-        Point2D roundedSecond = createRoundedPoint(second.getX(), second.getY(), precision);
+    public static boolean doublePointsEqual(Point2D first, Point2D second) {
+        Point2D roundedFirst = createRoundedPoint(first.getX(), first.getY());
+        Point2D roundedSecond = createRoundedPoint(second.getX(), second.getY());
 
         return Double.compare(roundedFirst.getX(), roundedSecond.getX()) == 0
                 && Double.compare(roundedFirst.getY(), roundedSecond.getY()) == 0;

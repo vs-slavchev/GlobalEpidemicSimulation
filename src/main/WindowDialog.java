@@ -22,8 +22,8 @@ public class WindowDialog {
 
     public WindowDialog() {
         alert = new Alert(Alert.AlertType.CONFIRMATION,
-                "Simulation is already started, do you wish to exit?\n" +
-                        "If yes all progress will be lost.");
+                "Simulation is already started, do you wish to\n" +
+                        "lose any unsaved progress?");
         alert.setHeaderText(null);
         alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo, buttonTypeSave);
 

@@ -47,9 +47,9 @@ public class World implements Serializable {
         return points;
     }
 
-    public boolean containsInfectionPoint(Point2D toCheck, double precision) {
+    public boolean containsInfectionPoint(Point2D toCheck) {
         return getAllInfectionPoints().stream()
-                .anyMatch(point2D -> ConstantValues.doublePointsEqual(point2D, toCheck, precision));
+                .anyMatch(point2D -> ConstantValues.doublePointsEqual(point2D, toCheck));
     }
 
     public void readCountryInfo() {
