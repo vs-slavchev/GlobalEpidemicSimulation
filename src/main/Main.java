@@ -6,6 +6,7 @@ import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
 import disease.SymptomType;
+import files.SaveLoadManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -22,14 +23,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import map.MapCanvas;
 
-import java.io.*;
-import java.util.Optional;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Random;
 
 /**
@@ -54,7 +54,7 @@ public class Main extends Application {
     private InfectionSpread infectionSpread;
     private volatile boolean isWorking = true;
     private volatile boolean isStarted = false;
-    private Optional<String> filePath = Optional.empty();
+    private SaveLoadManager saveLoadManager;
 
     public static void main(String[] args) {
         launch(args);
@@ -77,6 +77,7 @@ public class Main extends Application {
         random = new Random();
         infectionSpread = new InfectionSpread(random, world, mapCanvas);
         medicineSpread = new MedicineSpread();
+        saveLoadManager = new SaveLoadManager();
 
         timer.setText(world.getTime().toString());
         timer.setId("timer");
@@ -92,9 +93,7 @@ public class Main extends Application {
         primaryStage.show();
 
         scene.getStylesheets().add(ConstantValues.CSS_STYLE_FILE);
-
     }
-
 
     private void setUpButtonBar(Stage primaryStage) {
         buttonBar = new HBox();
@@ -117,9 +116,15 @@ public class Main extends Application {
         addToListBoxes(DiseaseListBox, MedicineListBox);
 
         newSimulation.setOnAction(event -> startNewSimulation(primaryStage));
-        openSimulation.setOnAction(event -> openFile(primaryStage));
-        saveSimulation.setOnAction(event -> saveFile(primaryStage));
-        saveSimulationAs.setOnAction(event -> saveFileAs(primaryStage));
+        openSimulation.setOnAction(event -> {
+            World loadedWorld = saveLoadManager.openFile(primaryStage);
+            if (loadedWorld != null) {
+                world = loadedWorld;
+                timer.setText(world.getTime().toString());
+            }
+        });
+        saveSimulation.setOnAction(event -> saveLoadManager.saveFile(primaryStage, world));
+        saveSimulationAs.setOnAction(event -> saveLoadManager.saveFileAs(primaryStage, world));
 
         // assign action handlers to the items in the file menu
         setUpButtons(fileMenuButton, DiseaseListBox, MedicineListBox, primaryStage);
@@ -132,13 +137,13 @@ public class Main extends Application {
 
             if (newSimulationDialog.isYes()) {
                 interruptAlgorithmAndTimerThreads();
-                filePath = Optional.empty();
+                saveLoadManager.clearFilePath();
                 start(primaryStage);
             }
             if (newSimulationDialog.isSaveAndExit()) {
-                saveFile(primaryStage);
+                saveLoadManager.saveFile(primaryStage, world);
                 interruptAlgorithmAndTimerThreads();
-                filePath = Optional.empty();
+                saveLoadManager.clearFilePath();
                 start(primaryStage);
             }
         }
@@ -278,7 +283,7 @@ public class Main extends Application {
                     interruptAlgorithmAndTimerThreads();
                     System.exit(1);
                 } else if (newSimulationDialog.isSaveAndExit()) {
-                    saveFile(primaryStage);
+                    saveLoadManager.saveFile(primaryStage, world);
                     interruptAlgorithmAndTimerThreads();
                     System.exit(1);
                 }
@@ -523,7 +528,7 @@ public class Main extends Application {
 
     /**
      * Creates a text field which only takes input in the format: digits followed by a single comma or dot
-     * followed by more digits.
+     * followed by more digits, or just the initial digits.
      */
     private TextField createFractionTextField() {
         return new TextField() {
@@ -544,6 +549,7 @@ public class Main extends Application {
                 try {
                     Thread.sleep(world.getTime().timerSleepTime());
                 } catch (InterruptedException e) {
+                    // empty on purpose
                 }
             }
         });
@@ -559,7 +565,7 @@ public class Main extends Application {
                     try {
                         Thread.sleep(33);
                     } catch (InterruptedException e) {
-                        // TODO: catch error
+                        // empty on purpose
                     }
                 }
             }
@@ -603,67 +609,4 @@ public class Main extends Application {
             });
         }
     }
-
-    private void saveFile(Stage primaryStage) {
-        // if there is no save file, go to 'save file as' dialog
-        if (!filePath.isPresent()) {
-            saveFileAs(primaryStage);
-            return;
-        }
-
-        try {
-            FileOutputStream streamOut = new FileOutputStream(filePath.get());
-            ObjectOutputStream oos = new ObjectOutputStream(streamOut);
-            oos.writeObject(world);
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Saved!");
-            alert.setHeaderText(null);
-            alert.showAndWait();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void saveFileAs(Stage primaryStage) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save File");
-        File file = fileChooser.showSaveDialog(primaryStage);
-        if (file != null) {
-            try {
-                FileOutputStream streamOut = new FileOutputStream(file.getPath());
-                ObjectOutputStream oos = new ObjectOutputStream(streamOut);
-                oos.writeObject(world);
-                filePath = Optional.of(file.getPath());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    private void configureFileChooser(final FileChooser fileChooser) {
-        fileChooser.setTitle("Open file");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("SIM", "*.sim")
-        );
-    }
-
-    private void openFile(Stage primaryStage) {
-        FileChooser fileChooser = new FileChooser();
-        configureFileChooser(fileChooser);
-        File file = fileChooser.showOpenDialog(primaryStage);
-        if (file != null) {
-            try {
-                FileInputStream inputStream = new FileInputStream(file.getPath());
-                ObjectInputStream ois = new ObjectInputStream(inputStream);
-                World savedWorld = (World) ois.readObject();
-                world = savedWorld;
-                filePath = Optional.of(file.getPath());
-
-                timer.setText(world.getTime().toString());
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 }
