@@ -25,9 +25,9 @@ public class InfectionSpread {
     private World world;
     private MapCanvas mapCanvas;
 
-    public InfectionSpread(Random random, World world, MapCanvas mapCanvas) {
+    public InfectionSpread(World world, MapCanvas mapCanvas) {
         diseaseList = new ArrayList<>();
-        this.random = random;
+        this.random = new Random();
         this.world = world;
         this.mapCanvas = mapCanvas;
     }

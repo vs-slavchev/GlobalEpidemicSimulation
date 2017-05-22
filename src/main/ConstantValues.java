@@ -12,16 +12,11 @@ public class ConstantValues {
     public static final String MAP_SHAPE_FILE = "maps/ne_110m_admin_0_countries.shp";
 
     public static final int POINT_RADIUS = 4;
-    public static final double PRECISION = 1;
 
-    public static double roundPrecision(double value) {
-        return Math.round(value * PRECISION) / PRECISION;
-    }
-
-    public static Point2D createRoundedPoint(double x, double y) {
+    private static Point2D createRoundedPoint(double x, double y) {
         return new Point2D.Double(
-                ConstantValues.roundPrecision(x),
-                ConstantValues.roundPrecision(y));
+                Math.round(x),
+                Math.round(y));
     }
 
     public static boolean doublePointsEqual(Point2D first, Point2D second) {

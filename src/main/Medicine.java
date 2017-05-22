@@ -1,7 +1,7 @@
 package main;
 
 /**
- * Created by Owner on 4/2/2017.
+ * Owner: Yasen
  */
 
 import disease.DiseaseProperties;

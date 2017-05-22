@@ -8,7 +8,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
+import main.ConstantValues;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
@@ -24,7 +27,6 @@ import org.jfree.fx.FXGraphics2D;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
-import main.ConstantValues;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -85,18 +87,31 @@ public class MapCanvas {
         StreamingRenderer draw = new StreamingRenderer();
         draw.setMapContent(map);
         FXGraphics2D graphics = new FXGraphics2D(gc);
-        graphics.setBackground(Color.BLUE);
+        graphics.setBackground(java.awt.Color.BLUE);
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
         Rectangle rectangle = new Rectangle((int) canvas.getWidth(), (int) canvas.getHeight());
         draw.paint(graphics, rectangle, map.getViewport().getBounds());
 
-        gc.setFill(javafx.scene.paint.Color.rgb(255, 0, 0, 0.4));
+        gc.setFill(Color.rgb(255, 0, 0, 0.4));
         for (Point2D point : infectionPoints) {
             Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
             gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
                     ConstantValues.POINT_RADIUS, ConstantValues.POINT_RADIUS);
         }
 
+        //drawGraph(gc);
+
+    }
+
+    // TODO: finish
+    private void drawGraph(GraphicsContext gc) {
+        gc.setStroke(Color.RED);
+        gc.setFill(Color.RED);
+        gc.setFont(new Font(17));
+        gc.strokeLine(50, canvas.getHeight() - 100, 250, canvas.getHeight() - 100);
+        gc.strokeLine(50, canvas.getHeight() - 100, 50, canvas.getHeight() - 300);
+        gc.fillText("time", 150, canvas.getHeight() - 85);
+        gc.fillText("%", 30, canvas.getHeight() - 200);
     }
 
     public void setNeedsRepaint() {

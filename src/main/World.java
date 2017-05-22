@@ -23,10 +23,6 @@ public class World implements Serializable {
         time = new Time();
     }
 
-    public List<Country> getCountries() {
-        return countries;
-    }
-
     public Optional<Country> getCountry(String countryName) {
         return countries.stream()
                 .filter(country -> country.getName().equals(countryName))

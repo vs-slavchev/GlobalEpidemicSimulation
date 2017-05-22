@@ -26,6 +26,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import map.MapCanvas;
 
 import java.io.FileInputStream;
@@ -39,10 +40,8 @@ import java.util.Random;
 public class Main extends Application {
 
     private HBox buttonBar;
-    private VBox root;
     private MapCanvas mapCanvas;
     private Popup popup = null;
-    private Random random;
     private Label timer = new Label();
     private Label speedLabel = new Label();
     private World world;
@@ -62,7 +61,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        root = new VBox();
+        VBox root = new VBox();
         root.setMinWidth(640);
         root.setMinHeight(480);
         isStarted = false;
@@ -74,8 +73,7 @@ public class Main extends Application {
         mapCanvas = new MapCanvas(width, height);
 
         world = new World();
-        random = new Random();
-        infectionSpread = new InfectionSpread(random, world, mapCanvas);
+        infectionSpread = new InfectionSpread(world, mapCanvas);
         medicineSpread = new MedicineSpread();
         saveLoadManager = new SaveLoadManager();
 
@@ -275,21 +273,7 @@ public class Main extends Application {
             speedLabel.setText("x" + world.getTime().getRunSpeed());
         });
 
-        primaryStage.setOnCloseRequest(event -> {
-            if (isStarted) {
-                WindowDialog newSimulationDialog = new WindowDialog();
-                newSimulationDialog.showAndWait();
-                if (newSimulationDialog.isYes()) {
-                    interruptAlgorithmAndTimerThreads();
-                    System.exit(1);
-                } else if (newSimulationDialog.isSaveAndExit()) {
-                    saveLoadManager.saveFile(primaryStage, world);
-                    interruptAlgorithmAndTimerThreads();
-                    System.exit(1);
-                }
-                event.consume();
-            }
-        });
+        primaryStage.setOnCloseRequest(event -> closeApplication(primaryStage, event));
 
         mapCanvas.getCanvas().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             if (event.getClickCount() == 1) {
@@ -305,8 +289,25 @@ public class Main extends Application {
         setPointers(diseaseListBox, medicineListBox, primaryStage);
     }
 
+    private void closeApplication(Stage primaryStage, WindowEvent event) {
+        if (isStarted) {
+            WindowDialog newSimulationDialog = new WindowDialog();
+            newSimulationDialog.showAndWait();
+            if (newSimulationDialog.isYes()) {
+                interruptAlgorithmAndTimerThreads();
+                System.exit(1);
+            } else if (newSimulationDialog.isSaveAndExit()) {
+                saveLoadManager.saveFile(primaryStage, world);
+                interruptAlgorithmAndTimerThreads();
+                System.exit(1);
+            }
+            event.consume();
+        }
+    }
+
     private void createInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
-        if (mapCanvas.getGeoFinder().getCountryNameFromScreenCoordinates(event.getX(), event.getY())
+        if (mapCanvas.getGeoFinder()
+                .getCountryNameFromScreenCoordinates(event.getX(), event.getY())
                 .equals("water")) {
             return;
         }
@@ -336,11 +337,6 @@ public class Main extends Application {
         popup = new Popup();
         Rectangle popUpRectangleBackground = new Rectangle(360, 350);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
-
-        final TextField name = new TextField();
-        final TextField preferredTemp = createFractionTextField();
-        final TextField tempTolerance = createFractionTextField();
-
 
         final Slider lethality = new Slider(0, 100, 50);
         final Slider virulence = new Slider(0, 100, 50);
@@ -389,6 +385,10 @@ public class Main extends Application {
         HBox buttonsHB = new HBox();
         VBox buttonsAndFieldsVB = new VBox();
 
+        final TextField name = new TextField();
+        final TextField preferredTemp = createFractionTextField();
+        final TextField tempTolerance = createFractionTextField();
+
         nameHB.getChildren().addAll(nameCaption, name);
         virusTypeHB.getChildren().addAll(virusType, diseaseType);
         prefTempHB.getChildren().addAll(prefTempCaption, preferredTemp);
@@ -412,8 +412,8 @@ public class Main extends Application {
                                 Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
                 infectionSpread.addDisease(disease);
-                addToListBoxes(DiseaseListBox, MedicineListBox);
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
+                addToListBoxes(DiseaseListBox, MedicineListBox);
                 popup.hide();
             } catch (Exception ex) {
                 name.setPromptText("not filled in");
