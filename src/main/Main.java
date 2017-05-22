@@ -29,8 +29,6 @@ import javafx.stage.Stage;
 import map.MapCanvas;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Optional;
 import java.util.Random;
 
@@ -118,31 +116,35 @@ public class Main extends Application {
         DiseaseListBox = new MenuButton("Diseases");
         addToListBoxes(DiseaseListBox, MedicineListBox);
 
-        saveSimulation.setOnAction(event -> saveFile());
-        saveSimulationAs.setOnAction(event -> saveFileAs(primaryStage));
+        newSimulation.setOnAction(event -> startNewSimulation(primaryStage));
         openSimulation.setOnAction(event -> openFile(primaryStage));
+        saveSimulation.setOnAction(event -> saveFile(primaryStage));
+        saveSimulationAs.setOnAction(event -> saveFileAs(primaryStage));
 
-        newSimulation.setOnAction(event -> {
-            if (isStarted) {
-                WindowDialog newSimulationDialog = new WindowDialog();
-                newSimulationDialog.showAndWait();
-
-                if (newSimulationDialog.isYes()) {
-                    interruptAlgoAndTimerThreads();
-                    start(primaryStage);
-                }
-                if (newSimulationDialog.isSaveAndExit()) {
-                    saveFile();
-                    interruptAlgoAndTimerThreads();
-                    start(primaryStage);
-                }
-            }
-        });
         // assign action handlers to the items in the file menu
         setUpButtons(fileMenuButton, DiseaseListBox, MedicineListBox, primaryStage);
     }
 
-    private void interruptAlgoAndTimerThreads() {
+    private void startNewSimulation(Stage primaryStage) {
+        if (isStarted) {
+            WindowDialog newSimulationDialog = new WindowDialog();
+            newSimulationDialog.showAndWait();
+
+            if (newSimulationDialog.isYes()) {
+                interruptAlgorithmAndTimerThreads();
+                filePath = Optional.empty();
+                start(primaryStage);
+            }
+            if (newSimulationDialog.isSaveAndExit()) {
+                saveFile(primaryStage);
+                interruptAlgorithmAndTimerThreads();
+                filePath = Optional.empty();
+                start(primaryStage);
+            }
+        }
+    }
+
+    private void interruptAlgorithmAndTimerThreads() {
         if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
             AlgorithmThread().interrupt();
         }
@@ -219,7 +221,8 @@ public class Main extends Application {
             if (world.getTime().getRunSpeed() < 70) {
                 fastForwardbutton.setDisable(false);
             } else {
-                fastForwardbutton.setDisable(true);}
+                fastForwardbutton.setDisable(true);
+            }
 
         });
 
@@ -272,12 +275,12 @@ public class Main extends Application {
                 WindowDialog newSimulationDialog = new WindowDialog();
                 newSimulationDialog.showAndWait();
                 if (newSimulationDialog.isYes()) {
-                        interruptAlgoAndTimerThreads();
-                        System.exit(1);
+                    interruptAlgorithmAndTimerThreads();
+                    System.exit(1);
                 } else if (newSimulationDialog.isSaveAndExit()) {
-                        saveFile();
-                        interruptAlgoAndTimerThreads();
-                        System.exit(1);
+                    saveFile(primaryStage);
+                    interruptAlgorithmAndTimerThreads();
+                    System.exit(1);
                 }
                 event.consume();
             }
@@ -299,7 +302,7 @@ public class Main extends Application {
 
     private void createInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
         if (mapCanvas.getGeoFinder().getCountryNameFromScreenCoordinates(event.getX(), event.getY())
-                .equals("water")){
+                .equals("water")) {
             return;
         }
         if (world.getCountry("Bulgaria").isPresent()) {
@@ -313,6 +316,7 @@ public class Main extends Application {
 
     /**
      * Changes the rendering style of the clicked on country.
+     *
      * @return The name of the country that was clicked on.
      */
     private String selectCountryOnMap(MouseEvent event) {
@@ -549,7 +553,7 @@ public class Main extends Application {
     private Thread AlgorithmThread() {
         return new Thread(() -> {
             while (isWorking) {
-                if(world.getTime().checkHour()){
+                if (world.getTime().checkHour()) {
                     infectionSpread.applyAlgorithm(selectedDisease);
                     mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
                     try {
@@ -600,20 +604,24 @@ public class Main extends Application {
         }
     }
 
-    private void saveFile() {
-            try {
-                String date = new SimpleDateFormat("yyyyMMdd_HHmmss")
-                        .format(Calendar.getInstance().getTime()) + ".sim";
-                FileOutputStream streamOut = new FileOutputStream(filePath.orElse(date));
-                ObjectOutputStream oos = new ObjectOutputStream(streamOut);
-                oos.writeObject(world);
+    private void saveFile(Stage primaryStage) {
+        // if there is no save file, go to 'save file as' dialog
+        if (!filePath.isPresent()) {
+            saveFileAs(primaryStage);
+            return;
+        }
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Saved!");
-                alert.setHeaderText(null);
-                alert.showAndWait();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+        try {
+            FileOutputStream streamOut = new FileOutputStream(filePath.get());
+            ObjectOutputStream oos = new ObjectOutputStream(streamOut);
+            oos.writeObject(world);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Saved!");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void saveFileAs(Stage primaryStage) {
@@ -632,9 +640,8 @@ public class Main extends Application {
         }
     }
 
-    private static void configureFileChooser(final FileChooser fileChooser) {
+    private void configureFileChooser(final FileChooser fileChooser) {
         fileChooser.setTitle("Open file");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("SIM", "*.sim")
         );

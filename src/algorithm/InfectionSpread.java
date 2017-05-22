@@ -10,7 +10,6 @@ import disease.DiseaseType;
 import main.Country;
 import main.World;
 import map.MapCanvas;
-import main.ConstantValues;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -91,28 +90,28 @@ public class InfectionSpread {
                     continue;
                 } else if (world.getCountry("Bulgaria").isPresent()) {
                     Country country = world.getCountry("Bulgaria").get();
-                    double tweakedX = roundedPoint.getX() + (random.nextDouble() - 0.5) / 2;
-                    double tweakedY = roundedPoint.getY() + (random.nextDouble() - 0.5) / 2;
-                    country.addInfectionPoint(new Point2D.Double(tweakedX, tweakedY));
+                    //double tweakedX = roundedPoint.getX() + (random.nextDouble() - 0.5) / 1;
+                    //double tweakedY = roundedPoint.getY() + (random.nextDouble() - 0.5) / 1;
+                    country.addInfectionPoint(roundedPoint);
                 }
             }
         }
     }
 
     private Point2D findSuitablePlaceForPoint(double newPointX, double newPointY) {
-        Point2D roundedPoint = ConstantValues.createRoundedPoint(newPointX, newPointY, PRECISION);
+
+        Point2D point = new Point2D.Double(newPointX, newPointY);
+        int divider = 10;
         int triesLeft = 5;
-        while (world.containsInfectionPoint(roundedPoint, PRECISION)) {
+        while (world.containsInfectionPoint(point, PRECISION)) {
             if (triesLeft-- < 0) {
                 return null;
             }
-            double newRoundedX = (random.nextBoolean() ? INFECTION_RADIUS / 5 : -INFECTION_RADIUS / 5);
-            double newRoundedY = (random.nextBoolean() ? INFECTION_RADIUS / 5 : -INFECTION_RADIUS / 5);
-            newRoundedX = ConstantValues.roundPrecision(newRoundedX, PRECISION);
-            newRoundedY = ConstantValues.roundPrecision(newRoundedY, PRECISION);
-            roundedPoint.setLocation(newRoundedX, newRoundedY);
+            double newRoundedX = (random.nextBoolean() ? INFECTION_RADIUS / divider : -INFECTION_RADIUS / divider);
+            double newRoundedY = (random.nextBoolean() ? INFECTION_RADIUS / divider : -INFECTION_RADIUS / divider);
+            point.setLocation(newRoundedX, newRoundedY);
         }
-        return roundedPoint;
+        return point;
     }
 
 
