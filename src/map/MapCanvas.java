@@ -30,9 +30,7 @@ import org.opengis.filter.identity.FeatureId;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Owner: Veselin
@@ -55,6 +53,8 @@ public class MapCanvas {
     private double dragDistanceX;
     private double dragDistanceY;
 
+    private ArrayList<Integer> percentageInfected;
+
     public MapCanvas(int width, int height) {
         canvas = new Canvas(width, height);
         geoFinder = new GeoFinder(width, height);
@@ -62,9 +62,11 @@ public class MapCanvas {
         graphics = canvas.getGraphicsContext2D();
         infectionPoints = new ArrayList<>();
         initMap();
-        drawMap(graphics);
         initializeEventHandling();
         initPaintThread();
+
+        percentageInfected = new ArrayList<>(100);
+        percentageInfected.add(0);
     }
 
     public Node getCanvas() {
@@ -98,20 +100,42 @@ public class MapCanvas {
             gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
                     ConstantValues.POINT_RADIUS, ConstantValues.POINT_RADIUS);
         }
-
-        //drawGraph(gc);
-
     }
 
-    // TODO: finish
     private void drawGraph(GraphicsContext gc) {
+
+        //TODO repaint ONLY when a new percentage is added to the list!
+        needsRepaint = true; //remove that
+
+        Random random = new Random();
+        if (random.nextDouble() < 0.1) {
+            if (percentageInfected.size() >= 100) {
+                percentageInfected.set(0, random.nextInt(100));
+                Collections.rotate(percentageInfected, -1);
+            } else {
+                percentageInfected.add(random.nextInt(100));
+            }
+        }
+
         gc.setStroke(Color.RED);
         gc.setFill(Color.RED);
         gc.setFont(new Font(17));
-        gc.strokeLine(50, canvas.getHeight() - 100, 250, canvas.getHeight() - 100);
-        gc.strokeLine(50, canvas.getHeight() - 100, 50, canvas.getHeight() - 300);
         gc.fillText("time", 150, canvas.getHeight() - 85);
         gc.fillText("%", 30, canvas.getHeight() - 200);
+        gc.strokeLine(50, canvas.getHeight() - 100, 250, canvas.getHeight() - 100);
+        gc.strokeLine(50, canvas.getHeight() - 100, 50, canvas.getHeight() - 300);
+        for (int firstOfPair_i = 0; firstOfPair_i < percentageInfected.size() - 1; firstOfPair_i++) {
+            int firstOfPair = percentageInfected.get(firstOfPair_i);
+            int secondOfPair = percentageInfected.get(firstOfPair_i + 1);
+            System.out.println(percentageInfected.size());
+
+            //TODO restrict to last 100 hours only, use queue?
+            gc.strokeLine(
+                    (firstOfPair_i/(double)percentageInfected.size()*100.0) * 2 + 50,
+                    canvas.getHeight() - 100 - firstOfPair * 2,
+                    ((firstOfPair_i + 1)/(double)percentageInfected.size()*100.0) * 2 + 50,
+                    canvas.getHeight() - 100 - secondOfPair * 2);
+        }
     }
 
     public void setNeedsRepaint() {
@@ -177,7 +201,10 @@ public class MapCanvas {
             protected Task<Boolean> createTask() {
                 return new Task<Boolean>() {
                     protected Boolean call() {
-                        Platform.runLater(() -> drawMap(graphics));
+                        Platform.runLater(() -> {
+                            drawMap(graphics);
+                            //drawGraph(graphics);
+                        });
                         return true;
                     }
                 };
