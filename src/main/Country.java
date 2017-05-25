@@ -16,20 +16,21 @@ public class Country implements Serializable {
     private String countryID;
     private String GovernmentForm;
     private long unaffectedPopulation;
-    private long infectedPopulation;
+    //private long infectedPopulation;
     private long deadPopulation;
     private long curedPopulation;
     private long migrationRate;
     private Environment environment;
     private Queue<Point2D> infectionPoints;
 
-    public Country(String countryName, String countryId, long unaffectedPopulation, String governmentForm, long infectedPopulation,
-                   long deadPopulation, long curedPopulation, long rateOfMigration, Environment environment) {
+    public Country(String countryName, String countryId, long unaffectedPopulation,
+                   String governmentForm, long infectedPopulation, long deadPopulation,
+                   long curedPopulation, long rateOfMigration, Environment environment) {
         this.name = countryName;
         this.countryID = countryId;
         this.unaffectedPopulation = unaffectedPopulation;
         this.GovernmentForm = governmentForm;
-        this.infectedPopulation = infectedPopulation;
+        //this.infectedPopulation = infectedPopulation;
         this.deadPopulation = deadPopulation;
         this.curedPopulation = curedPopulation;
         this.migrationRate = rateOfMigration;
@@ -37,44 +38,13 @@ public class Country implements Serializable {
         infectionPoints = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE);
     }
 
-    public void modifyInfectedPopulation(int value) {
-        if (unaffectedPopulation > 0) {
-            if (unaffectedPopulation < value) {
-                infectedPopulation += unaffectedPopulation;
-                unaffectedPopulation = 0;
-            } else {
-                infectedPopulation += value;
-                unaffectedPopulation -= value;
-            }
-        }
-    }
-
     public long getTotalPopulation() {
-        return infectedPopulation + unaffectedPopulation;
-    }
-
-    public long getUnaffectedPopulation() {
         return unaffectedPopulation;
     }
 
+    // let's say a point represents 2 percent of the population
     public long getInfectedPopulation() {
-        return infectedPopulation;
-    }
-
-    public void setInfectedPopulation(long infectedPopulation) {
-        this.infectedPopulation = infectedPopulation;
-    }
-
-    public long getDeadPopulation() {
-        return deadPopulation;
-    }
-
-    public long getCuredPopulation() {
-        return curedPopulation;
-    }
-
-    public long getMigrationRate() {
-        return migrationRate;
+        return (int)(Math.min(50, infectionPoints.size()) * 2 / 100.0 * unaffectedPopulation);
     }
 
     public Environment getEnvironment() {
@@ -105,7 +75,6 @@ public class Country implements Serializable {
                 "name='" + name + '\'' +
                 ", countryCode=" + countryID +
                 ", unaffectedPopulation=" + unaffectedPopulation +
-                ", infectedPopulation=" + infectedPopulation +
                 ", deadPopulation=" + deadPopulation +
                 ", curedPopulation=" + curedPopulation +
                 ", GovernmentForm=" + GovernmentForm +
@@ -114,4 +83,36 @@ public class Country implements Serializable {
                 ", ENV=" + environment.toString() +
                 '}';
     }
+
+    /*public void modifyInfectedPopulation(int value) {
+        if (unaffectedPopulation > 0) {
+            if (unaffectedPopulation < value) {
+                infectedPopulation += unaffectedPopulation;
+                unaffectedPopulation = 0;
+            } else {
+                infectedPopulation += value;
+                unaffectedPopulation -= value;
+            }
+        }
+    }*/
+
+    /*public long getUnaffectedPopulation() {
+        return unaffectedPopulation;
+    }*/
+
+    /*public void setInfectedPopulation(long infectedPopulation) {
+        this.infectedPopulation = infectedPopulation;
+    }
+
+    public long getDeadPopulation() {
+        return deadPopulation;
+    }
+
+    public long getCuredPopulation() {
+        return curedPopulation;
+    }
+
+    public long getMigrationRate() {
+        return migrationRate;
+    }*/
 }

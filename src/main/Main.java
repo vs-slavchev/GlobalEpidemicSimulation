@@ -31,7 +31,6 @@ import map.MapCanvas;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Random;
 
 /**
  * Owner: Ivan
@@ -66,13 +65,11 @@ public class Main extends Application {
         root.setMinHeight(480);
         isStarted = false;
 
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-        int width = (int) bounds.getWidth();
-        int height = (int) bounds.getHeight();
-        mapCanvas = new MapCanvas(width, height);
-
         world = new World();
+
+        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+        mapCanvas = new MapCanvas((int)bounds.getWidth(), (int)bounds.getHeight());
+
         infectionSpread = new InfectionSpread(world, mapCanvas);
         medicineSpread = new MedicineSpread();
         saveLoadManager = new SaveLoadManager();
@@ -545,6 +542,8 @@ public class Main extends Application {
         return new Thread(() -> {
             while (isWorking) {
                 world.getTime().setElapsedTime();
+                mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
+                System.out.println("inf %: " + world.calculateWorldTotalInfectedPercentage());
                 Platform.runLater(() -> timer.setText(world.getTime().toString()));
                 try {
                     Thread.sleep(world.getTime().timerSleepTime());

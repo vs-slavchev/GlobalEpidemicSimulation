@@ -103,20 +103,6 @@ public class MapCanvas {
     }
 
     private void drawGraph(GraphicsContext gc) {
-
-        //TODO repaint ONLY when a new percentage is added to the list!
-        needsRepaint = true; //remove that
-
-        Random random = new Random();
-        if (random.nextDouble() < 0.1) {
-            if (percentageInfected.size() >= 100) {
-                percentageInfected.set(0, random.nextInt(100));
-                Collections.rotate(percentageInfected, -1);
-            } else {
-                percentageInfected.add(random.nextInt(100));
-            }
-        }
-
         gc.setStroke(Color.RED);
         gc.setFill(Color.RED);
         gc.setFont(new Font(17));
@@ -127,7 +113,6 @@ public class MapCanvas {
         for (int firstOfPair_i = 0; firstOfPair_i < percentageInfected.size() - 1; firstOfPair_i++) {
             int firstOfPair = percentageInfected.get(firstOfPair_i);
             int secondOfPair = percentageInfected.get(firstOfPair_i + 1);
-            System.out.println(percentageInfected.size());
 
             //TODO restrict to last 100 hours only, use queue?
             gc.strokeLine(
@@ -136,6 +121,16 @@ public class MapCanvas {
                     ((firstOfPair_i + 1)/(double)percentageInfected.size()*100.0) * 2 + 50,
                     canvas.getHeight() - 100 - secondOfPair * 2);
         }
+    }
+
+    public void pushNewPercentageValue(int element) {
+        if (percentageInfected.size() >= 100) {
+            percentageInfected.set(0, element);
+            Collections.rotate(percentageInfected, -1);
+        } else {
+            percentageInfected.add(element);
+        }
+        needsRepaint = true;
     }
 
     public void setNeedsRepaint() {
@@ -203,7 +198,7 @@ public class MapCanvas {
                     protected Boolean call() {
                         Platform.runLater(() -> {
                             drawMap(graphics);
-                            //drawGraph(graphics);
+                            drawGraph(graphics);
                         });
                         return true;
                     }
