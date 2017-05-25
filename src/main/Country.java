@@ -13,7 +13,7 @@ public class Country implements Serializable {
 
     private static final int QUEUE_MAX_SIZE = 10_000;
     private String name;
-    private String countryID;
+    private String code;
     private String GovernmentForm;
     private long unaffectedPopulation;
     //private long infectedPopulation;
@@ -23,11 +23,11 @@ public class Country implements Serializable {
     private Environment environment;
     private Queue<Point2D> infectionPoints;
 
-    public Country(String countryName, String countryId, long unaffectedPopulation,
+    public Country(String countryName, String code, long unaffectedPopulation,
                    String governmentForm, long infectedPopulation, long deadPopulation,
                    long curedPopulation, long rateOfMigration, Environment environment) {
         this.name = countryName;
-        this.countryID = countryId;
+        this.code = code;
         this.unaffectedPopulation = unaffectedPopulation;
         this.GovernmentForm = governmentForm;
         //this.infectedPopulation = infectedPopulation;
@@ -73,7 +73,7 @@ public class Country implements Serializable {
     public String toString() {
         return "Country{" +
                 "name='" + name + '\'' +
-                ", countryCode=" + countryID +
+                ", countryCode=" + code +
                 ", unaffectedPopulation=" + unaffectedPopulation +
                 ", deadPopulation=" + deadPopulation +
                 ", curedPopulation=" + curedPopulation +
@@ -115,4 +115,8 @@ public class Country implements Serializable {
     public long getMigrationRate() {
         return migrationRate;
     }*/
+
+    public String getCode() {
+        return code;
+    }
 }

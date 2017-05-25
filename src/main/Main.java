@@ -308,8 +308,8 @@ public class Main extends Application {
                 .equals("water")) {
             return;
         }
-        if (world.getCountry("Bulgaria").isPresent()) {
-            Country country = world.getCountry("Bulgaria").get();
+        if (world.getCountryByName("Bulgaria").isPresent()) {
+            Country country = world.getCountryByName("Bulgaria").get();
             java.awt.geom.Point2D mapInfectionPoint = mapCanvas.getGeoFinder()
                     .screenToMapCoordinates(event.getX(), event.getY());
             country.addInfectionPoint(mapInfectionPoint);
@@ -542,8 +542,6 @@ public class Main extends Application {
         return new Thread(() -> {
             while (isWorking) {
                 world.getTime().setElapsedTime();
-                mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
-                System.out.println("inf %: " + world.calculateWorldTotalInfectedPercentage());
                 Platform.runLater(() -> timer.setText(world.getTime().toString()));
                 try {
                     Thread.sleep(world.getTime().timerSleepTime());
@@ -561,6 +559,7 @@ public class Main extends Application {
                 if (world.getTime().checkHour()) {
                     infectionSpread.applyAlgorithm(selectedDisease);
                     mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                    mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
                     try {
                         Thread.sleep(33);
                     } catch (InterruptedException e) {

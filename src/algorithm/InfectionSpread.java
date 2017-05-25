@@ -74,15 +74,23 @@ public class InfectionSpread {
                 continue;
             }
 
-            String countryName = mapCanvas.getGeoFinder()
-                    .getCountryNameFromMapCoordinates(newPoint.getX(), newPoint.getY());
+            String countryCode = mapCanvas.getGeoFinder()
+                    .getCountryNameCodeFromMapCoordinates(newPoint.getX(), newPoint.getY());
 
-            if (countryName.equals("water")) {
+            if (countryCode.equals("water")) {
                 continue;
-            } else if (world.getCountry("Bulgaria").isPresent()) {
-                Country country = world.getCountry("Bulgaria").get();
+            } else if (world.getCountryByCode(countryCode).isPresent()){
+                Country country = world.getCountryByCode(countryCode).get();
                 country.addInfectionPoint(newPoint);
+            } else {
+                // not found in our list of countries
+                System.out.println("COUNTRY NOT FOUND: " + countryCode);
             }
+
+            /*else if (world.getCountryByName("Bulgaria").isPresent()) {
+                Country country = world.getCountryByName("Bulgaria").get();
+                country.addInfectionPoint(newPoint);
+            }*/
 
         }
     }

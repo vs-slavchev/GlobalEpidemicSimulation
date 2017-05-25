@@ -104,7 +104,7 @@ public class MapCanvas {
 
     private void drawGraph(GraphicsContext gc) {
         gc.setStroke(Color.RED);
-        gc.setFill(Color.RED);
+        gc.setFill(Color.rgb(255, 0, 0, 1));
         gc.setFont(new Font(17));
         gc.fillText("time", 150, canvas.getHeight() - 85);
         gc.fillText("%", 30, canvas.getHeight() - 200);

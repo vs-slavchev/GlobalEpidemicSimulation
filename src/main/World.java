@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.function.ToLongFunction;
 
 public class World implements Serializable {
@@ -24,10 +25,18 @@ public class World implements Serializable {
         time = new Time();
     }
 
-    public Optional<Country> getCountry(String countryName) {
+    private Optional<Country> getFirstCountry(Predicate<Country> countryPredicate) {
         return countries.stream()
-                .filter(country -> country.getName().equals(countryName))
+                .filter(countryPredicate)
                 .findFirst();
+    }
+
+    public Optional<Country> getCountryByName(String countryName) {
+        return getFirstCountry(country -> country.getName().equals(countryName));
+    }
+
+    public Optional<Country> getCountryByCode(String code) {
+        return getFirstCountry(country -> country.getCode().equals(code));
     }
 
     public ArrayList<Point2D> getAllInfectionPoints() {
@@ -36,22 +45,24 @@ public class World implements Serializable {
         return points;
     }
 
-    public long sumPopulationFrom(ToLongFunction<Country> countryFunction) {
+    private long sumPopulationFrom(ToLongFunction<Country> countryFunction) {
         return countries.stream()
                 .mapToLong(countryFunction)
                 .sum();
     }
 
-    public long getWorldTotalPopulation() {
+    private long getWorldTotalPopulation() {
         return sumPopulationFrom(Country::getTotalPopulation);
     }
 
-    public long getWorldTotalInfectedPopulation() {
+    private long getWorldTotalInfectedPopulation() {
         return sumPopulationFrom(Country::getInfectedPopulation);
     }
 
     public int calculateWorldTotalInfectedPercentage() {
-        return (int)(getWorldTotalInfectedPopulation() / (double)getWorldTotalPopulation());
+        return (int)(
+                (float)getWorldTotalInfectedPopulation() / (float)getWorldTotalPopulation()
+                * 100);
     }
 
     public boolean containsInfectionPoint(Point2D toCheck) {

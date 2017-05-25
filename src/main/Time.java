@@ -17,7 +17,7 @@ public class Time implements Serializable {
     private int RunSpeed = 0;
     private int SaveRunSpeed = 0;
     private int LastHour = 0;
-    private Boolean InitialStart = true;
+    private boolean InitialStart = true;
 
     public void setElapsedTime() {
         Sec++;
@@ -48,7 +48,7 @@ public class Time implements Serializable {
         }
     }
 
-    public Boolean checkHour(){
+    public boolean checkHour(){
         if(Hour == 0 && LastHour >= 23){
             LastHour = Hour;
             return true;

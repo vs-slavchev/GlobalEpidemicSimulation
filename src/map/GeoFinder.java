@@ -114,24 +114,26 @@ public class GeoFinder {
 
     public String getCountryNameFromScreenCoordinates(double x, double y) {
         SimpleFeatureCollection features = getCountryFeaturesCollectionFromScreenCoordinates(x, y);
-        return extractCountryNameFromOptional(features);
+        return extractCountryNameCodeFromOptional(features);
     }
 
-    public String getCountryNameFromMapCoordinates(double x, double y) {
+    public String getCountryNameCodeFromMapCoordinates(double x, double y) {
         SimpleFeatureCollection features = getCountryFeaturesCollectionFromMapCoordinates(x, y);
-        return extractCountryNameFromOptional(features);
+        return extractCountryNameCodeFromOptional(features);
     }
 
-    private String extractCountryNameFromOptional(SimpleFeatureCollection features) {
-        Optional<String> countryName = Optional.empty();
+    private String extractCountryNameCodeFromOptional(SimpleFeatureCollection features) {
+        Optional<String> countryNameCode = Optional.empty();
         try (SimpleFeatureIterator itr = features.features()) {
             while (itr.hasNext()) {
                 SimpleFeature feature = itr.next();
-                String name = (String) feature.getAttribute("name");
-                countryName = Optional.ofNullable(name);
+                //String name = (String) feature.getAttribute("name");
+                // other codes: sov_a3, gu_a3, su_a3, brk_a3, iso_a2, iso_a3
+                String name = (String) feature.getAttribute("adm0_a3");
+                countryNameCode = Optional.ofNullable(name);
             }
         }
-        return countryName.orElse("water");
+        return countryNameCode.orElse("water");
     }
 
     /**
