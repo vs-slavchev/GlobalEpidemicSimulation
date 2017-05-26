@@ -53,6 +53,7 @@ public class MapCanvas {
     private double dragDistanceY;
 
     private ArrayList<Integer> percentageInfected;
+    private String countryInformation;
 
     public MapCanvas(int width, int height) {
         canvas = new Canvas(width, height);
@@ -246,5 +247,9 @@ public class MapCanvas {
     public synchronized void updateInfectionPointsCoordinates(ArrayList<Point2D> infectionPoints) {
         this.infectionPoints = infectionPoints;
         setNeedsRepaint();
+    }
+
+    public void setCountryInformation(String countryInformation) {
+        this.countryInformation = countryInformation;
     }
 }

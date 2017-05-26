@@ -74,18 +74,26 @@ public class InfectionSpread {
                 continue;
             }
 
-            String countryCode = mapCanvas.getGeoFinder()
-                    .getCountryNameCodeFromMapCoordinates(newPoint.getX(), newPoint.getY());
+            addInfectionPointToCountryAtMapCoordinates(newPoint);
+        }
+    }
 
-            if (countryCode.equals("water")) {
-                continue;
-            } else if (world.getCountryByCode(countryCode).isPresent()){
-                Country country = world.getCountryByCode(countryCode).get();
-                country.addInfectionPoint(newPoint);
-            } else {
-                // not found in our list of countries
-                System.out.println("COUNTRY NOT FOUND: " + countryCode);
-            }
+    /**
+     * Tries to add an infection point to a country.
+     * @param newMapPoint A point in map coordinates where an infection point should be added.
+     */
+    public void addInfectionPointToCountryAtMapCoordinates(Point2D newMapPoint) {
+        String countryCode = mapCanvas.getGeoFinder()
+                .getCountryNameCodeFromMapCoordinates(newMapPoint.getX(), newMapPoint.getY());
+
+        if (countryCode.equals("water")) {
+            return;
+        } else if (world.getCountryByCode(countryCode).isPresent()){
+            Country country = world.getCountryByCode(countryCode).get();
+            country.addInfectionPoint(newMapPoint);
+        } else {
+            // not found in our list of countries
+            System.out.println("COUNTRY NOT FOUND: " + countryCode);
         }
     }
 

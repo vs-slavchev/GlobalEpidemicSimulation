@@ -303,18 +303,10 @@ public class Main extends Application {
     }
 
     private void createInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
-        if (mapCanvas.getGeoFinder()
-                .getCountryNameFromScreenCoordinates(event.getX(), event.getY())
-                .equals("water")) {
-            return;
-        }
-        if (world.getCountryByName("Bulgaria").isPresent()) {
-            Country country = world.getCountryByName("Bulgaria").get();
-            java.awt.geom.Point2D mapInfectionPoint = mapCanvas.getGeoFinder()
-                    .screenToMapCoordinates(event.getX(), event.getY());
-            country.addInfectionPoint(mapInfectionPoint);
-            primaryStage.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
-        }
+        java.awt.geom.Point2D mapPoint = mapCanvas.getGeoFinder()
+                .screenToMapCoordinates(event.getX(), event.getY());
+        infectionSpread.addInfectionPointToCountryAtMapCoordinates(mapPoint);
+        primaryStage.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
     }
 
     /**
@@ -325,6 +317,9 @@ public class Main extends Application {
     private String selectCountryOnMap(MouseEvent event) {
         mapCanvas.selectStyleChange(event.getX(), event.getY());
         mapCanvas.setNeedsRepaint();
+
+
+
         return mapCanvas
                 .getGeoFinder()
                 .getCountryNameFromScreenCoordinates(event.getX(), event.getY());
