@@ -86,12 +86,6 @@ public class InfectionSpread {
                 // not found in our list of countries
                 System.out.println("COUNTRY NOT FOUND: " + countryCode);
             }
-
-            /*else if (world.getCountryByName("Bulgaria").isPresent()) {
-                Country country = world.getCountryByName("Bulgaria").get();
-                country.addInfectionPoint(newPoint);
-            }*/
-
         }
     }
 

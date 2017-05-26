@@ -561,7 +561,7 @@ public class Main extends Application {
                     mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
                     mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
                     try {
-                        Thread.sleep(33);
+                        Thread.sleep(1000 / ConstantValues.FPS);
                     } catch (InterruptedException e) {
                         // empty on purpose
                     }

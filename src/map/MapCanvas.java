@@ -40,7 +40,6 @@ import java.util.*;
 
 public class MapCanvas {
 
-    private static final double FPS = 60.0;
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
     private Canvas canvas;
@@ -82,10 +81,6 @@ public class MapCanvas {
     }
 
     private synchronized void drawMap(GraphicsContext gc) {
-        if (!needsRepaint) {
-            return;
-        }
-        needsRepaint = false;
         StreamingRenderer draw = new StreamingRenderer();
         draw.setMapContent(map);
         FXGraphics2D graphics = new FXGraphics2D(gc);
@@ -103,18 +98,19 @@ public class MapCanvas {
     }
 
     private void drawGraph(GraphicsContext gc) {
-        gc.setStroke(Color.RED);
-        gc.setFill(Color.rgb(255, 0, 0, 1));
+        gc.setStroke(Color.BLACK);
+        gc.setFill(Color.rgb(0, 0, 0, 1));
         gc.setFont(new Font(17));
         gc.fillText("time", 150, canvas.getHeight() - 85);
         gc.fillText("%", 30, canvas.getHeight() - 200);
         gc.strokeLine(50, canvas.getHeight() - 100, 250, canvas.getHeight() - 100);
         gc.strokeLine(50, canvas.getHeight() - 100, 50, canvas.getHeight() - 300);
+
+        gc.setStroke(Color.RED);
         for (int firstOfPair_i = 0; firstOfPair_i < percentageInfected.size() - 1; firstOfPair_i++) {
             int firstOfPair = percentageInfected.get(firstOfPair_i);
             int secondOfPair = percentageInfected.get(firstOfPair_i + 1);
 
-            //TODO restrict to last 100 hours only, use queue?
             gc.strokeLine(
                     (firstOfPair_i/(double)percentageInfected.size()*100.0) * 2 + 50,
                     canvas.getHeight() - 100 - firstOfPair * 2,
@@ -197,6 +193,10 @@ public class MapCanvas {
                 return new Task<Boolean>() {
                     protected Boolean call() {
                         Platform.runLater(() -> {
+                            if (!needsRepaint) {
+                                return;
+                            }
+                            needsRepaint = false;
                             drawMap(graphics);
                             drawGraph(graphics);
                         });
@@ -205,7 +205,7 @@ public class MapCanvas {
                 };
             }
         };
-        svc.setPeriod(Duration.millis(1000.0 / FPS));
+        svc.setPeriod(Duration.millis(1000.0 / ConstantValues.FPS));
         svc.start();
     }
 

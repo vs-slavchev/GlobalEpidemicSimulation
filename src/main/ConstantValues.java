@@ -3,6 +3,8 @@ package main;
 import java.awt.geom.Point2D;
 
 public class ConstantValues {
+    public static final int FPS = 30;
+
     // input files
     public static final String CSS_STYLE_FILE = "Style.css";
     public static final String PLAY_BUTTON_IMAGE_FILE = "start-button";
