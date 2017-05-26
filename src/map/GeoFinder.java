@@ -114,15 +114,15 @@ public class GeoFinder {
 
     public String getCountryNameFromScreenCoordinates(double x, double y) {
         SimpleFeatureCollection features = getCountryFeaturesCollectionFromScreenCoordinates(x, y);
-        return extractCountryNameCodeFromOptional(features);
+        return extractCountryCode(features);
     }
 
-    public String getCountryNameCodeFromMapCoordinates(double x, double y) {
+    public String getCountryCodeFromMapCoordinates(double x, double y) {
         SimpleFeatureCollection features = getCountryFeaturesCollectionFromMapCoordinates(x, y);
-        return extractCountryNameCodeFromOptional(features);
+        return extractCountryCode(features);
     }
 
-    private String extractCountryNameCodeFromOptional(SimpleFeatureCollection features) {
+    private String extractCountryCode(SimpleFeatureCollection features) {
         Optional<String> countryNameCode = Optional.empty();
         try (SimpleFeatureIterator itr = features.features()) {
             while (itr.hasNext()) {

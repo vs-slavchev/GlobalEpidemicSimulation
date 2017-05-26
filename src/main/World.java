@@ -31,9 +31,9 @@ public class World implements Serializable {
                 .findFirst();
     }
 
-    public Optional<Country> getCountryByName(String countryName) {
+    /*public Optional<Country> getCountryByName(String countryName) {
         return getFirstCountry(country -> country.getName().equals(countryName));
-    }
+    }*/
 
     public Optional<Country> getCountryByCode(String code) {
         return getFirstCountry(country -> country.getCode().equals(code));

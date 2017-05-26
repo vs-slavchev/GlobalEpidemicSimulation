@@ -79,12 +79,12 @@ public class InfectionSpread {
     }
 
     /**
-     * Tries to add an infection point to a country.
+     * Tries to add an infection point to the country which is at the input coordinates.
      * @param newMapPoint A point in map coordinates where an infection point should be added.
      */
     public void addInfectionPointToCountryAtMapCoordinates(Point2D newMapPoint) {
         String countryCode = mapCanvas.getGeoFinder()
-                .getCountryNameCodeFromMapCoordinates(newMapPoint.getX(), newMapPoint.getY());
+                .getCountryCodeFromMapCoordinates(newMapPoint.getX(), newMapPoint.getY());
 
         if (countryCode.equals("water")) {
             return;
@@ -93,12 +93,13 @@ public class InfectionSpread {
             country.addInfectionPoint(newMapPoint);
         } else {
             // not found in our list of countries
-            System.out.println("COUNTRY NOT FOUND: " + countryCode);
+            //System.out.println("COUNTRY NOT FOUND: " + countryCode);
         }
     }
 
     /**
      * Given a source point, method creates another point near it with random coordinates.
+     * @param infectionPoint the source point to spawn from
      */
     private Point2D generateNewRandomPoint(Point2D infectionPoint) {
         double offsetX = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
