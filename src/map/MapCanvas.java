@@ -54,7 +54,7 @@ public class MapCanvas {
     private double dragDistanceY;
 
     private ArrayList<Integer> percentageInfected;
-    private String countryInformation;
+    private Country selectedCountry;
 
     public MapCanvas(int width, int height) {
         canvas = new Canvas(width, height);
@@ -82,6 +82,29 @@ public class MapCanvas {
         map.getViewport().setScreenArea(new Rectangle((int) canvas.getWidth(), (int) canvas.getHeight()));
     }
 
+    private void initPaintThread() {
+        ScheduledService<Boolean> svc = new ScheduledService<Boolean>() {
+            protected Task<Boolean> createTask() {
+                return new Task<Boolean>() {
+                    protected Boolean call() {
+                        Platform.runLater(() -> {
+                            if (!needsRepaint) {
+                                return;
+                            }
+                            needsRepaint = false;
+                            drawMap(graphics);
+                            drawGraph(graphics);
+                            drawSelectedCountryInformation(graphics);
+                        });
+                        return true;
+                    }
+                };
+            }
+        };
+        svc.setPeriod(Duration.millis(1000.0 / ConstantValues.FPS));
+        svc.start();
+    }
+
     private synchronized void drawMap(GraphicsContext gc) {
         StreamingRenderer draw = new StreamingRenderer();
         draw.setMapContent(map);
@@ -100,6 +123,7 @@ public class MapCanvas {
     }
 
     private void drawGraph(GraphicsContext gc) {
+        // draw the base
         gc.setStroke(Color.BLACK);
         gc.setFill(Color.rgb(0, 0, 0, 1));
         gc.setFont(new Font(17));
@@ -108,6 +132,7 @@ public class MapCanvas {
         gc.strokeLine(50, canvas.getHeight() - 100, 250, canvas.getHeight() - 100);
         gc.strokeLine(50, canvas.getHeight() - 100, 50, canvas.getHeight() - 300);
 
+        // draw the lines
         gc.setStroke(Color.RED);
         for (int firstOfPair_i = 0; firstOfPair_i < percentageInfected.size() - 1; firstOfPair_i++) {
             int firstOfPair = percentageInfected.get(firstOfPair_i);
@@ -118,6 +143,32 @@ public class MapCanvas {
                     canvas.getHeight() - 100 - firstOfPair * 2,
                     ((firstOfPair_i + 1)/(double)percentageInfected.size()*100.0) * 2 + 50,
                     canvas.getHeight() - 100 - secondOfPair * 2);
+        }
+    }
+
+    private void drawSelectedCountryInformation(GraphicsContext gc) {
+        if (selectedCountry == null) { return; }
+
+        int baseX = (int) (canvas.getWidth() - 400);
+        int baseY = (int) (canvas.getHeight() - 300);
+
+        gc.setFill(Color.rgb(0, 200, 200, 0.8));
+        gc.fillRect(baseX, baseY, 350, 200);
+
+        gc.setFill(Color.rgb(30, 30, 200, 1));
+        gc.setFont(new Font(15));
+//        gc.fillText("Name:" + selectedCountry.getName(), baseX + 10, baseY + 30);
+
+        String[] lines = {
+                "Name: " + selectedCountry.getName(),
+                "Code: " + selectedCountry.getCode(),
+                "Population: " + String.format("%,d", selectedCountry.getTotalPopulation()),
+                "Population density: " + selectedCountry.getEnvironment().getPopulationDensity(),
+                "Medical infrastructure: " + selectedCountry.getEnvironment().getMedicalInfrastructure(),
+                "Average yearly temperature: " + selectedCountry.getEnvironment().getAvgYearlyTemp()
+        };
+        for (int line_i = 0; line_i < lines.length; line_i++) {
+            gc.fillText(lines[line_i], baseX + 20, baseY + 30 * (line_i + 1));
         }
     }
 
@@ -189,28 +240,6 @@ public class MapCanvas {
         });
     }
 
-    private void initPaintThread() {
-        ScheduledService<Boolean> svc = new ScheduledService<Boolean>() {
-            protected Task<Boolean> createTask() {
-                return new Task<Boolean>() {
-                    protected Boolean call() {
-                        Platform.runLater(() -> {
-                            if (!needsRepaint) {
-                                return;
-                            }
-                            needsRepaint = false;
-                            drawMap(graphics);
-                            drawGraph(graphics);
-                        });
-                        return true;
-                    }
-                };
-            }
-        };
-        svc.setPeriod(Duration.millis(1000.0 / ConstantValues.FPS));
-        svc.start();
-    }
-
     private void setViewport(ReferencedEnvelope envelope) {
         map.getViewport().setBounds(envelope);
         needsRepaint = true;
@@ -235,14 +264,17 @@ public class MapCanvas {
     private void displaySelectedFeatures(Set<FeatureId> IDs) {
         Style style = IDs.isEmpty() ?
                 styleManager.createDefaultStyle() : styleManager.createSelectedStyle(IDs);
-
-        Layer layer = map.layers().get(0);
-        ((FeatureLayer) layer).setStyle(style);
+        setMapStyle(style);
     }
 
     public void deselectStyle() {
+        setMapStyle(styleManager.createDefaultStyle());
+        selectedCountry = null;
+    }
+
+    private void setMapStyle(Style style) {
         Layer layer = map.layers().get(0);
-        ((FeatureLayer) layer).setStyle(styleManager.createDefaultStyle());
+        ((FeatureLayer) layer).setStyle(style);
     }
 
     public GeoFinder getGeoFinder() {
@@ -254,14 +286,13 @@ public class MapCanvas {
         setNeedsRepaint();
     }
 
-    public void setCountryInformation(String countryInformation) {
-        this.countryInformation = countryInformation;
-    }
-
     public void selectCountry(double x, double y, Country country) {
-        setCountryInformation(country.toString());
+        if (country.equals(selectedCountry)) {
+            deselectStyle();
+            return;
+        }
         selectStyleChange(x, y);
         setNeedsRepaint();
-
+        selectedCountry = country;
     }
 }
