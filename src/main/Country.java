@@ -119,4 +119,22 @@ public class Country implements Serializable {
     public String getCode() {
         return code;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Country country = (Country) o;
+
+        if (name != null ? !name.equals(country.name) : country.name != null) return false;
+        return code != null ? code.equals(country.code) : country.code == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        return result;
+    }
 }

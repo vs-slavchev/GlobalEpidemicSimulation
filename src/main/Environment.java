@@ -58,4 +58,24 @@ public class Environment implements Serializable {
                 + AllTemps() + ", airPol= "
                 + airPollution + ", waterPoll= " + waterPollution + ", popDensity= " + populationDensity;
     }
+
+    public float getMedicalInfrastructure() {
+        return medicalInfrastructure;
+    }
+
+    public float getHumidity() {
+        return humidity;
+    }
+
+    public double getAvgYearlyTemp() {
+        return AvgYearlyTemp;
+    }
+
+    public float getAirPollution() {
+        return airPollution;
+    }
+
+    public float getPopulationDensity() {
+        return populationDensity;
+    }
 }
