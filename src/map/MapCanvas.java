@@ -150,25 +150,40 @@ public class MapCanvas {
         if (selectedCountry == null) { return; }
 
         int baseX = (int) (canvas.getWidth() - 400);
-        int baseY = (int) (canvas.getHeight() - 300);
+        int baseY = (int) (canvas.getHeight() - 380);
 
         gc.setFill(Color.rgb(0, 200, 200, 0.8));
-        gc.fillRect(baseX, baseY, 350, 200);
+        gc.fillRect(baseX, baseY, 350, 280);
 
         gc.setFill(Color.rgb(30, 30, 200, 1));
         gc.setFont(new Font(15));
 //        gc.fillText("Name:" + selectedCountry.getName(), baseX + 10, baseY + 30);
 
-        String[] lines = {
-                "Name: " + selectedCountry.getName(),
-                "Code: " + selectedCountry.getCode(),
-                "Population: " + String.format("%,d", selectedCountry.getTotalPopulation()),
-                "Population density: " + selectedCountry.getEnvironment().getPopulationDensity(),
-                "Medical infrastructure: " + selectedCountry.getEnvironment().getMedicalInfrastructure(),
-                "Average yearly temperature: " + selectedCountry.getEnvironment().getAvgYearlyTemp()
+        String[] labelLines = {
+                "Name:",
+                "Code:",
+                "Population:",
+                "Population density:",
+                "Medical infrastructure:",
+                "Average yearly temperature:"
         };
-        for (int line_i = 0; line_i < lines.length; line_i++) {
-            gc.fillText(lines[line_i], baseX + 20, baseY + 30 * (line_i + 1));
+
+        String[] contentLines = {
+                selectedCountry.getName(),
+                selectedCountry.getCode(),
+                String.format("%,d", selectedCountry.getTotalPopulation()),
+                String.valueOf(selectedCountry.getEnvironment().getPopulationDensity()),
+                String.valueOf(selectedCountry.getEnvironment().getMedicalInfrastructure()),
+                String.valueOf(selectedCountry.getEnvironment().getAvgYearlyTemp())
+        };
+
+        for (int line_i = 0; line_i < labelLines.length; line_i++) {
+            gc.fillText(labelLines[line_i], baseX + 20, baseY + 40 * (line_i + 1));
+        }
+
+        gc.setFill(Color.rgb(100, 30, 120, 1));
+        for (int line_i = 0; line_i < labelLines.length; line_i++) {
+            gc.fillText(contentLines[line_i], baseX + 50, baseY + 17.5 + 40 * (line_i + 1));
         }
     }
 
