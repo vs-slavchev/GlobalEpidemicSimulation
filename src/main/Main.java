@@ -423,6 +423,7 @@ public class Main extends Application {
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
                 addToListBoxes(DiseaseListBox, MedicineListBox);
                 popup.hide();
+                pp.hide();
             } catch (Exception ex) {
                 name.setPromptText("not filled in");
                 preferredTemp.setPromptText("not filled in");
@@ -533,6 +534,7 @@ public class Main extends Application {
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
                 addToListBoxes(DiseaseListBox, MedicineListBox);
                 popup.hide();
+                pp.hide();
             } catch (Exception ex) {
                 name.setPromptText("not filled in");
                 preferredTemp.setPromptText("not filled in");
