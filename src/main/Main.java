@@ -41,6 +41,7 @@ public class Main extends Application {
     private HBox buttonBar;
     private MapCanvas mapCanvas;
     private Popup popup = null;
+    private Popup pp = null;
     private Label timer = new Label();
     private Label speedLabel = new Label();
     private World world;
@@ -92,6 +93,7 @@ public class Main extends Application {
 
     private void setUpButtonBar(Stage primaryStage) {
         buttonBar = new HBox();
+        buttonBar.getStyleClass().add("hbox");
 
         MenuButton fileMenuButton = new MenuButton("File");
 
@@ -238,17 +240,21 @@ public class Main extends Application {
         });
 
         disease.setOnAction(event -> {
-            if (popup != null) {
-                popup.hide();
-            }
+//            if (popup != null) {
+//                popup.hide();
+//                pp.hide();
+//            }
             SetUpPopupDisease(diseaseListBox, medicineListBox, primaryStage);
+            pp.show(primaryStage);
             popup.show(primaryStage);
         });
         medicine.setOnAction(event -> {
-            if (popup != null) {
-                popup.hide();
-            }
+//            if (popup != null) {
+//                popup.hide();
+//                pp.hide();
+//            }
             SetUpPopupMedicine(diseaseListBox, medicineListBox, primaryStage);
+            pp.show(primaryStage);
             popup.show(primaryStage);
         });
 
@@ -327,8 +333,15 @@ public class Main extends Application {
 
     private void SetUpPopupDisease(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
         popup = new Popup();
+        pp = new Popup();
         Rectangle popUpRectangleBackground = new Rectangle(360, 350);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
+
+        Rectangle popUpRectangleBackgroundCover = new Rectangle();
+        popUpRectangleBackgroundCover.setFill(Color.ALICEBLUE);
+        popUpRectangleBackgroundCover.setOpacity(0.1);
+        popUpRectangleBackgroundCover.setHeight(primaryStage.getHeight());
+        popUpRectangleBackgroundCover.setWidth(primaryStage.getWidth());
 
         final Slider lethality = new Slider(0, 100, 50);
         final Slider virulence = new Slider(0, 100, 50);
@@ -393,6 +406,7 @@ public class Main extends Application {
                 lethalityHB, virulenceHB, buttonsHB);
 
         popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
+        pp.getContent().addAll(popUpRectangleBackgroundCover);
         buttonsAndFieldsVB.setSpacing(10);
         buttonsAndFieldsVB.setPadding(new Insets(10, 10, 10, 10));
 
@@ -415,13 +429,22 @@ public class Main extends Application {
         });
         cancel.setOnAction(event -> {
             popup.hide();
+            pp.hide();
         });
     }
 
     private void SetUpPopupMedicine(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
         popup = new Popup();
+        pp = new Popup();
+
         Rectangle popUpRectangleBackground = new Rectangle(360, 350);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
+
+        Rectangle popUpRectangleBackgroundCover = new Rectangle();
+        popUpRectangleBackgroundCover.setFill(Color.ALICEBLUE);
+        popUpRectangleBackgroundCover.setOpacity(0.1);
+        popUpRectangleBackgroundCover.setHeight(primaryStage.getHeight());
+        popUpRectangleBackgroundCover.setWidth(primaryStage.getWidth());
 
         final Slider lethality = new Slider(0, 100, 50);
         final Slider virulence = new Slider(0, 100, 50);
@@ -492,6 +515,7 @@ public class Main extends Application {
                 tempToleranceHB, lethalityHB, virulenceHB, buttonsHB);
 
         popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
+        pp.getContent().addAll(popUpRectangleBackgroundCover);
         buttonsAndFieldsVB.setSpacing(10);
         buttonsAndFieldsVB.setPadding(new Insets(10, 10, 10, 10));
 
@@ -515,6 +539,7 @@ public class Main extends Application {
         });
         cancel.setOnAction(event -> {
             popup.hide();
+            pp.hide();
         });
     }
 
