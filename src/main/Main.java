@@ -51,6 +51,7 @@ public class Main extends Application {
 
     private MedicineSpread medicineSpread;
     private InfectionSpread infectionSpread;
+    private boolean isClickedOnMap = false;
     private volatile boolean isWorking = true;
     private volatile boolean isStarted = false;
     private SaveLoadManager saveLoadManager;
@@ -313,6 +314,7 @@ public class Main extends Application {
                 .screenToMapCoordinates(event.getX(), event.getY());
         infectionSpread.addInfectionPointToCountryAtMapCoordinates(mapPoint);
         primaryStage.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+        isClickedOnMap = true;
     }
 
     /**
@@ -560,15 +562,15 @@ public class Main extends Application {
 
     private Thread startTimer() {
         return new Thread(() -> {
-            while (isWorking) {
-                world.getTime().setElapsedTime();
-                Platform.runLater(() -> timer.setText(world.getTime().toString()));
-                try {
-                    Thread.sleep(world.getTime().timerSleepTime());
-                } catch (InterruptedException e) {
-                    // empty on purpose
+                while (isWorking) {
+                    world.getTime().setElapsedTime();
+                    Platform.runLater(() -> timer.setText(world.getTime().toString()));
+                    try {
+                        Thread.sleep(world.getTime().timerSleepTime());
+                    } catch (InterruptedException e) {
+                        // empty on purpose
+                    }
                 }
-            }
         });
 
     }
@@ -576,14 +578,16 @@ public class Main extends Application {
     private Thread AlgorithmThread() {
         return new Thread(() -> {
             while (isWorking) {
-                if (world.getTime().checkHour()) {
-                    infectionSpread.applyAlgorithm(selectedDisease);
-                    mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-                    mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
-                    try {
-                        Thread.sleep(1000 / ConstantValues.FPS);
-                    } catch (InterruptedException e) {
-                        // empty on purpose
+                if(isClickedOnMap){
+                    while(world.getTime().checkHour()) {
+                        infectionSpread.applyAlgorithm(selectedDisease);
+                        mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                        mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
+                        try {
+                            Thread.sleep(1000 / ConstantValues.FPS);
+                        } catch (InterruptedException e) {
+                         // empty on purpose
+                        }
                     }
                 }
             }
