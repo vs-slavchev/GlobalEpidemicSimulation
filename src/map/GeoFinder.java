@@ -112,7 +112,7 @@ public class GeoFinder {
         return worldToScreen;
     }
 
-    public String getCountryNameFromScreenCoordinates(double x, double y) {
+    public String getCountryCodeFromScreenCoordinates(double x, double y) {
         SimpleFeatureCollection features = getCountryFeaturesCollectionFromScreenCoordinates(x, y);
         return extractCountryCode(features);
     }

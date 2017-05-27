@@ -86,14 +86,9 @@ public class InfectionSpread {
         String countryCode = mapCanvas.getGeoFinder()
                 .getCountryCodeFromMapCoordinates(newMapPoint.getX(), newMapPoint.getY());
 
-        if (countryCode.equals("water")) {
-            return;
-        } else if (world.getCountryByCode(countryCode).isPresent()){
+        if (world.getCountryByCode(countryCode).isPresent()){
             Country country = world.getCountryByCode(countryCode).get();
             country.addInfectionPoint(newMapPoint);
-        } else {
-            // not found in our list of countries
-            //System.out.println("COUNTRY NOT FOUND: " + countryCode);
         }
     }
 

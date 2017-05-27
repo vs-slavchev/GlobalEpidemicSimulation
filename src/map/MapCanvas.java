@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import main.ConstantValues;
+import main.Country;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
@@ -239,6 +240,10 @@ public class MapCanvas {
         ((FeatureLayer) layer).setStyle(style);
     }
 
+    public void deselectStyle() {
+        Layer layer = map.layers().get(0);
+        ((FeatureLayer) layer).setStyle(styleManager.createDefaultStyle());
+    }
 
     public GeoFinder getGeoFinder() {
         return geoFinder;
@@ -251,5 +256,12 @@ public class MapCanvas {
 
     public void setCountryInformation(String countryInformation) {
         this.countryInformation = countryInformation;
+    }
+
+    public void selectCountry(double x, double y, Country country) {
+        setCountryInformation(country.toString());
+        selectStyleChange(x, y);
+        setNeedsRepaint();
+
     }
 }

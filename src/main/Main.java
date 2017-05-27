@@ -31,6 +31,7 @@ import map.MapCanvas;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 
 /**
  * Owner: Ivan
@@ -310,19 +311,15 @@ public class Main extends Application {
     }
 
     /**
-     * Changes the rendering style of the clicked on country.
-     *
-     * @return The name of the country that was clicked on.
+     * Changes the rendering style of the clicked on country and displays information about it.
      */
-    private String selectCountryOnMap(MouseEvent event) {
-        mapCanvas.selectStyleChange(event.getX(), event.getY());
-        mapCanvas.setNeedsRepaint();
-
-
-
-        return mapCanvas
-                .getGeoFinder()
-                .getCountryNameFromScreenCoordinates(event.getX(), event.getY());
+    private void selectCountryOnMap(MouseEvent event) {
+        String selectedCode = mapCanvas.getGeoFinder().getCountryCodeFromScreenCoordinates(event.getX(), event.getY());
+        Optional<Country> countryMaybe = world.getCountryByCode(selectedCode);
+        if (countryMaybe.isPresent()) {
+            Country country = countryMaybe.get();
+            mapCanvas.selectCountry(event.getX(), event.getY(), country);
+        }
     }
 
     private void SetUpPopupDisease(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
