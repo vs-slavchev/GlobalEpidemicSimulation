@@ -271,7 +271,7 @@ public class Main extends Application {
 
         backForwardbutton.setOnAction(event -> {
             fastForwardbutton.setDisable(false);
-            world.getTime().substract();
+            world.getTime().subtract();
             if (world.getTime().getRunSpeed() <= 1) {
                 backForwardbutton.setDisable(true);
             }
