@@ -120,6 +120,10 @@ public class Main extends Application {
             if (loadedWorld != null) {
                 world = loadedWorld;
                 timer.setText(world.getTime().toString());
+                mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
+                saveLoadManager.InformativeMessage("Opened!");
+                isClickedOnMap = true;
             }
         });
         saveSimulation.setOnAction(event -> saveLoadManager.saveFile(primaryStage, world));

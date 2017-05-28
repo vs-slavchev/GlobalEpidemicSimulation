@@ -100,8 +100,8 @@ public class SaveLoadManager {
                 FileInputStream inputStream = new FileInputStream(file.getPath());
                 ObjectInputStream ois = new ObjectInputStream(inputStream);
                 World loadedWorld = (World) ois.readObject();
+
                 filePath = file.getPath();
-                InformativeMessage("Opened!");
                 return loadedWorld;
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -126,7 +126,7 @@ public class SaveLoadManager {
      * Displaying a informative message about the action done
      * @param text used to pass the text to be used in the MessageBox
      */
-    private void InformativeMessage(String text){
+    public void InformativeMessage(String text){
         Alert alert = new Alert(Alert.AlertType.INFORMATION, text);
         alert.setHeaderText(null);
         alert.showAndWait();
