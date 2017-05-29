@@ -545,6 +545,12 @@ public class Main extends Application {
                 popup.hide();
                 backgroundBlock.hide();
             } catch (Exception ex) {
+                if (preferredTemp.getText().equals("-")){
+                    preferredTemp.setText("");
+                }
+                if (tempTolerance.getText().equals("-")){
+                    tempTolerance.setText("");
+                }
                 name.setPromptText("not filled in");
                 preferredTemp.setPromptText("not filled in");
                 tempTolerance.setPromptText("not filled in");
