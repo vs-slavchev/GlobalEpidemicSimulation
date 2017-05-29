@@ -337,7 +337,7 @@ public class Main extends Application {
     private void SetUpPopupDisease(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
         popup = new Popup();
         pp = new Popup();
-        Rectangle popUpRectangleBackground = new Rectangle(360, 350);
+        Rectangle popUpRectangleBackground = new Rectangle(390, 360);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
 
         Rectangle popUpRectangleBackgroundCover = new Rectangle();
@@ -441,7 +441,7 @@ public class Main extends Application {
         popup = new Popup();
         pp = new Popup();
 
-        Rectangle popUpRectangleBackground = new Rectangle(360, 350);
+        Rectangle popUpRectangleBackground = new Rectangle(390, 380);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
 
         Rectangle popUpRectangleBackgroundCover = new Rectangle();
