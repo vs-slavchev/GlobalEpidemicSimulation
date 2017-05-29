@@ -420,13 +420,21 @@ public class Main extends Application {
                                 Double.parseDouble(preferredTemp.getText()),
                                 Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
-                infectionSpread.addDisease(disease);
-                setPointers(diseaseListBox, medicineListBox, primaryStage);
-                addToListBoxes(DiseaseListBox, MedicineListBox);
-                popup.hide();
-                pp.hide();
+
+                    infectionSpread.addDisease(disease);
+                    setPointers(diseaseListBox, medicineListBox, primaryStage);
+                    addToListBoxes(DiseaseListBox, MedicineListBox);
+                    popup.hide();
+                    pp.hide();
+
             } catch (Exception ex) {
                 name.setPromptText("not filled in");
+                if (preferredTemp.getText().equals("-")){
+                    preferredTemp.setText("");
+                }
+                if (tempTolerance.getText().equals("-")){
+                    tempTolerance.setText("");
+                }
                 preferredTemp.setPromptText("not filled in");
                 tempTolerance.setPromptText("not filled in");
             }
@@ -556,7 +564,7 @@ public class Main extends Application {
         return new TextField() {
             @Override
             public void replaceText(int i, int j, String string) {
-                if (string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")) {
+                if (string.isEmpty() || (this.getText() + string).matches("(-)?(\\d+([.,])?(\\d+)?)?")) {
                     super.replaceText(i, j, string);
                 }
             }
