@@ -35,7 +35,6 @@ public class SaveLoadManager {
     public void saveFile(Stage primaryStage, World world) {
         // if there is no save file, go to 'save file as' dialog
         if (filePath == null) {
-            //calling saveFileAs method
             saveFileAs(primaryStage, world);
         }
         else{
@@ -60,7 +59,7 @@ public class SaveLoadManager {
      */
     public void saveFileAs(Stage primaryStage, World world) {
         //getting current date-time
-        String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())+".sim";
+        String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())+".bin";
         //creating new FileChooser
         FileChooser fileChooser = new FileChooser();
         //setting the title
@@ -92,7 +91,6 @@ public class SaveLoadManager {
     @Nullable
     public World openFile(Stage primaryStage) {
         FileChooser fileChooser = new FileChooser();
-        //calling the configureOpenFileChooser method
         configureOpenFileChooser(fileChooser);
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
@@ -118,7 +116,7 @@ public class SaveLoadManager {
         fileChooser.setTitle("Open file");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("SIM", "*.sim")
+                new FileChooser.ExtensionFilter("BIN", "*.bin")
         );
     }
 
