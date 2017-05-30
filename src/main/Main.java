@@ -14,6 +14,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -49,21 +51,21 @@ public class Main extends Application {
     private MenuButton MedicineListBox;
     private MenuButton DiseaseListBox;
     private Disease selectedDisease;
-
+    public VBox root;
     private MedicineSpread medicineSpread;
     private InfectionSpread infectionSpread;
     private boolean isClickedOnMap = false;
     private volatile boolean isWorking = true;
     private volatile boolean isStarted = false;
     private SaveLoadManager saveLoadManager;
-
+    private GaussianBlur blur;
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        VBox root = new VBox();
+        root = new VBox();
         root.setMinWidth(640);
         root.setMinHeight(480);
         isStarted = false;
@@ -73,9 +75,11 @@ public class Main extends Application {
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         mapCanvas = new MapCanvas((int)bounds.getWidth(), (int)bounds.getHeight());
 
+
         infectionSpread = new InfectionSpread(world, mapCanvas);
         medicineSpread = new MedicineSpread();
         saveLoadManager = new SaveLoadManager();
+
 
         timer.setText(world.getTime().toString());
         timer.setId("timer");
@@ -90,7 +94,11 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+
         scene.getStylesheets().add(ConstantValues.CSS_STYLE_FILE);
+        blur = new GaussianBlur(0);
+        root.setEffect(blur);
+
     }
 
     private void setUpButtonBar(Stage primaryStage) {
@@ -339,6 +347,9 @@ public class Main extends Application {
         backgroundBlock = new Popup();
         Rectangle popUpRectangleBackground = new Rectangle(390, 360);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
+        blur.setRadius(15);
+
+
 
         Rectangle popUpRectangleBackgroundCover = new Rectangle();
         popUpRectangleBackgroundCover.setFill(Color.ALICEBLUE);
@@ -441,6 +452,7 @@ public class Main extends Application {
         });
         cancel.setOnAction(event -> {
             popup.hide();
+            blur.setRadius(0);
             backgroundBlock.hide();
         });
     }
@@ -448,6 +460,7 @@ public class Main extends Application {
     private void SetUpPopupMedicine(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
         popup = new Popup();
         backgroundBlock = new Popup();
+        blur.setRadius(15);
 
         Rectangle popUpRectangleBackground = new Rectangle(390, 380);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
@@ -558,6 +571,7 @@ public class Main extends Application {
         });
         cancel.setOnAction(event -> {
             popup.hide();
+            blur.setRadius(0);
             backgroundBlock.hide();
         });
     }
