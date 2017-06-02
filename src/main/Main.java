@@ -436,6 +436,7 @@ public class Main extends Application {
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
                 addToListBoxes(DiseaseListBox, MedicineListBox);
                 popup.hide();
+                blur.setRadius(0);
                 backgroundBlock.hide();
 
             } catch (Exception ex) {
@@ -556,6 +557,7 @@ public class Main extends Application {
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
                 addToListBoxes(DiseaseListBox, MedicineListBox);
                 popup.hide();
+                blur.setRadius(0);
                 backgroundBlock.hide();
             } catch (Exception ex) {
                 if (preferredTemp.getText().equals("-")){
