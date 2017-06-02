@@ -124,25 +124,26 @@ public class MapCanvas {
 
     private void drawGraph(GraphicsContext gc) {
         // draw the base
-        gc.setStroke(Color.BLACK);
-        gc.setFill(Color.rgb(0, 0, 0, 1));
-        gc.setFont(new Font(17));
-        gc.fillText("time", 150, canvas.getHeight() - 85);
-        gc.fillText("%", 30, canvas.getHeight() - 200);
-        gc.strokeLine(50, canvas.getHeight() - 100, 250, canvas.getHeight() - 100);
-        gc.strokeLine(50, canvas.getHeight() - 100, 50, canvas.getHeight() - 300);
+        gc.setStroke(Color.rgb(220, 20, 60, 1));
+        gc.setLineWidth(3);
+        gc.setFill(Color.rgb(178, 34, 34, 1));
+        gc.setFont(new Font(25));
+        gc.fillText("time", 300, canvas.getHeight() - 125);
+        gc.fillText("%", 20, canvas.getHeight() - 380);
+        gc.strokeLine(50, canvas.getHeight() - 150, 350, canvas.getHeight() - 150);
+        gc.strokeLine(50, canvas.getHeight() - 150, 50, canvas.getHeight() - 400);
 
         // draw the lines
-        gc.setStroke(Color.RED);
+        gc.setStroke(Color.rgb(240, 128, 128, 1));
         for (int firstOfPair_i = 0; firstOfPair_i < percentageInfected.size() - 1; firstOfPair_i++) {
             int firstOfPair = percentageInfected.get(firstOfPair_i);
             int secondOfPair = percentageInfected.get(firstOfPair_i + 1);
 
             gc.strokeLine(
-                    (firstOfPair_i/(double)percentageInfected.size()*100.0) * 2 + 50,
-                    canvas.getHeight() - 100 - firstOfPair * 2,
-                    ((firstOfPair_i + 1)/(double)percentageInfected.size()*100.0) * 2 + 50,
-                    canvas.getHeight() - 100 - secondOfPair * 2);
+                    (firstOfPair_i/(double)percentageInfected.size()*100.0) * 3 + 50,
+                    canvas.getHeight() - 150 - firstOfPair * 2.5,
+                    ((firstOfPair_i + 1)/(double)percentageInfected.size()*100.0) * 3 + 50,
+                    canvas.getHeight() - 150 - secondOfPair * 2.5);
         }
     }
 
