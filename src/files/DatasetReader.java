@@ -75,7 +75,6 @@ public class DatasetReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //calling method readTemperatures
         readTemperatures(countries);
         return countries;
     }

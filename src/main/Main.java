@@ -14,6 +14,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -47,12 +48,14 @@ public class Main extends Application {
 
     private HBox buttonBar;
     private Popup popup = null;
-    private Popup pp = null;
+    private Popup backgroundBlock = null;
     private Label timer = new Label();
     private Label speedLabel = new Label();
     private MenuButton MedicineListBox;
     private MenuButton DiseaseListBox;
     private Disease selectedDisease;
+    private GaussianBlur blur;
+
     private boolean isClickedOnMap = false;
     private volatile boolean isWorking = true;
     private volatile boolean isStarted = false;
@@ -73,9 +76,11 @@ public class Main extends Application {
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         mapCanvas = new MapCanvas((int)bounds.getWidth(), (int)bounds.getHeight());
 
+
         infectionSpread = new InfectionSpread(world, mapCanvas);
         medicineSpread = new MedicineSpread();
         saveLoadManager = new SaveLoadManager();
+
 
         timer.setText(world.getTime().toString());
         timer.setId("timer");
@@ -90,7 +95,11 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+
         scene.getStylesheets().add(ConstantValues.CSS_STYLE_FILE);
+        blur = new GaussianBlur(0);
+        root.setEffect(blur);
+
     }
 
     private void setUpButtonBar(Stage primaryStage) {
@@ -251,7 +260,7 @@ public class Main extends Application {
 //                pp.hide();
 //            }
             SetUpPopupDisease(diseaseListBox, medicineListBox, primaryStage);
-            pp.show(primaryStage);
+            backgroundBlock.show(primaryStage);
             popup.show(primaryStage);
         });
         medicine.setOnAction(event -> {
@@ -260,7 +269,7 @@ public class Main extends Application {
 //                pp.hide();
 //            }
             SetUpPopupMedicine(diseaseListBox, medicineListBox, primaryStage);
-            pp.show(primaryStage);
+            backgroundBlock.show(primaryStage);
             popup.show(primaryStage);
         });
 
@@ -336,9 +345,12 @@ public class Main extends Application {
 
     private void SetUpPopupDisease(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
         popup = new Popup();
-        pp = new Popup();
+        backgroundBlock = new Popup();
         Rectangle popUpRectangleBackground = new Rectangle(390, 360);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
+        blur.setRadius(15);
+
+
 
         Rectangle popUpRectangleBackgroundCover = new Rectangle();
         popUpRectangleBackgroundCover.setFill(Color.ALICEBLUE);
@@ -409,7 +421,7 @@ public class Main extends Application {
                 lethalityHB, virulenceHB, buttonsHB);
 
         popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
-        pp.getContent().addAll(popUpRectangleBackgroundCover);
+        backgroundBlock.getContent().addAll(popUpRectangleBackgroundCover);
         buttonsAndFieldsVB.setSpacing(10);
         buttonsAndFieldsVB.setPadding(new Insets(10, 10, 10, 10));
 
@@ -420,12 +432,21 @@ public class Main extends Application {
                                 Double.parseDouble(preferredTemp.getText()),
                                 Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
+
                 infectionSpread.addDisease(disease);
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
                 addToListBoxes(DiseaseListBox, MedicineListBox);
                 popup.hide();
-                pp.hide();
+                blur.setRadius(0);
+                backgroundBlock.hide();
+
             } catch (Exception ex) {
+                if (preferredTemp.getText().equals("-")){
+                    preferredTemp.setText("");
+                }
+                if (tempTolerance.getText().equals("-")){
+                    tempTolerance.setText("");
+                }
                 name.setPromptText("not filled in");
                 preferredTemp.setPromptText("not filled in");
                 tempTolerance.setPromptText("not filled in");
@@ -433,13 +454,15 @@ public class Main extends Application {
         });
         cancel.setOnAction(event -> {
             popup.hide();
-            pp.hide();
+            blur.setRadius(0);
+            backgroundBlock.hide();
         });
     }
 
     private void SetUpPopupMedicine(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
         popup = new Popup();
-        pp = new Popup();
+        backgroundBlock = new Popup();
+        blur.setRadius(15);
 
         Rectangle popUpRectangleBackground = new Rectangle(390, 380);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
@@ -519,7 +542,7 @@ public class Main extends Application {
                 tempToleranceHB, lethalityHB, virulenceHB, buttonsHB);
 
         popup.getContent().addAll(popUpRectangleBackground, buttonsAndFieldsVB);
-        pp.getContent().addAll(popUpRectangleBackgroundCover);
+        backgroundBlock.getContent().addAll(popUpRectangleBackgroundCover);
         buttonsAndFieldsVB.setSpacing(10);
         buttonsAndFieldsVB.setPadding(new Insets(10, 10, 10, 10));
 
@@ -535,8 +558,15 @@ public class Main extends Application {
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
                 addToListBoxes(DiseaseListBox, MedicineListBox);
                 popup.hide();
-                pp.hide();
+                blur.setRadius(0);
+                backgroundBlock.hide();
             } catch (Exception ex) {
+                if (preferredTemp.getText().equals("-")){
+                    preferredTemp.setText("");
+                }
+                if (tempTolerance.getText().equals("-")){
+                    tempTolerance.setText("");
+                }
                 name.setPromptText("not filled in");
                 preferredTemp.setPromptText("not filled in");
                 tempTolerance.setPromptText("not filled in");
@@ -544,7 +574,8 @@ public class Main extends Application {
         });
         cancel.setOnAction(event -> {
             popup.hide();
-            pp.hide();
+            blur.setRadius(0);
+            backgroundBlock.hide();
         });
     }
 
@@ -556,7 +587,7 @@ public class Main extends Application {
         return new TextField() {
             @Override
             public void replaceText(int i, int j, String string) {
-                if (string.isEmpty() || (this.getText() + string).matches("\\d+([.,])?(\\d+)?")) {
+                if (string.isEmpty() || (this.getText() + string).matches("(-)?(\\d+([.,])?(\\d+)?)?")) {
                     super.replaceText(i, j, string);
                 }
             }
