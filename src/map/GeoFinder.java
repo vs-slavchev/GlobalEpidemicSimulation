@@ -37,7 +37,7 @@ public class GeoFinder {
     private SpatialIndexFeatureCollection countries;
     private SimpleFeatureSource featureSource;
 
-    GeoFinder(int width, int height) {
+    public GeoFinder(int width, int height) {
         this.viewportWidth = width;
         this.viewportHeight = height;
 
@@ -65,7 +65,7 @@ public class GeoFinder {
         return createScreenToWorldAffineTransform().transform(new Point2D.Double(x, y), null);
     }
 
-    Point2D mapToScreenCoordinates(double x, double y) {
+    public Point2D mapToScreenCoordinates(double x, double y) {
         return createWorldToScreenAffineTransform().transform(new Point2D.Double(x, y), null);
     }
 

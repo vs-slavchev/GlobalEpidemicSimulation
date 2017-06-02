@@ -39,23 +39,23 @@ import java.util.Optional;
 
 public class Main extends Application {
 
-    private HBox buttonBar;
+    private World world;
     private MapCanvas mapCanvas;
+    private InfectionSpread infectionSpread;
+    private MedicineSpread medicineSpread;
+    private SaveLoadManager saveLoadManager;
+
+    private HBox buttonBar;
     private Popup popup = null;
     private Popup pp = null;
     private Label timer = new Label();
     private Label speedLabel = new Label();
-    private World world;
     private MenuButton MedicineListBox;
     private MenuButton DiseaseListBox;
     private Disease selectedDisease;
-
-    private MedicineSpread medicineSpread;
-    private InfectionSpread infectionSpread;
     private boolean isClickedOnMap = false;
     private volatile boolean isWorking = true;
     private volatile boolean isStarted = false;
-    private SaveLoadManager saveLoadManager;
 
     public static void main(String[] args) {
         launch(args);

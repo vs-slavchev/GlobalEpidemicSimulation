@@ -157,7 +157,6 @@ public class MapCanvas {
 
         gc.setFill(Color.rgb(30, 30, 200, 1));
         gc.setFont(new Font(15));
-//        gc.fillText("Name:" + selectedCountry.getName(), baseX + 10, baseY + 30);
 
         String[] labelLines = {
                 "Name:",
@@ -282,9 +281,13 @@ public class MapCanvas {
         setMapStyle(style);
     }
 
+    /**
+     * Deselect any selected countries.
+     */
     public void deselectStyle() {
         setMapStyle(styleManager.createDefaultStyle());
         selectedCountry = null;
+        needsRepaint = true;
     }
 
     private void setMapStyle(Style style) {

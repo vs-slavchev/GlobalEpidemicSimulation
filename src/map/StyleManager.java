@@ -38,7 +38,7 @@ class StyleManager {
     private GeomType geometryType;
     private String geometryAttributeName;
 
-    StyleManager(FeatureSource featureSource) {
+    public StyleManager(FeatureSource featureSource) {
         GeometryDescriptor geomDesc = featureSource.getSchema().getGeometryDescriptor();
         geometryAttributeName = geomDesc.getLocalName();
 
@@ -55,7 +55,7 @@ class StyleManager {
         }
     }
 
-    Style createDefaultStyle() {
+    public Style createDefaultStyle() {
         Stroke stroke = styleFactory.createStroke(
                 filterFactory.literal(Color.BLACK),
                 filterFactory.literal(1),
@@ -80,7 +80,7 @@ class StyleManager {
         return style;
     }
 
-    Style createSelectedStyle(Set<FeatureId> IDs) {
+    public Style createSelectedStyle(Set<FeatureId> IDs) {
         Rule selectedRule = createRule(SELECTED_LINE_COLOUR, SELECTED_COLOUR);
         selectedRule.setFilter(ff.id(IDs));
 
