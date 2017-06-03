@@ -27,6 +27,7 @@ public class Medicine {
         return name;
     }
 
+    @Override
     public String toString() {
         return name + ", " + targetedTypes + ", " + targetedSymptoms + ", " + properties.toString();
     }

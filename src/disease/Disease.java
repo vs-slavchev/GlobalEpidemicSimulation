@@ -40,6 +40,8 @@ public class Disease {
     public void setProperties(DiseaseProperties properties) {
         this.properties = properties;
     }
+
+    @Override
     public String toString(){
         return name + ","+type + ","+properties.toString();
     }

@@ -36,6 +36,7 @@ public class DiseaseProperties {
         return virulence;
     }
 
+    @Override
     public String toString() {
         return lethality + ", " + preferredTemperature + ", " + temperatureTolerance + ", " + virulence;
     }

@@ -219,7 +219,7 @@ public class MapCanvas {
             map.getViewport().getScreenToWorld().transform(newPos, result);
             ReferencedEnvelope env = new ReferencedEnvelope(map.getViewport().getBounds());
 
-            
+
             if ((env.getMinimum(0) >= -180 && difX > 0)
                     || (env.getMaximum(0) <= 180 && difX < 0)) {
                 env.translate(env.getMinimum(0) - result.x, 0);
