@@ -218,19 +218,21 @@ public class MapCanvas {
             DirectPosition2D result = new DirectPosition2D();
             map.getViewport().getScreenToWorld().transform(newPos, result);
             ReferencedEnvelope env = new ReferencedEnvelope(map.getViewport().getBounds());
-            env.translate(env.getMinimum(0) - result.x,
-                    env.getMaximum(1) - result.y);
 
-            if (env.getMinimum(0) >= -180
-                    && env.getMaximum(0) <= 180
-                    && env.getMinimum(1) >= -90
-                    && env.getMaximum(1) <= 90) {
-                geoFinder.setPanOffsetX(env.getMaximum(0));
-                geoFinder.setPanOffsetY(env.getMaximum(1));
-                setViewport(env);
+            
+            if ((env.getMinimum(0) >= -180 && difX > 0)
+                    || (env.getMaximum(0) <= 180 && difX < 0)) {
+                env.translate(env.getMinimum(0) - result.x, 0);
             }
-            e.consume();
+            if ((env.getMinimum(1) >= -90 && difY < 0)
+                    || (env.getMaximum(1) <= 90 && difY > 0)) {
+                env.translate(0, env.getMaximum(1) - result.y);
+            }
 
+            geoFinder.setPanOffsetX(env.getMaximum(0));
+            geoFinder.setPanOffsetY(env.getMaximum(1));
+            setViewport(env);
+            e.consume();
         });
 
         canvas.addEventHandler(ScrollEvent.SCROLL, e -> {
