@@ -78,6 +78,11 @@ public class InfectionSpread {
         }
     }
 
+    public void airplaneAlgorithm(){
+        Point2D newPoint = getAirportPoint();
+        addInfectionPointToCountryAtMapCoordinates(newPoint);
+    }
+
     /**
      * Tries to add an infection point to the country which is at the input coordinates.
      * @param newMapPoint A point in map coordinates where an infection point should be added.
@@ -143,5 +148,40 @@ public class InfectionSpread {
         return point;
     }
 
+    private Point2D getAirportPoint() {
+        int airport = random.nextInt(4);
+        double x = 0;
+        double y = 0;
 
+        switch (airport) {
+            case 0:
+                // Hartsfield–Jackson Atlanta International Airport
+                x =-83.6951559140206;
+                y =33.030313668662004;
+            break;
+            case 1:
+                // Beijing Capital International Airport
+                x =115.69108481501507;
+                y =40.74449381999329;
+            break;
+            case 2:
+                // Dubai International Airport
+                x =55.286382319436555;
+                y =24.72033059971252;
+                break;
+            case 3:
+                // Heathrow Airport
+                x =-1.1395673171517586;
+                y =52.01777447747722;
+                break;
+            case 4:
+                // Istanbul Atatürk Airport
+                x =28.304842741091683;
+                y =41.02522898034852;
+                break;
+
+
+        }
+        return new Point2D.Double(x,y);
+    }
 }
