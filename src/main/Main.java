@@ -222,7 +222,7 @@ public class Main extends Application {
                                     final Button backForwardbutton, final MenuButton diseaseListBox, final MenuButton medicineListBox) {
         start.setOnAction(event -> {
             AlgorithmThread().start();
-            AirplaneThread().start();
+            //AirplaneThread().start();
             startTimer().start();
             start.setVisible(false);
             pause.setVisible(true);
@@ -300,7 +300,6 @@ public class Main extends Application {
                     selectCountryOnMap(event);
                 } else if (event.getButton() == MouseButton.PRIMARY) {
                     createInfectionPointFromClick(event, primaryStage);
-                    XcreateInfectionPointFromClick(event, primaryStage);
                 }
             }
             event.consume();
@@ -333,11 +332,6 @@ public class Main extends Application {
         isClickedOnMap = true;
     }
 
-    private void XcreateInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
-        java.awt.geom.Point2D mapPoint = mapCanvas.getGeoFinder()
-                .screenToMapCoordinates(event.getX(), event.getY());
-        System.out.println(mapPoint);
-    }
     /**
      * Changes the rendering style of the clicked on country and displays information about it.
      */
