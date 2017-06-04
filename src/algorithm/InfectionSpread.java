@@ -4,6 +4,7 @@ import com.sun.istack.internal.Nullable;
 import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
+import main.ConstantValues;
 import main.Country;
 import main.World;
 import map.MapCanvas;
@@ -78,8 +79,8 @@ public class InfectionSpread {
         }
     }
 
-    public void airplaneAlgorithm(){
-        Point2D newPoint = getAirportPoint();
+    public void applyAirplaneAlgorithm(){
+        Point2D newPoint = getRandomAirportCoordinates();
         addInfectionPointToCountryAtMapCoordinates(newPoint);
     }
 
@@ -148,99 +149,7 @@ public class InfectionSpread {
         return point;
     }
 
-    private Point2D getAirportPoint() {
-        int airport = random.nextInt(17);
-        double x = 0;
-        double y = 0;
-
-        switch (airport) {
-            case 0:
-                // Hartsfield–Jackson Atlanta International Airport
-                x =-83.6951559140206;
-                y =33.030313668662004;
-            break;
-            case 1:
-                // Beijing Capital International Airport
-                x =115.69108481501507;
-                y =40.74449381999329;
-            break;
-            case 2:
-                // Dubai International Airport
-                x =55.286382319436555;
-                y =24.72033059971252;
-                break;
-            case 3:
-                // Heathrow Airport
-                x =-1.1395673171517586;
-                y =52.01777447747722;
-                break;
-            case 4:
-                // Sofiq Atatürk Airport
-                x =23.46751896814726;
-                y =42.496142938751554;
-                break;
-            case 5:
-                // Sydney Airport
-                x =149.8125;
-                y =-33.67932692307694;
-                break;
-            case 6:
-                // South Africa  Airport
-                x =28.471338077947024;
-                y =-25.281203954231955;
-                break;
-            case 7:
-                // Brasilia  Airport
-                x =-50.27569963763071;
-                y =-14.786563409065337;
-                break;
-            case 8:
-                // Santiago  Airport
-                x =-70.98920615692101;
-                y =-34.02673774187082;
-                break;
-            case 9:
-                // Nigeria  Airport
-                x =6.865008001790812;
-                y =9.223902080634062;
-                break;
-            case 10:
-                // Tokyo  Airport
-                x =139.47190152280348;
-                y =35.50610053738791;
-                break;
-            case 11:
-                // Moscow  Airport
-                x =42.1875;
-                y =56.74086538461536;
-                break;
-            case 12:
-                // Madagascar  Airport
-                x =46.3125;
-                y =-18.33125;
-                break;
-            case 13:
-                // India  Airport
-                x =76.6875;
-                y =14.033173076923063;
-                break;
-            case 14:
-                // Indonesia   Airport
-                x =113.4375;
-                y =0.019711538461521627;
-                break;
-            case 15:
-                // New Guinea  Airport
-                x =141.375;
-                y =-4.484615384615395;
-                break;
-            case 16:
-                // New Zealand  Airport
-                x =175.125;
-                y =-38.51730769230771;
-                break;
-
-        }
-        return new Point2D.Double(x,y);
+    private Point2D getRandomAirportCoordinates() {
+        return ConstantValues.AIRPORTS[random.nextInt(ConstantValues.AIRPORTS.length)];
     }
 }

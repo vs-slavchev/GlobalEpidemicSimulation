@@ -162,8 +162,8 @@ public class Main extends Application {
     }
 
     private void interruptAlgorithmAndTimerThreads() {
-        if (AlgorithmThread() != null && AlgorithmThread().isAlive()) {
-            AlgorithmThread().interrupt();
+        if (createAlgorithmThread() != null && createAlgorithmThread().isAlive()) {
+            createAlgorithmThread().interrupt();
         }
         if (startTimer() != null && startTimer().isAlive()) {
             startTimer().interrupt();
@@ -219,9 +219,10 @@ public class Main extends Application {
 
     private void setUpEventHandlers(final Stage primaryStage, final Button disease, final Button medicine,
                                     final Button start, final Button pause, final Button fastForwardbutton,
-                                    final Button backForwardbutton, final MenuButton diseaseListBox, final MenuButton medicineListBox) {
+                                    final Button backForwardbutton, final MenuButton diseaseListBox,
+                                    final MenuButton medicineListBox) {
         start.setOnAction(event -> {
-            AlgorithmThread().start();
+            createAlgorithmThread().start();
             //AirplaneThread().start();
             startTimer().start();
             start.setVisible(false);
@@ -610,7 +611,7 @@ public class Main extends Application {
 
     }
 
-    private Thread AlgorithmThread() {
+    private Thread createAlgorithmThread() {
         return new Thread(() -> {
             while (isWorking) {
                 if(isClickedOnMap){
@@ -618,27 +619,11 @@ public class Main extends Application {
                         infectionSpread.applyAlgorithm(selectedDisease);
                         mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
                         mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
+                        infectionSpread.applyAirplaneAlgorithm();
                         try {
                             Thread.sleep(1000 / ConstantValues.FPS);
                         } catch (InterruptedException e) {
                          // empty on purpose
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private Thread AirplaneThread() {
-        return new Thread(() -> {
-            while (isWorking) {
-                if(isClickedOnMap){
-                    while(world.getTime().checkHour()) {
-                        infectionSpread.airplaneAlgorithm();
-                        try {
-                            Thread.sleep(1000 / ConstantValues.FPS);
-                        } catch (InterruptedException e) {
-                            // empty on purpose
                         }
                     }
                 }
