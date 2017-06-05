@@ -44,7 +44,8 @@ public class Country implements Serializable {
 
     // let's say a point represents 2 percent of the population
     public long getInfectedPopulation() {
-        return (int)(Math.min(50, infectionPoints.size()) * 2 / 100.0 * Population);
+//        return (int)(Math.min(50, infectionPoints.size()) * 2 / 100.0 * Population);
+        return infectedPopulation;
     }
 
     public Environment getEnvironment() {
@@ -86,6 +87,23 @@ public class Country implements Serializable {
     public long gethealthyPopulation() {
         return this.Population - this.infectedPopulation;
     }
+    public int getPercentageOfInfectedPopulation(){
+        long Percentage = this.infectedPopulation/this.Population*100;
+        return (int)Percentage;
+    }
+    public void infectPopulation(int number){
+        this.infectedPopulation += number;
+        if (this.infectedPopulation > this.Population){
+            this.infectedPopulation = this.Population;
+        }
+    }
+//    public void infectPercentageOfPopulation(int percentage){
+//        long number = this.Population * percentage /100;
+//        this.infectedPopulation =+ number;
+//        if (this.infectedPopulation > this.Population){
+//            this.infectedPopulation = this.Population;
+//        }
+//    }
     /*public void modifyInfectedPopulation(int value) {
         if (unaffectedPopulation > 0) {
             if (unaffectedPopulation < value) {

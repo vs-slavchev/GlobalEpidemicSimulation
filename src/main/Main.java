@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -30,6 +31,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import map.MapCanvas;
 
+import java.awt.geom.Point2D;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Optional;
@@ -326,10 +328,11 @@ public class Main extends Application {
     }
 
     private void createInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
-        java.awt.geom.Point2D mapPoint = mapCanvas.getGeoFinder()
+        Point2D mapPoint = mapCanvas.getGeoFinder()
                 .screenToMapCoordinates(event.getX(), event.getY());
-        infectionSpread.addInfectionPointToCountryAtMapCoordinates(mapPoint);
-        primaryStage.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+        infectionSpread.addInfectionToCountryAtMapCoordinates(mapPoint);
+
+        primaryStage.getScene().setCursor(Cursor.DEFAULT);
         isClickedOnMap = true;
     }
 
@@ -436,8 +439,8 @@ public class Main extends Application {
                                 virulence.getValue() / 100));
 
                 infectionSpread.addDisease(disease);
-                setPointers(diseaseListBox, medicineListBox, primaryStage);
                 addToListBoxes(DiseaseListBox, MedicineListBox);
+                setPointers(diseaseListBox, medicineListBox, primaryStage);
                 popup.hide();
                 blur.setRadius(0);
                 backgroundBlock.hide();
@@ -616,10 +619,21 @@ public class Main extends Application {
             while (isWorking) {
                 if(isClickedOnMap){
                     while(world.getTime().checkHour()) {
-                        infectionSpread.applyAlgorithm(selectedDisease);
-                        mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-                        mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
-                        infectionSpread.applyAirplaneAlgorithm();
+                        if (selectedDisease ==null){
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    saveLoadManager.InformativeMessage("Please select a disease first!");
+                                }
+                            });
+
+                        }
+                        else {
+                            infectionSpread.applyAlgorithm(selectedDisease);
+                            mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                            mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
+                            infectionSpread.applyAirplaneAlgorithm();
+                        }
                         try {
                             Thread.sleep(1000 / ConstantValues.FPS);
                         } catch (InterruptedException e) {

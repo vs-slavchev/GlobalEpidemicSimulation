@@ -59,6 +59,11 @@ public class World implements Serializable {
         return sumPopulationFrom(Country::getInfectedPopulation);
     }
 
+    public List<Country> getListOfCountries(){
+        return countries;
+    }
+
+
     public int calculateWorldTotalInfectedPercentage() {
         return (int)(
                 (float)getWorldTotalInfectedPopulation() / (float)getWorldTotalPopulation()

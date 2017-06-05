@@ -188,7 +188,7 @@ public class MapCanvas {
                 "Code:",
                 "Population:",
                 "Population density:",
-                "Medical infrastructure:",
+                "Infected People",
                 "Average yearly temperature:"
         };
 
@@ -197,7 +197,7 @@ public class MapCanvas {
                 selectedCountry.getCode(),
                 String.format("%,d", selectedCountry.getTotalPopulation()),
                 String.valueOf(selectedCountry.getEnvironment().getPopulationDensity()),
-                String.valueOf(selectedCountry.getEnvironment().getMedicalInfrastructure()),
+                String.format("%,d",selectedCountry.getInfectedPopulation()),
                 String.valueOf(selectedCountry.getEnvironment().getAvgYearlyTemp())
         };
 
