@@ -109,12 +109,12 @@ public class MapCanvas {
         StreamingRenderer draw = new StreamingRenderer();
         draw.setMapContent(map);
         FXGraphics2D graphics = new FXGraphics2D(gc);
-        graphics.setBackground(java.awt.Color.BLUE);
+        graphics.setBackground(ConstantValues.SEA_COLOR1);
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
         Rectangle rectangle = new Rectangle((int) canvas.getWidth(), (int) canvas.getHeight());
         draw.paint(graphics, rectangle, map.getViewport().getBounds());
 
-        gc.setFill(Color.rgb(255, 0, 0, 0.4));
+        gc.setFill(ConstantValues.POINTS_COLOR1);
         for (Point2D point : infectionPoints) {
             Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
             gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
@@ -134,9 +134,9 @@ public class MapCanvas {
 
     private void drawGraph(GraphicsContext gc) {
         // draw the base
-        gc.setStroke(Color.rgb(220, 20, 60, 1));
+        gc.setStroke(ConstantValues.GRAPH_STROKE_COLOR1);
         gc.setLineWidth(3);
-        gc.setFill(Color.rgb(178, 34, 34, 1));
+        gc.setFill(ConstantValues.GRAPH_TEXT_COLOR1);
         gc.setFont(new Font(25));
         gc.fillText("time", 300, canvas.getHeight() - 125);
         gc.fillText("%", 20, canvas.getHeight() - 380);
@@ -144,7 +144,7 @@ public class MapCanvas {
         gc.strokeLine(50, canvas.getHeight() - 150, 50, canvas.getHeight() - 400);
 
         // draw the lines
-        gc.setStroke(Color.rgb(240, 128, 128, 1));
+        gc.setStroke(ConstantValues.GRAPH_LINE_COLOR1);
         for (int firstOfPair_i = 0; firstOfPair_i < percentageInfected.size() - 1; firstOfPair_i++) {
             int firstOfPair = percentageInfected.get(firstOfPair_i);
             int secondOfPair = percentageInfected.get(firstOfPair_i + 1);
@@ -165,10 +165,10 @@ public class MapCanvas {
         int baseX = (int) (canvas.getWidth() - 400);
         int baseY = (int) (canvas.getHeight() - 380);
 
-        gc.setFill(Color.rgb(0, 200, 200, 0.8));
+        gc.setFill(ConstantValues.BOX_COLOR1);
         gc.fillRect(baseX, baseY, 350, 280);
 
-        gc.setFill(Color.rgb(30, 30, 200, 1));
+        gc.setFill(ConstantValues.BOX_TITLES_COLOR1);
         gc.setFont(new Font(15));
 
         String[] labelLines = {
@@ -193,7 +193,7 @@ public class MapCanvas {
             gc.fillText(labelLines[line_i], baseX + 20, baseY + 40 * (line_i + 1));
         }
 
-        gc.setFill(Color.rgb(100, 30, 120, 1));
+        gc.setFill(ConstantValues.BOX_INFO_COLOR1);
         for (int line_i = 0; line_i < labelLines.length; line_i++) {
             gc.fillText(contentLines[line_i], baseX + 50, baseY + 17.5 + 40 * (line_i + 1));
         }

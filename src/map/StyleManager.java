@@ -3,6 +3,7 @@ package map;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import main.ConstantValues;
 import org.geotools.data.FeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.*;
@@ -26,10 +27,8 @@ import static map.MapCanvas.styleFactory;
 
 class StyleManager {
 
-    private static final Color LINE_COLOUR = Color.BLACK;
-    private static final Color FILL_COLOUR = Color.CYAN;
-    private static final Color SELECTED_COLOUR = Color.YELLOW;
-    private static final Color SELECTED_LINE_COLOUR = Color.RED;
+    private static final Color SELECTED_COLOUR = ConstantValues.SELECTED_COUNTRY_COLOR1;
+    private static final Color SELECTED_LINE_COLOUR = ConstantValues.SELECTED_COUNTRY_LINE_COLOR1;
     private static final float OPACITY = 0.1f;
     private static final float LINE_WIDTH = 1.0f;
 
@@ -57,12 +56,12 @@ class StyleManager {
 
     public Style createDefaultStyle() {
         Stroke stroke = styleFactory.createStroke(
-                filterFactory.literal(Color.BLACK),
+                filterFactory.literal(ConstantValues.LINE_COLOR1),
                 filterFactory.literal(1),
                 filterFactory.literal(0.5));
 
         Fill fill = styleFactory.createFill(
-                filterFactory.literal(Color.CYAN),
+                filterFactory.literal(ConstantValues.FILL_COLOR1),
                 filterFactory.literal(0.5));
 
         /*
@@ -84,7 +83,7 @@ class StyleManager {
         Rule selectedRule = createRule(SELECTED_LINE_COLOUR, SELECTED_COLOUR);
         selectedRule.setFilter(ff.id(IDs));
 
-        Rule otherRule = createRule(LINE_COLOUR, FILL_COLOUR);
+        Rule otherRule = createRule(ConstantValues.LINE_COLOR1, ConstantValues.FILL_COLOR1);
         otherRule.setElseFilter(true);
 
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
