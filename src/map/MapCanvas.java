@@ -117,31 +117,19 @@ public class MapCanvas {
         gc.setFill(Color.rgb(255, 0, 0, 0.4));
         for (Point2D point : infectionPoints) {
             Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
-            if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 100){
-                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
-                        ConstantValues.POINT_RADIUS + 20, ConstantValues.POINT_RADIUS + 20);
-            }
-            else if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 80){
-                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
-                        ConstantValues.POINT_RADIUS + 16, ConstantValues.POINT_RADIUS + 16);
-            }
-            else if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 60){
-                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
-                        ConstantValues.POINT_RADIUS + 12, ConstantValues.POINT_RADIUS + 12);
-            }
-            else if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 40){
-                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
-                        ConstantValues.POINT_RADIUS + 8, ConstantValues.POINT_RADIUS + 8);
-            }
-            else if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 20){
-                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
-                        ConstantValues.POINT_RADIUS + 4, ConstantValues.POINT_RADIUS + 4);
-            }
-            else {
-                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
-                        ConstantValues.POINT_RADIUS , ConstantValues.POINT_RADIUS );
-            }
+            gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
+                    calculatePointRadius() , calculatePointRadius() );
         }
+    }
+
+    /**
+     * Calculates the radius of the infection points regarding the scale of X
+     * Scaling the points when zooming in/out
+     */
+    private double calculatePointRadius(){
+        double radius;
+        radius = (geoFinder.createWorldToScreenAffineTransform().getScaleX() + 2) / 2;
+        return radius;
     }
 
     private void drawGraph(GraphicsContext gc) {
