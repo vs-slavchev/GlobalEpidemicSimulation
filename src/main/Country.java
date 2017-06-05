@@ -14,8 +14,8 @@ public class Country implements Serializable {
     private static final int QUEUE_MAX_SIZE = 10_000;
     private String name;
     private String code;
-    private String GovernmentForm;
-    private long Population;
+    private String governmentForm;
+    private long population;
     private long infectedPopulation;
     private long deadPopulation;
     private long curedPopulation;
@@ -28,8 +28,8 @@ public class Country implements Serializable {
                    long curedPopulation, long rateOfMigration, Environment environment) {
         this.name = countryName;
         this.code = code;
-        this.Population = Population;
-        this.GovernmentForm = governmentForm;
+        this.population = Population;
+        this.governmentForm = governmentForm;
         this.infectedPopulation = infectedPopulation;
         this.deadPopulation = deadPopulation;
         this.curedPopulation = curedPopulation;
@@ -39,12 +39,10 @@ public class Country implements Serializable {
     }
 
     public long getTotalPopulation() {
-        return Population;
+        return population;
     }
 
-    // let's say a point represents 2 percent of the population
     public long getInfectedPopulation() {
-//        return (int)(Math.min(50, infectionPoints.size()) * 2 / 100.0 * Population);
         return infectedPopulation;
     }
 
@@ -75,66 +73,36 @@ public class Country implements Serializable {
         return "Country{" +
                 "name='" + name + '\'' +
                 ", countryCode=" + code +
-                ", Population=" + Population +
+                ", population=" + population +
                 ", deadPopulation=" + deadPopulation +
                 ", curedPopulation=" + curedPopulation +
-                ", GovernmentForm=" + GovernmentForm +
+                ", governmentForm=" + governmentForm +
                 ", migrationRate=" + migrationRate +
                 ", infectionPoints.size()=" + infectionPoints.size() +
                 ", ENV=" + environment.toString() +
                 '}';
     }
+
     public long gethealthyPopulation() {
-        return this.Population - this.infectedPopulation;
+        return this.population - this.infectedPopulation;
     }
-    public int getPercentageOfInfectedPopulation(){
-        long Percentage = this.infectedPopulation/this.Population*100;
-        return (int)Percentage;
+
+    public int getPercentageOfInfectedPopulation() {
+        long Percentage = this.infectedPopulation / this.population * 100;
+        return (int) Percentage;
     }
-    public void infectPopulation(int number){
+
+    public void infectPopulation(int number) {
         this.infectedPopulation += number;
-        if (this.infectedPopulation > this.Population){
-            this.infectedPopulation = this.Population;
-        }
+        infectedPopulation = Math.min(infectedPopulation, population);
     }
 //    public void infectPercentageOfPopulation(int percentage){
-//        long number = this.Population * percentage /100;
+//        long number = this.population * percentage /100;
 //        this.infectedPopulation =+ number;
-//        if (this.infectedPopulation > this.Population){
-//            this.infectedPopulation = this.Population;
+//        if (this.infectedPopulation > this.population){
+//            this.infectedPopulation = this.population;
 //        }
 //    }
-    /*public void modifyInfectedPopulation(int value) {
-        if (unaffectedPopulation > 0) {
-            if (unaffectedPopulation < value) {
-                infectedPopulation += unaffectedPopulation;
-                unaffectedPopulation = 0;
-            } else {
-                infectedPopulation += value;
-                unaffectedPopulation -= value;
-            }
-        }
-    }*/
-
-    /*public long getUnaffectedPopulation() {
-        return unaffectedPopulation;
-    }*/
-
-    /*public void setInfectedPopulation(long infectedPopulation) {
-        this.infectedPopulation = infectedPopulation;
-    }
-
-    public long getDeadPopulation() {
-        return deadPopulation;
-    }
-
-    public long getCuredPopulation() {
-        return curedPopulation;
-    }
-
-    public long getMigrationRate() {
-        return migrationRate;
-    }*/
 
     public String getCode() {
         return code;

@@ -76,7 +76,7 @@ public class Main extends Application {
         world = new World();
 
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-        mapCanvas = new MapCanvas((int)bounds.getWidth(), (int)bounds.getHeight());
+        mapCanvas = new MapCanvas((int) bounds.getWidth(), (int) bounds.getHeight());
 
 
         infectionSpread = new InfectionSpread(world, mapCanvas);
@@ -225,7 +225,6 @@ public class Main extends Application {
                                     final MenuButton medicineListBox) {
         start.setOnAction(event -> {
             createAlgorithmThread().start();
-            //AirplaneThread().start();
             startTimer().start();
             start.setVisible(false);
             pause.setVisible(true);
@@ -244,7 +243,6 @@ public class Main extends Application {
             } else {
                 fastForwardbutton.setDisable(true);
             }
-
         });
 
         pause.setOnAction(event -> {
@@ -356,7 +354,6 @@ public class Main extends Application {
         blur.setRadius(15);
 
 
-
         Rectangle popUpRectangleBackgroundCover = new Rectangle();
         popUpRectangleBackgroundCover.setFill(Color.ALICEBLUE);
         popUpRectangleBackgroundCover.setOpacity(0.1);
@@ -446,10 +443,10 @@ public class Main extends Application {
                 backgroundBlock.hide();
 
             } catch (Exception ex) {
-                if (preferredTemp.getText().equals("-")){
+                if (preferredTemp.getText().equals("-")) {
                     preferredTemp.setText("");
                 }
-                if (tempTolerance.getText().equals("-")){
+                if (tempTolerance.getText().equals("-")) {
                     tempTolerance.setText("");
                 }
                 name.setPromptText("not filled in");
@@ -566,10 +563,10 @@ public class Main extends Application {
                 blur.setRadius(0);
                 backgroundBlock.hide();
             } catch (Exception ex) {
-                if (preferredTemp.getText().equals("-")){
+                if (preferredTemp.getText().equals("-")) {
                     preferredTemp.setText("");
                 }
-                if (tempTolerance.getText().equals("-")){
+                if (tempTolerance.getText().equals("-")) {
                     tempTolerance.setText("");
                 }
                 name.setPromptText("not filled in");
@@ -601,15 +598,15 @@ public class Main extends Application {
 
     private Thread startTimer() {
         return new Thread(() -> {
-                while (isWorking) {
-                    world.getTime().setElapsedTime();
-                    Platform.runLater(() -> timer.setText(world.getTime().toString()));
-                    try {
-                        Thread.sleep(world.getTime().timerSleepTime());
-                    } catch (InterruptedException e) {
-                        // empty on purpose
-                    }
+            while (isWorking) {
+                world.getTime().setElapsedTime();
+                Platform.runLater(() -> timer.setText(world.getTime().toString()));
+                try {
+                    Thread.sleep(world.getTime().timerSleepTime());
+                } catch (InterruptedException e) {
+                    // empty on purpose
                 }
+            }
         });
 
     }
@@ -617,9 +614,9 @@ public class Main extends Application {
     private Thread createAlgorithmThread() {
         return new Thread(() -> {
             while (isWorking) {
-                if(isClickedOnMap){
-                    while(world.getTime().checkHour()) {
-                        if (selectedDisease ==null){
+                if (isClickedOnMap) {
+                    while (world.getTime().checkHour()) {
+                        if (selectedDisease == null) {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -627,8 +624,7 @@ public class Main extends Application {
                                 }
                             });
 
-                        }
-                        else {
+                        } else {
                             infectionSpread.applyAlgorithm(selectedDisease);
                             mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
                             mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
@@ -637,7 +633,7 @@ public class Main extends Application {
                         try {
                             Thread.sleep(1000 / ConstantValues.FPS);
                         } catch (InterruptedException e) {
-                         // empty on purpose
+                            // empty on purpose
                         }
                     }
                 }

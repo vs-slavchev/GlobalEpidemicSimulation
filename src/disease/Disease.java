@@ -42,8 +42,8 @@ public class Disease {
     }
 
     @Override
-    public String toString(){
-        return name + ","+type + ","+properties.toString();
+    public String toString() {
+        return name + "," + type + "," + properties.toString();
     }
 }
 

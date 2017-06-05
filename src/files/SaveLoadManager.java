@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import main.World;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,17 +28,17 @@ public class SaveLoadManager {
     /**
      * Saving the current state of the world variable to a file
      * if there is no file already created, execute the saveFileAs method
+     *
      * @param primaryStage used to pass the Stage to the SaveAs
-     *              method to be used in the fileChooser
-     * @param world used to pass the instance of the world object
-     *              to be saved
+     *                     method to be used in the fileChooser
+     * @param world        used to pass the instance of the world object
+     *                     to be saved
      */
     public void saveFile(Stage primaryStage, World world) {
         // if there is no save file, go to 'save file as' dialog
         if (filePath == null) {
             saveFileAs(primaryStage, world);
-        }
-        else{
+        } else {
             try {
                 FileOutputStream streamOut = new FileOutputStream(filePath);
                 ObjectOutputStream oos = new ObjectOutputStream(streamOut);
@@ -53,13 +54,14 @@ public class SaveLoadManager {
      * Saving the current state of the world variable through a FileChooser
      * and creating a new file(save)  of the world or overwriting an existing
      * one if needed
+     *
      * @param primaryStage used as a reference of the stage being used
      *                     in the fileChooser
-     * @param world used as reference of the world object to be saved
+     * @param world        used as reference of the world object to be saved
      */
     public void saveFileAs(Stage primaryStage, World world) {
         //getting current date-time
-        String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())+".bin";
+        String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()) + ".bin";
         //creating new FileChooser
         FileChooser fileChooser = new FileChooser();
         //setting the title
@@ -84,9 +86,10 @@ public class SaveLoadManager {
 
     /**
      * Creating a FileChooser and selecting a file to be opened
+     *
      * @param primaryStage used to pass the stage to the fileChooser
      * @return the world object read from the fileChooser or return a null
-     *               if the fileChooser is null
+     * if the fileChooser is null
      */
     @Nullable
     public World openFile(Stage primaryStage) {
@@ -110,6 +113,7 @@ public class SaveLoadManager {
 
     /**
      * setting all the needed parameters of the OpenFileChooser
+     *
      * @param fileChooser used as reference of type FileChooser to pass
      */
     private void configureOpenFileChooser(final FileChooser fileChooser) {
@@ -122,9 +126,10 @@ public class SaveLoadManager {
 
     /**
      * Displaying a informative message about the action done
+     *
      * @param text used to pass the text to be used in the MessageBox
      */
-    public void InformativeMessage(String text){
+    public void InformativeMessage(String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, text);
         alert.setHeaderText(null);
         alert.showAndWait();

@@ -14,22 +14,6 @@ public class ConstantValues {
     public static final String MAP_SHAPE_FILE = "maps/ne_110m_admin_0_countries.shp";
 
     public static final int POINT_RADIUS = 4;
-
-    private static Point2D createRoundedPoint(double x, double y) {
-        return new Point2D.Double(
-                Math.round(x),
-                Math.round(y));
-    }
-
-    public static boolean doublePointsEqual(Point2D first, Point2D second) {
-        Point2D roundedFirst = createRoundedPoint(first.getX(), first.getY());
-        Point2D roundedSecond = createRoundedPoint(second.getX(), second.getY());
-
-        return Double.compare(roundedFirst.getX(), roundedSecond.getX()) == 0
-                && Double.compare(roundedFirst.getY(), roundedSecond.getY()) == 0;
-    }
-
-
     public static final Point2D.Double[] AIRPORTS = {
             new Point2D.Double(-83.6951559140206, 33.030313668662004), // Hartsfield–Jackson Atlanta International
             new Point2D.Double(115.69108481501507, 40.74449381999329), // Beijing Capital International
@@ -49,4 +33,18 @@ public class ConstantValues {
             new Point2D.Double(141.375, -4.484615384615395), // New Guinea
             new Point2D.Double(175.125, -38.51730769230771), // New Zealand
     };
+
+    private static Point2D createRoundedPoint(double x, double y) {
+        return new Point2D.Double(
+                Math.round(x),
+                Math.round(y));
+    }
+
+    public static boolean doublePointsEqual(Point2D first, Point2D second) {
+        Point2D roundedFirst = createRoundedPoint(first.getX(), first.getY());
+        Point2D roundedSecond = createRoundedPoint(second.getX(), second.getY());
+
+        return Double.compare(roundedFirst.getX(), roundedSecond.getX()) == 0
+                && Double.compare(roundedFirst.getY(), roundedSecond.getY()) == 0;
+    }
 }

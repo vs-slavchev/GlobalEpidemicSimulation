@@ -36,7 +36,9 @@ public class DiseaseProperties {
         return virulence;
     }
 
-    public void setVirulence(double number){this.virulence=number;}
+    public void setVirulence(double number) {
+        this.virulence = number;
+    }
 
     @Override
     public String toString() {

@@ -31,7 +31,10 @@ import org.opengis.filter.identity.FeatureId;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Owner: Veselin
@@ -118,7 +121,7 @@ public class MapCanvas {
         for (Point2D point : infectionPoints) {
             Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
             gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
-                    calculatePointRadius() , calculatePointRadius() );
+                    calculatePointRadius(), calculatePointRadius());
         }
     }
 
@@ -126,7 +129,7 @@ public class MapCanvas {
      * Calculates the radius of the infection points regarding the scale of X
      * Scaling the points when zooming in/out
      */
-    private double calculatePointRadius(){
+    private double calculatePointRadius() {
         double radius;
         radius = (geoFinder.createWorldToScreenAffineTransform().getScaleX() + 2) / 2;
         return radius;
@@ -185,7 +188,7 @@ public class MapCanvas {
                 selectedCountry.getCode(),
                 String.format("%,d", selectedCountry.getTotalPopulation()),
                 String.valueOf(selectedCountry.getEnvironment().getPopulationDensity()),
-                String.format("%,d",selectedCountry.getInfectedPopulation()),
+                String.format("%,d", selectedCountry.getInfectedPopulation()),
                 String.valueOf(selectedCountry.getEnvironment().getAvgYearlyTemp())
         };
 

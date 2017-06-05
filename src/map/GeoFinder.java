@@ -3,6 +3,7 @@ package map;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+import main.ConstantValues;
 import org.geotools.data.*;
 import org.geotools.data.collection.SpatialIndexFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -13,7 +14,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
-import main.ConstantValues;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -88,7 +88,7 @@ public class GeoFinder {
     /**
      * Creates an object that is responsible for the matrix math to transform a point from world
      * to screen coordinates.
-     *
+     * <p>
      * Explanation:
      * The translation sets both origins to the same point.
      * The scaling makes both matrices have the same width and height.
