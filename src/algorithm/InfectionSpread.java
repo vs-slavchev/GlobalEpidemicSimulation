@@ -31,16 +31,17 @@ public class InfectionSpread {
         this.random = new Random();
         this.world = world;
         this.mapCanvas = mapCanvas;
+        addDisease();
     }
 
     private void addDisease() {
         diseaseList.add(new Disease("ebola", DiseaseType.BACTERIA,
                 new DiseaseProperties(10, 10,
-                        10, 0.6)));
+                        90, 0.6)));
     }
 
     public void addDisease(String name, int diseaseType, int lethality,
-                           int prefTemp, int tempTolerance,double virulence) {
+                           int prefTemp, int tempTolerance, double virulence) {
         diseaseList.add(new Disease(name, DiseaseType.values()[diseaseType - 1],
                 new DiseaseProperties(lethality, prefTemp,
                         tempTolerance, virulence)));
@@ -59,8 +60,19 @@ public class InfectionSpread {
     }
 
     public void applyAlgorithm(Disease disease) {
+        if (disease == null) {
+            System.out.println("no disease");
+        }
         if (this.diseaseList.isEmpty()) {
             this.addDisease();
+        }
+        for (Country country : world.getListOfCountries()) {
+
+            if (checkCountryToDiseaseCompatibility(country, disease)) {
+                double currentVirulence = disease.getProperties().getVirulence();
+                disease.getProperties().setVirulence(currentVirulence + country.getPercentageOfInfectedPopulation() / 1000);
+                spreadInfection(country, disease.getProperties().getVirulence());
+            }
         }
         // TODO: instead of all points, get the most recent in the queue for each country?
         for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
@@ -75,31 +87,56 @@ public class InfectionSpread {
                 continue;
             }
 
-            addInfectionPointToCountryAtMapCoordinates(newPoint);
+            addInfectionToCountryAtMapCoordinates(newPoint);
         }
     }
 
-    public void applyAirplaneAlgorithm(){
-        Point2D newPoint = getRandomAirportCoordinates();
-        addInfectionPointToCountryAtMapCoordinates(newPoint);
+    private void spreadInfection(Country country, Double virulence) {
+        double toInfect = country.getInfectedPopulation() * virulence;
+        toInfect = Math.min(Math.round(toInfect), country.getTotalPopulation() * 5 / 100);
+
+        country.infectPopulation((int) toInfect);
     }
+
+    private boolean checkCountryToDiseaseCompatibility(Country country, Disease disease) {
+
+        double dTolerence = disease.getProperties().getTemperatureTolerance();
+        double dTemp = disease.getProperties().getPreferredTemperature();
+        double countryTemperature = country.getEnvironment().getAvgYearlyTemp();
+
+        if (country.getInfectedPopulation() == country.getTotalPopulation()) {
+            return false;
+        }
+        boolean temperatureIsInsideBonds = countryTemperature >= dTemp - dTolerence
+                && countryTemperature <= dTemp + dTolerence;
+        return temperatureIsInsideBonds && country.getInfectedPopulation() > 0;
+    }
+
+    public void applyAirplaneAlgorithm() {
+        Point2D newPoint = getRandomAirportCoordinates();
+        addInfectionToCountryAtMapCoordinates(newPoint);
+    }
+
 
     /**
      * Tries to add an infection point to the country which is at the input coordinates.
+     *
      * @param newMapPoint A point in map coordinates where an infection point should be added.
      */
-    public void addInfectionPointToCountryAtMapCoordinates(Point2D newMapPoint) {
+    public void addInfectionToCountryAtMapCoordinates(Point2D newMapPoint) {
         String countryCode = mapCanvas.getGeoFinder()
                 .getCountryCodeFromMapCoordinates(newMapPoint.getX(), newMapPoint.getY());
 
-        if (world.getCountryByCode(countryCode).isPresent()){
+        if (world.getCountryByCode(countryCode).isPresent()) {
             Country country = world.getCountryByCode(countryCode).get();
+            country.infectPopulation(1);
             country.addInfectionPoint(newMapPoint);
         }
     }
 
     /**
      * Given a source point, method creates another point near it with random coordinates.
+     *
      * @param infectionPoint the source point to spawn from
      */
     private Point2D generateNewRandomPoint(Point2D infectionPoint) {
@@ -130,7 +167,7 @@ public class InfectionSpread {
     /**
      * Method tries to find an unoccupied place for a point. If the number of tries is
      * exhausted then null is returned.
-     *
+     * <p>
      * Points which round up to different values may have a visual overlap because of the
      * circle radius.
      */

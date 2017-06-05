@@ -7,7 +7,7 @@ import java.util.Optional;
 
 /**
  * A custom dialog asking the user for confirmation when progress may be lost.
- *
+ * <p>
  * After making a new instance the showAndWait method should be used and then the
  * instance can be queried about the result.
  */

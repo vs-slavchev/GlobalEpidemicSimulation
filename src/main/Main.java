@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -30,6 +31,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import map.MapCanvas;
 
+import java.awt.geom.Point2D;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Optional;
@@ -74,7 +76,7 @@ public class Main extends Application {
         world = new World();
 
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-        mapCanvas = new MapCanvas((int)bounds.getWidth(), (int)bounds.getHeight());
+        mapCanvas = new MapCanvas((int) bounds.getWidth(), (int) bounds.getHeight());
 
 
         infectionSpread = new InfectionSpread(world, mapCanvas);
@@ -223,7 +225,6 @@ public class Main extends Application {
                                     final MenuButton medicineListBox) {
         start.setOnAction(event -> {
             createAlgorithmThread().start();
-            //AirplaneThread().start();
             startTimer().start();
             start.setVisible(false);
             pause.setVisible(true);
@@ -242,7 +243,6 @@ public class Main extends Application {
             } else {
                 fastForwardbutton.setDisable(true);
             }
-
         });
 
         pause.setOnAction(event -> {
@@ -326,10 +326,11 @@ public class Main extends Application {
     }
 
     private void createInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
-        java.awt.geom.Point2D mapPoint = mapCanvas.getGeoFinder()
+        Point2D mapPoint = mapCanvas.getGeoFinder()
                 .screenToMapCoordinates(event.getX(), event.getY());
-        infectionSpread.addInfectionPointToCountryAtMapCoordinates(mapPoint);
-        primaryStage.getScene().setCursor(javafx.scene.Cursor.DEFAULT);
+        infectionSpread.addInfectionToCountryAtMapCoordinates(mapPoint);
+
+        primaryStage.getScene().setCursor(Cursor.DEFAULT);
         isClickedOnMap = true;
     }
 
@@ -351,7 +352,6 @@ public class Main extends Application {
         Rectangle popUpRectangleBackground = new Rectangle(390, 360);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
         blur.setRadius(15);
-
 
 
         Rectangle popUpRectangleBackgroundCover = new Rectangle();
@@ -436,17 +436,17 @@ public class Main extends Application {
                                 virulence.getValue() / 100));
 
                 infectionSpread.addDisease(disease);
-                setPointers(diseaseListBox, medicineListBox, primaryStage);
                 addToListBoxes(DiseaseListBox, MedicineListBox);
+                setPointers(diseaseListBox, medicineListBox, primaryStage);
                 popup.hide();
                 blur.setRadius(0);
                 backgroundBlock.hide();
 
             } catch (Exception ex) {
-                if (preferredTemp.getText().equals("-")){
+                if (preferredTemp.getText().equals("-")) {
                     preferredTemp.setText("");
                 }
-                if (tempTolerance.getText().equals("-")){
+                if (tempTolerance.getText().equals("-")) {
                     tempTolerance.setText("");
                 }
                 name.setPromptText("not filled in");
@@ -563,10 +563,10 @@ public class Main extends Application {
                 blur.setRadius(0);
                 backgroundBlock.hide();
             } catch (Exception ex) {
-                if (preferredTemp.getText().equals("-")){
+                if (preferredTemp.getText().equals("-")) {
                     preferredTemp.setText("");
                 }
-                if (tempTolerance.getText().equals("-")){
+                if (tempTolerance.getText().equals("-")) {
                     tempTolerance.setText("");
                 }
                 name.setPromptText("not filled in");
@@ -598,15 +598,15 @@ public class Main extends Application {
 
     private Thread startTimer() {
         return new Thread(() -> {
-                while (isWorking) {
-                    world.getTime().setElapsedTime();
-                    Platform.runLater(() -> timer.setText(world.getTime().toString()));
-                    try {
-                        Thread.sleep(world.getTime().timerSleepTime());
-                    } catch (InterruptedException e) {
-                        // empty on purpose
-                    }
+            while (isWorking) {
+                world.getTime().setElapsedTime();
+                Platform.runLater(() -> timer.setText(world.getTime().toString()));
+                try {
+                    Thread.sleep(world.getTime().timerSleepTime());
+                } catch (InterruptedException e) {
+                    // empty on purpose
                 }
+            }
         });
 
     }
@@ -614,16 +614,26 @@ public class Main extends Application {
     private Thread createAlgorithmThread() {
         return new Thread(() -> {
             while (isWorking) {
-                if(isClickedOnMap){
-                    while(world.getTime().checkHour()) {
-                        infectionSpread.applyAlgorithm(selectedDisease);
-                        mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-                        mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
-                        infectionSpread.applyAirplaneAlgorithm();
+                if (isClickedOnMap) {
+                    while (world.getTime().checkHour()) {
+                        if (selectedDisease == null) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    saveLoadManager.InformativeMessage("Please select a disease first!");
+                                }
+                            });
+
+                        } else {
+                            infectionSpread.applyAlgorithm(selectedDisease);
+                            mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                            mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
+                            infectionSpread.applyAirplaneAlgorithm();
+                        }
                         try {
                             Thread.sleep(1000 / ConstantValues.FPS);
                         } catch (InterruptedException e) {
-                         // empty on purpose
+                            // empty on purpose
                         }
                     }
                 }

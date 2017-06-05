@@ -52,29 +52,28 @@ public class Time implements Serializable {
     }
 
     /**
-     *  checking the elapsed time in the simulation, foreach
-     *  time Hour increments the method returns a boolean value
-     *  (Used to time the AlgorithmThread so it is fired every  application hour)
+     * checking the elapsed time in the simulation, foreach
+     * time Hour increments the method returns a boolean value
+     * (Used to time the AlgorithmThread so it is fired every  application hour)
+     *
      * @return a boolean value
      */
-    public boolean checkHour(){
-        if(Hour == 0 && LastHour >= 23){
+    public boolean checkHour() {
+        if (Hour == 0 && LastHour >= 23) {
             LastHour = Hour;
             return true;
-        }
-        else if(Hour> LastHour){
+        } else if (Hour > LastHour) {
             LastHour = Hour;
             return true;
-        }
-        else if(InitialStart){
+        } else if (InitialStart) {
             InitialStart = false;
-            return  true;
-        }
-        else return false;
+            return true;
+        } else return false;
     }
 
     /**
      * returns  RunSpeed
+     *
      * @return
      */
     public int getRunSpeed() {
@@ -83,6 +82,7 @@ public class Time implements Serializable {
 
     /**
      * Method used to set the value of the RunSpeed variable
+     *
      * @param speed used to assign  its value to RunSpeed
      */
     public void setRunSpeed(int speed) {
@@ -103,6 +103,7 @@ public class Time implements Serializable {
             RunSpeed += 5;
         } else RunSpeed += 10;
     }
+
     /**
      * decrementing(subtracting) RunSpeed value depending on what its
      * value is at the moment.
@@ -120,6 +121,7 @@ public class Time implements Serializable {
     /**
      * Gets the SaveRunSpeed variable which is used for saving
      * the RunSpeed variable
+     *
      * @return the SaveRunSpeed value
      */
     public int getSavedRunSpeed() {
@@ -127,8 +129,8 @@ public class Time implements Serializable {
     }
 
     /**
-     *  Takes the value of RunSpeed and assigns it to SaveRunSpeed variable
-     *  for later use
+     * Takes the value of RunSpeed and assigns it to SaveRunSpeed variable
+     * for later use
      */
     public void saveRunSpeed() {
         this.SaveRunSpeed = RunSpeed;
@@ -136,12 +138,13 @@ public class Time implements Serializable {
 
     /**
      * Used to set the current time in the application when necessary
-     * @param hour assigning the Hour variable
-     * @param min assigning the Minutes variable
-     * @param sec assigning the Sec variable
-     * @param day assigning the Day variable
+     *
+     * @param hour  assigning the Hour variable
+     * @param min   assigning the Minutes variable
+     * @param sec   assigning the Sec variable
+     * @param day   assigning the Day variable
      * @param month assigning the Month variable
-     * @param year assigning the Year variable
+     * @param year  assigning the Year variable
      */
     public void setTime(int hour, int min, int sec, int day, int month, int year) {
         this.Sec = sec;
@@ -154,6 +157,7 @@ public class Time implements Serializable {
 
     /**
      * Used to get the current time in the application
+     *
      * @return A string containing the current time if format sec,min,hour-d/m/y
      */
     public String getTime() {
@@ -164,6 +168,7 @@ public class Time implements Serializable {
      * The method is used to check what is the value of RunSpeed
      * ( the method is created mainly for the purpose of timing the
      * Thread responsible for the Timer in the application)
+     *
      * @return a value in the range of 1000-10 depending on the RunSpeed value
      */
     public int timerSleepTime() {
@@ -181,6 +186,7 @@ public class Time implements Serializable {
 
     /**
      * Overriding the toString method
+     *
      * @return the current time in string format hh:mm:ss, dd/mm/yy
      */
     @Override
