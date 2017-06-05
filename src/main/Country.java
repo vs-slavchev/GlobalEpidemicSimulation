@@ -45,6 +45,9 @@ public class Country implements Serializable {
     public long getInfectedPopulation() {
         return infectedPopulation;
     }
+    public void setInfectedPopulation(long number){
+        this.infectedPopulation = number;
+    }
 
     public Environment getEnvironment() {
         return environment;
@@ -57,7 +60,6 @@ public class Country implements Serializable {
     public Queue<Point2D> getInfectionPoints() {
         return infectionPoints;
     }
-
     /**
      * Add an infection point in map coordinates.
      */
@@ -82,7 +84,15 @@ public class Country implements Serializable {
                 ", ENV=" + environment.toString() +
                 '}';
     }
-
+    public long getCuredPopulation(){
+        return curedPopulation;
+    }
+    public void setCuredPopulation(long number){
+        this.curedPopulation = number;
+    }
+    public void addCuredPopulation(long number){
+        this.curedPopulation += number;
+    }
     public long gethealthyPopulation() {
         return this.population - this.infectedPopulation;
     }
@@ -91,7 +101,6 @@ public class Country implements Serializable {
         long Percentage = this.infectedPopulation / this.population * 100;
         return (int) Percentage;
     }
-
     public void infectPopulation(int number) {
         this.infectedPopulation += number;
         infectedPopulation = Math.min(infectedPopulation, population);

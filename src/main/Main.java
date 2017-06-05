@@ -56,9 +56,11 @@ public class Main extends Application {
     private MenuButton MedicineListBox;
     private MenuButton DiseaseListBox;
     private Disease selectedDisease;
+    private Medicine selectedMedicine;
     private GaussianBlur blur;
 
-    private boolean isClickedOnMap = false;
+    private boolean isClickedOnMapDisease = false;
+    private boolean isClickedOnMapMedicine = false;
     private volatile boolean isWorking = true;
     private volatile boolean isStarted = false;
 
@@ -134,7 +136,7 @@ public class Main extends Application {
                 mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
                 mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
                 saveLoadManager.InformativeMessage("Opened!");
-                isClickedOnMap = true;
+                isClickedOnMapDisease = true;
             }
         });
         saveSimulation.setOnAction(event -> saveLoadManager.saveFile(primaryStage, world));
@@ -225,6 +227,7 @@ public class Main extends Application {
                                     final MenuButton medicineListBox) {
         start.setOnAction(event -> {
             createAlgorithmThread().start();
+            createMedicineThread().start();
             startTimer().start();
             start.setVisible(false);
             pause.setVisible(true);
@@ -326,12 +329,26 @@ public class Main extends Application {
     }
 
     private void createInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
-        Point2D mapPoint = mapCanvas.getGeoFinder()
-                .screenToMapCoordinates(event.getX(), event.getY());
-        infectionSpread.addInfectionToCountryAtMapCoordinates(mapPoint);
-
-        primaryStage.getScene().setCursor(Cursor.DEFAULT);
-        isClickedOnMap = true;
+        if(selectedDisease!=null){
+            Point2D mapPoint = mapCanvas.getGeoFinder()
+                    .screenToMapCoordinates(event.getX(), event.getY());
+            infectionSpread.addInfectionToCountryAtMapCoordinates(mapPoint);
+            primaryStage.getScene().setCursor(Cursor.DEFAULT);
+            isClickedOnMapDisease = true;
+        }
+        if (selectedMedicine!=null){
+            String selectedCode = mapCanvas.getGeoFinder().getCountryCodeFromScreenCoordinates(event.getX(), event.getY());
+            Optional<Country> countryMaybe = world.getCountryByCode(selectedCode);
+            if (countryMaybe.isPresent()) {
+                Country country = countryMaybe.get();
+                if(country!=null){
+                    medicineSpread.addInitialCountry(country);
+                    medicineSpread.setMedicine(selectedMedicine);
+                }
+                selectedMedicine = null;
+                isClickedOnMapMedicine = true;
+            }
+        }
     }
 
     /**
@@ -614,7 +631,7 @@ public class Main extends Application {
     private Thread createAlgorithmThread() {
         return new Thread(() -> {
             while (isWorking) {
-                if (isClickedOnMap) {
+                if (isClickedOnMapDisease) {
                     while (world.getTime().checkHour()) {
                         if (selectedDisease == null) {
                             Platform.runLater(new Runnable() {
@@ -640,6 +657,33 @@ public class Main extends Application {
             }
         });
     }
+
+    private Thread createMedicineThread() {
+        return new Thread(() -> {
+            while (isWorking) {
+                if (isClickedOnMapMedicine) {
+                    while (world.getTime().checkHour()) {
+                        if (medicineSpread.getMedicine() == null) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    saveLoadManager.InformativeMessage("Please select a Medicine first!");
+                                }
+                            });
+                        } else {
+                            medicineSpread.medicineAlgorithm();
+                        }
+                        try {
+                            Thread.sleep(1000 / ConstantValues.FPS);
+                        } catch (InterruptedException e) {
+                            // empty on purpose
+                        }
+                    }
+                }
+            }
+        });
+    }
+
 
     private void addToListBoxes(MenuButton DiseaseMenuButton, MenuButton MedicineButton) {
         DiseaseMenuButton.getItems().clear();
@@ -672,6 +716,7 @@ public class Main extends Application {
                     if (item.getText().equals(medicine.getName())) {
                         Image pointer = new Image("file:./images/medicinepointer.png");
                         primaryStage.getScene().setCursor(new ImageCursor(pointer));
+                        selectedMedicine = medicine;
                     }
                 }
 

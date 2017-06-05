@@ -166,10 +166,10 @@ public class MapCanvas {
         }
 
         int baseX = (int) (canvas.getWidth() - 400);
-        int baseY = (int) (canvas.getHeight() - 380);
+        int baseY = (int) (canvas.getHeight() - 420);
 
         gc.setFill(ConstantValues.BOX_COLOR1);
-        gc.fillRect(baseX, baseY, 350, 280);
+        gc.fillRect(baseX, baseY, 350, 320);
 
         gc.setFill(ConstantValues.BOX_TITLES_COLOR1);
         gc.setFont(new Font(15));
@@ -180,6 +180,7 @@ public class MapCanvas {
                 "Population:",
                 "Population density:",
                 "Infected People",
+                "Cured Population",
                 "Average yearly temperature:"
         };
 
@@ -189,6 +190,7 @@ public class MapCanvas {
                 String.format("%,d", selectedCountry.getTotalPopulation()),
                 String.valueOf(selectedCountry.getEnvironment().getPopulationDensity()),
                 String.format("%,d", selectedCountry.getInfectedPopulation()),
+                String.format("%,d", selectedCountry.getCuredPopulation()),
                 String.valueOf(selectedCountry.getEnvironment().getAvgYearlyTemp())
         };
 

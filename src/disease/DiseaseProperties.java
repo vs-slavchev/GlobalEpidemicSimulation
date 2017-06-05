@@ -39,7 +39,15 @@ public class DiseaseProperties {
     public void setVirulence(double number) {
         this.virulence = number;
     }
-
+    public void setPreferredTemperature(double number) {
+        this.preferredTemperature = number;
+    }
+    public void setTemperatureTolerance(double number) {
+        this.temperatureTolerance = number;
+    }
+    public void setLethality(int number) {
+        this.lethality = number;
+    }
     @Override
     public String toString() {
         return lethality + ", " + preferredTemperature + ", " + temperatureTolerance + ", " + virulence;
