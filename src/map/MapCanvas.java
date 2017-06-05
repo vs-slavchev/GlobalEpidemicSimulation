@@ -117,8 +117,30 @@ public class MapCanvas {
         gc.setFill(Color.rgb(255, 0, 0, 0.4));
         for (Point2D point : infectionPoints) {
             Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
-            gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
-                    ConstantValues.POINT_RADIUS, ConstantValues.POINT_RADIUS);
+            if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 100){
+                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
+                        ConstantValues.POINT_RADIUS + 20, ConstantValues.POINT_RADIUS + 20);
+            }
+            else if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 80){
+                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
+                        ConstantValues.POINT_RADIUS + 16, ConstantValues.POINT_RADIUS + 16);
+            }
+            else if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 60){
+                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
+                        ConstantValues.POINT_RADIUS + 12, ConstantValues.POINT_RADIUS + 12);
+            }
+            else if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 40){
+                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
+                        ConstantValues.POINT_RADIUS + 8, ConstantValues.POINT_RADIUS + 8);
+            }
+            else if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 20){
+                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
+                        ConstantValues.POINT_RADIUS + 4, ConstantValues.POINT_RADIUS + 4);
+            }
+            else {
+                gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
+                        ConstantValues.POINT_RADIUS , ConstantValues.POINT_RADIUS );
+            }
         }
     }
 
@@ -140,15 +162,17 @@ public class MapCanvas {
             int secondOfPair = percentageInfected.get(firstOfPair_i + 1);
 
             gc.strokeLine(
-                    (firstOfPair_i/(double)percentageInfected.size()*100.0) * 3 + 50,
+                    (firstOfPair_i / (double) percentageInfected.size() * 100.0) * 3 + 50,
                     canvas.getHeight() - 150 - firstOfPair * 2.5,
-                    ((firstOfPair_i + 1)/(double)percentageInfected.size()*100.0) * 3 + 50,
+                    ((firstOfPair_i + 1) / (double) percentageInfected.size() * 100.0) * 3 + 50,
                     canvas.getHeight() - 150 - secondOfPair * 2.5);
         }
     }
 
     private void drawSelectedCountryInformation(GraphicsContext gc) {
-        if (selectedCountry == null) { return; }
+        if (selectedCountry == null) {
+            return;
+        }
 
         int baseX = (int) (canvas.getWidth() - 400);
         int baseY = (int) (canvas.getHeight() - 380);

@@ -97,7 +97,7 @@ public class GeoFinder {
      * All 3 transforms take into account the offset caused by the panning and also the current
      * viewport width and height, which are affected by the zoom.
      */
-    private AffineTransform createWorldToScreenAffineTransform() {
+    public AffineTransform createWorldToScreenAffineTransform() {
         AffineTransform translate = AffineTransform.
                 getTranslateInstance(mapWidth / 2 - (panOffsetX - mapWidth / 2),
                         mapHeight / 2 - (panOffsetY - (mapHeight / 2 - 3.1)) + 3.25);
