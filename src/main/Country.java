@@ -15,22 +15,22 @@ public class Country implements Serializable {
     private String name;
     private String code;
     private String GovernmentForm;
-    private long unaffectedPopulation;
-    //private long infectedPopulation;
+    private long Population;
+    private long infectedPopulation;
     private long deadPopulation;
     private long curedPopulation;
     private long migrationRate;
     private Environment environment;
     private Queue<Point2D> infectionPoints;
 
-    public Country(String countryName, String code, long unaffectedPopulation,
+    public Country(String countryName, String code, long Population,
                    String governmentForm, long infectedPopulation, long deadPopulation,
                    long curedPopulation, long rateOfMigration, Environment environment) {
         this.name = countryName;
         this.code = code;
-        this.unaffectedPopulation = unaffectedPopulation;
+        this.Population = Population;
         this.GovernmentForm = governmentForm;
-        //this.infectedPopulation = infectedPopulation;
+        this.infectedPopulation = infectedPopulation;
         this.deadPopulation = deadPopulation;
         this.curedPopulation = curedPopulation;
         this.migrationRate = rateOfMigration;
@@ -39,12 +39,12 @@ public class Country implements Serializable {
     }
 
     public long getTotalPopulation() {
-        return unaffectedPopulation;
+        return Population;
     }
 
     // let's say a point represents 2 percent of the population
     public long getInfectedPopulation() {
-        return (int)(Math.min(50, infectionPoints.size()) * 2 / 100.0 * unaffectedPopulation);
+        return (int)(Math.min(50, infectionPoints.size()) * 2 / 100.0 * Population);
     }
 
     public Environment getEnvironment() {
@@ -74,7 +74,7 @@ public class Country implements Serializable {
         return "Country{" +
                 "name='" + name + '\'' +
                 ", countryCode=" + code +
-                ", unaffectedPopulation=" + unaffectedPopulation +
+                ", Population=" + Population +
                 ", deadPopulation=" + deadPopulation +
                 ", curedPopulation=" + curedPopulation +
                 ", GovernmentForm=" + GovernmentForm +
@@ -83,7 +83,9 @@ public class Country implements Serializable {
                 ", ENV=" + environment.toString() +
                 '}';
     }
-
+    public long gethealthyPopulation() {
+        return this.Population - this.infectedPopulation;
+    }
     /*public void modifyInfectedPopulation(int value) {
         if (unaffectedPopulation > 0) {
             if (unaffectedPopulation < value) {
