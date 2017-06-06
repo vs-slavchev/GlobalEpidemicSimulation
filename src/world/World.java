@@ -76,6 +76,17 @@ public class World implements Serializable {
                 .anyMatch(point2D -> ConstantValues.doublePointsEqual(point2D, toCheck));
     }
 
+    /**
+     * Checks if a point is contained in a specific country identified by its code.
+     */
+    public boolean countryContainsInfectionPoint(String countryCode, Point2D toCheck) {
+        return getCountryByCode(countryCode)
+                .map(country -> country.getInfectionPoints()
+                        .stream()
+                        .anyMatch(point2D -> ConstantValues.doublePointsEqual(point2D, toCheck)))
+                .orElse(false);
+    }
+
     public Time getTime() {
         return time;
     }

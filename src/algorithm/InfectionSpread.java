@@ -171,7 +171,9 @@ public class InfectionSpread {
     private Point2D findSuitablePlaceForPoint(Point2D point) {
         double OFFSET = INFECTION_RADIUS / 5;
         int triesLeft = 5;
-        while (world.containsInfectionPoint(point)) {
+        String codeOfCountryLocatedIn = mapCanvas.getGeoFinder()
+                .getCountryCodeFromMapCoordinates(point.getX(), point.getY());
+        while (world.countryContainsInfectionPoint(codeOfCountryLocatedIn, point)) {
             if (triesLeft-- < 0) {
                 return null;
             }
