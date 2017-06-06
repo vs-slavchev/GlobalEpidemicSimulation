@@ -130,6 +130,7 @@ public class Main extends Application {
                             mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
                             mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
                             infectionSpread.applyAirplaneAlgorithm();
+                            System.gc();
                         }
                         try {
                             Thread.sleep(1000 / ConstantValues.FPS);
@@ -202,10 +203,10 @@ public class Main extends Application {
     }
 
     private void interruptAlgorithmAndTimerThreads() {
-        if (createAlgorithmThread() != null && createAlgorithmThread().isAlive()) {
+        if (createAlgorithmThread().isAlive()) {
             createAlgorithmThread().interrupt();
         }
-        if (startTimer() != null && startTimer().isAlive()) {
+        if (startTimer().isAlive()) {
             startTimer().interrupt();
         }
     }

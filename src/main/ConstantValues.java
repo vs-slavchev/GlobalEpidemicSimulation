@@ -7,6 +7,8 @@ import java.awt.geom.Point2D;
 
 public class ConstantValues {
     public static final int FPS = 30;
+    public static final double INFECTION_RADIUS = 2.0;
+    public static final double OFFSET = INFECTION_RADIUS / 5;
 
     // input files
     public static final String CSS_STYLE_FILE = "Style.css";

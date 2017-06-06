@@ -10,9 +10,10 @@ import world.Country;
 import world.World;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
+import static main.ConstantValues.INFECTION_RADIUS;
+import static main.ConstantValues.OFFSET;
 
 /**
  * Owner: Nikolay
@@ -20,7 +21,6 @@ import java.util.Random;
 
 public class InfectionSpread {
 
-    private static final double INFECTION_RADIUS = 2.0;
     private List<Disease> diseaseList;
     private Random random;
     private World world;
@@ -67,24 +67,27 @@ public class InfectionSpread {
 
             if (checkCountryToDiseaseCompatibility(country, disease)) {
                 double currentVirulence = disease.getProperties().getVirulence();
-                disease.getProperties().setVirulence(currentVirulence + country.getPercentageOfInfectedPopulation() / 1000);
+                disease.getProperties()
+                        .setVirulence(currentVirulence + country.getPercentageOfInfectedPopulation() / 1000);
                 spreadInfection(country, disease.getProperties().getVirulence());
             }
         }
-        for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
+
+        long startTime = System.currentTimeMillis();
+        for (java.awt.geom.Point2D originalInfectionPoint : world.getAllInfectionPoints()) {
             boolean pointWillSpread = random.nextDouble() < getMainDisease().getProperties().getVirulence();
             if (!pointWillSpread) {
                 continue;
             }
 
-            Point2D newPoint = generateNewRandomPoint(infectionPoint);
+            Point2D newPoint = generateNewRandomPoint(originalInfectionPoint);
             newPoint = findSuitablePlaceForPoint(newPoint);
             if (newPoint == null) {
                 continue;
             }
-
             addInfectionToCountryAtMapCoordinates(newPoint);
         }
+        System.out.println(System.currentTimeMillis() - startTime);
     }
 
     private void spreadInfection(Country country, Double virulence) {
@@ -169,7 +172,6 @@ public class InfectionSpread {
      */
     @Nullable
     private Point2D findSuitablePlaceForPoint(Point2D point) {
-        double OFFSET = INFECTION_RADIUS / 5;
         int triesLeft = 5;
         String codeOfCountryLocatedIn = mapCanvas.getGeoFinder()
                 .getCountryCodeFromMapCoordinates(point.getX(), point.getY());
@@ -177,9 +179,9 @@ public class InfectionSpread {
             if (triesLeft-- < 0) {
                 return null;
             }
-            double newRoundedX = (random.nextBoolean() ? OFFSET : -OFFSET);
-            double newRoundedY = (random.nextBoolean() ? OFFSET : -OFFSET);
-            point.setLocation(newRoundedX, newRoundedY);
+            point.setLocation(
+                    (random.nextBoolean() ? OFFSET : -OFFSET),
+                    (random.nextBoolean() ? OFFSET : -OFFSET));
         }
         return point;
     }
