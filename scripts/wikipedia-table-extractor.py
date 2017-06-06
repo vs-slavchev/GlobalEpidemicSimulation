@@ -8,7 +8,8 @@ tree = html.fromstring(pageContent.content)
 countriesRows = tree.xpath('//table/tr/td[1]/b/a/text()/ancestor::tr')
 
 find_pattern = re.compile(r"\s*([\d,]+)(\.\d+)?\s*km")
-outputFile = open('countriesSimilarity.txt', 'w')
+outputFile = open('countriesSimilarity.txt', 'w+', encoding="utf-8")
+outputFile2 = open('countryBorders.txt.', 'w+', encoding="utf-8")
 
 for countryRow in countriesRows:
     # .// specifies a relative path
@@ -41,8 +42,17 @@ for countryRow in countriesRows:
         if (clean_neighbour):
             neighbours_clean.append(clean_neighbour)
 
-    # print("\n" + name[0] + " ###")
-    # infoNeighbour = ""
+    s = ("\n" + name[0] + " ###\n")
+    outputFile2.write(s)
+	
+    infoNeighbour = ""
+    for neighbourName, neighbourKilometers in zip(neighbours_clean, kilometers_clean):
+        # keep the digits for the kilometers only
+        neighbourKilometers = find_pattern.sub(r"\1", neighbourKilometers)
+        infoNeighbour += str(neighbourName + " " + neighbourKilometers + "\n")
+
+    outputFile2.write(infoNeighbour)
+	
     tupleNeighbourNameKilometers = "", 0
     for neighbourName, neighbourKilometers in zip(neighbours_clean, kilometers_clean):
         # keep the digits for the kilometers only
@@ -63,3 +73,4 @@ for countryRow in countriesRows:
         outputFile.write(outputLine + '\n')
 
 outputFile.close()
+outputFile2.close()
