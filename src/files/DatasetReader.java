@@ -1,10 +1,9 @@
 package files;
 
-import main.Country;
-import main.Environment;
+import world.Country;
+import world.Environment;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -113,7 +112,8 @@ public class DatasetReader {
             e.printStackTrace();
         }
     }
-    private static void readNeighbouringCountries(List<Country> countries){
+
+    private static void readNeighbouringCountries(List<Country> countries) {
         //file path
         String File = "./scripts/countryBorders.txt";
         String line = "";
@@ -124,17 +124,15 @@ public class DatasetReader {
                 // use semi-comn as separator
                 String[] tempNeighbours = line.split(SplitBy);
                 if (tempNeighbours[1].startsWith("#")) {
-                    for (Country c : countries
-                            ) {
+                    for (Country c : countries) {
                         if (c.getName().toUpperCase().equals(tempNeighbours[0].toUpperCase())) {
                             tempCountry = c;
-                            System.out.println(c.getName()+" ----"+tempNeighbours[0]);
+                            //System.out.println(c.getName() + " ----" + tempNeighbours[0]);
                             break;
                         }
                     }
                 } else {
-                    for (Country c : countries
-                            ) {
+                    for (Country c : countries) {
                         if (c.getName().toUpperCase().equals(tempNeighbours[0].toUpperCase())) {
                             tempCountry.setNeighbours(c);
                             break;
@@ -142,7 +140,7 @@ public class DatasetReader {
                     }
                 }
             }
-            } catch (IOException e2) {
+        } catch (IOException e2) {
             e2.printStackTrace();
         }
     }

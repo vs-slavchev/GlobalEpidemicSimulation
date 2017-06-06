@@ -1,11 +1,10 @@
 package algorithm;
 
-import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
 import disease.SymptomType;
-import main.Country;
 import main.Medicine;
+import world.Country;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,40 +39,48 @@ public class MedicineSpread {
     public List<Medicine> getMedicineList() {
         return medicines;
     }
+
     public void addMedicine(Medicine medicine) {
         medicines.add(medicine);
     }
+
     public void removeMedicine(Medicine medicine) {
         medicines.remove(medicine);
     }
-    public void addInitialCountry(Country country){
+
+    public void addInitialCountry(Country country) {
         countries.add(country);
     }
-    public void addCountry(Country country){
+
+    public void addCountry(Country country) {
         countries.add(country);
     }
-    public List<Country> getCountries(){
+
+    public List<Country> getCountries() {
         return countries;
     }
-    public void setMedicine(Medicine medicine){
+
+    public Medicine getMedicine() {
+        return medicine;
+    }
+
+    public void setMedicine(Medicine medicine) {
         this.medicine = medicine;
     }
-    public Medicine getMedicine(){
-        return  medicine;
-    }
-    public void medicineAlgorithm(){
-        for (Country country: countries
+
+    public void medicineAlgorithm() {
+        for (Country country : countries
                 ) {
-            if(country.getInfectedPopulation() !=0 && country.getInfectedPopulation()+country.getCuredPopulation()<country.getTotalPopulation()) {
+            if (country.getInfectedPopulation() != 0 && country.getInfectedPopulation() + country.getCuredPopulation() < country.getTotalPopulation()) {
                 double currentVirulence = medicine.getProperties().getVirulence();
-                double pop = medicine.getProperties().getVirulence() * (double)country.getInfectedPopulation();
-                if(pop>country.getInfectedPopulation()){
+                double pop = medicine.getProperties().getVirulence() * (double) country.getInfectedPopulation();
+                if (pop > country.getInfectedPopulation()) {
                     pop = country.getInfectedPopulation();
                 }
-                country.addCuredPopulation((long)pop);
-                country.setInfectedPopulation(country.getInfectedPopulation()-(long)pop);
+                country.addCuredPopulation((long) pop);
+                country.setInfectedPopulation(country.getInfectedPopulation() - (long) pop);
                 medicine.getProperties().setVirulence(currentVirulence + 0.02);
-                System.out.print(country.getInfectionPoints().size()+","+country.getInfectedPopulation()+"     ");
+                System.out.print(country.getInfectionPoints().size() + "," + country.getInfectedPopulation() + "     ");
             }
         }
         /*if(disease.getType()==medicine.getTargetedTypesType()){
@@ -82,6 +89,7 @@ public class MedicineSpread {
         else
             changeDiseaseProperties(disease,medicine,country,false);*/
     }
+
     /* public void changeDiseaseProperties(Disease disease,Medicine medicine,Country country,Boolean SameType){
          if(SameType){
              disease.getProperties().setLethality(disease.getProperties().getLethality()-(int)(medicine.getProperties().getLethality()*1.1));
@@ -95,11 +103,12 @@ public class MedicineSpread {
          disease.getProperties().setTemperatureTolerance(disease.getProperties().getTemperatureTolerance()-medicine.getProperties().getTemperatureTolerance());
          disease.getProperties().setVirulence(disease.getProperties().getVirulence()-medicine.getProperties().getVirulence());
      }*/
-    public void changeCuredPeopleValue(long currentSickPeople, List<Country> countries){
-        for (Country country: countries
+    public void changeCuredPeopleValue(long currentSickPeople, List<Country> countries) {
+        for (Country country : countries
                 ) {
-            if(currentSickPeople>country.getInfectedPopulation()){
-                country.addCuredPopulation(currentSickPeople- country.getInfectedPopulation());}
+            if (currentSickPeople > country.getInfectedPopulation()) {
+                country.addCuredPopulation(currentSickPeople - country.getInfectedPopulation());
+            }
         }
     }
 }

@@ -127,7 +127,6 @@ public class GeoFinder {
         try (SimpleFeatureIterator itr = features.features()) {
             while (itr.hasNext()) {
                 SimpleFeature feature = itr.next();
-                //String name = (String) feature.getAttribute("name");
                 // other codes: sov_a3, gu_a3, su_a3, brk_a3, iso_a2, iso_a3
                 String name = (String) feature.getAttribute("adm0_a3");
                 countryNameCode = Optional.ofNullable(name);

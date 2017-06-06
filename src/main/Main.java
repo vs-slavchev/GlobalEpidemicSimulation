@@ -34,6 +34,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import map.MapCanvas;
+import world.Country;
+import world.World;
 
 import java.awt.geom.Point2D;
 import java.io.FileInputStream;
@@ -88,11 +90,9 @@ public class Main extends Application {
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         mapCanvas = new MapCanvas((int) bounds.getWidth(), (int) bounds.getHeight());
 
-
         infectionSpread = new InfectionSpread(world, mapCanvas);
         medicineSpread = new MedicineSpread();
         saveLoadManager = new SaveLoadManager();
-
 
         timer.setText(world.getTime().toString());
         timer.setId("timer");
@@ -107,51 +107,79 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-
         scene.getStylesheets().add(ConstantValues.CSS_STYLE_FILE);
         blur = new GaussianBlur(0);
         root.setEffect(blur);
-
     }
 
-    private void setUpButtonBar(Stage primaryStage) {
-        buttonBar = new HBox();
-        buttonBar.getStyleClass().add("hbox");
+    private Thread createAlgorithmThread() {
+        return new Thread(() -> {
+            while (isWorking) {
+                if (isClickedOnMapDisease) {
+                    while (world.getTime().checkHour()) {
+                        if (selectedDisease == null) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    saveLoadManager.InformativeMessage("Please select a disease first!");
+                                }
+                            });
 
-        MenuButton fileMenuButton = new MenuButton("File");
-
-        //addComponent items to file menu button
-        MenuItem newSimulation = new MenuItem("New simulation");
-        MenuItem openSimulation = new MenuItem("Open simulation");
-        SeparatorMenuItem separator = new SeparatorMenuItem();
-        MenuItem saveSimulation = new MenuItem("Save");
-        MenuItem saveSimulationAs = new MenuItem("Save As...");
-
-        fileMenuButton.getItems().addAll(newSimulation, openSimulation, separator,
-                saveSimulation, saveSimulationAs);
-
-
-        medicineListBox = new MenuButton("Medicines");
-        diseaseListBox = new MenuButton("Diseases");
-        addToListBoxes(diseaseListBox, medicineListBox);
-
-        newSimulation.setOnAction(event -> startNewSimulation(primaryStage));
-        openSimulation.setOnAction(event -> {
-            World loadedWorld = saveLoadManager.openFile(primaryStage);
-            if (loadedWorld != null) {
-                world = loadedWorld;
-                timer.setText(world.getTime().toString());
-                mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-                mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
-                saveLoadManager.InformativeMessage("Opened!");
-                isClickedOnMapDisease = true;
+                        } else {
+                            infectionSpread.applyAlgorithm(selectedDisease);
+                            mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                            mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
+                            infectionSpread.applyAirplaneAlgorithm();
+                        }
+                        try {
+                            Thread.sleep(1000 / ConstantValues.FPS);
+                        } catch (InterruptedException e) {
+                            // empty on purpose
+                        }
+                    }
+                }
             }
         });
-        saveSimulation.setOnAction(event -> saveLoadManager.saveFile(primaryStage, world));
-        saveSimulationAs.setOnAction(event -> saveLoadManager.saveFileAs(primaryStage, world));
+    }
 
-        // assign action handlers to the items in the file menu
-        setUpButtons(fileMenuButton, diseaseListBox, medicineListBox, primaryStage);
+    private Thread createMedicineThread() {
+        return new Thread(() -> {
+            while (isWorking) {
+                if (isClickedOnMapMedicine) {
+                    while (world.getTime().checkHour()) {
+                        if (medicineSpread.getMedicine() == null) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    saveLoadManager.InformativeMessage("Please select a Medicine first!");
+                                }
+                            });
+                        } else {
+                            medicineSpread.medicineAlgorithm();
+                        }
+                        try {
+                            Thread.sleep(1000 / ConstantValues.FPS);
+                        } catch (InterruptedException e) {
+                            // empty on purpose
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private Thread startTimer() {
+        return new Thread(() -> {
+            while (isWorking) {
+                world.getTime().setElapsedTime();
+                Platform.runLater(() -> timer.setText(world.getTime().toString()));
+                try {
+                    Thread.sleep(world.getTime().timerSleepTime());
+                } catch (InterruptedException e) {
+                    // empty on purpose
+                }
+            }
+        });
     }
 
     private void startNewSimulation(Stage primaryStage) {
@@ -180,35 +208,6 @@ public class Main extends Application {
         if (startTimer() != null && startTimer().isAlive()) {
             startTimer().interrupt();
         }
-    }
-
-    private void setUpButtons(MenuButton fileMenuButton, MenuButton diseaseList, MenuButton MedicineListBox, Stage primaryStage) {
-
-        start = setUpImageButton(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
-        pause = setUpImageButton(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
-        fastForward = setUpImageButton(ConstantValues.FAST_FORWARD_BUTTON_IMAGE_FILE);
-        backForward = setUpImageButton(ConstantValues.BACK_FORWARD_BUTTON_IMAGE_FILE);
-        // set up the buttons on the buttonBar
-        // set up the buttons on the buttonBar
-        Button disease = new Button("Create Disease");
-        Button medicine = new Button("Create Medicine");
-
-        setUpEventHandlers(primaryStage, disease, medicine, start, pause, fastForward, backForward, diseaseList, MedicineListBox);
-
-        // addComponent the file menu, separators and the object buttons to the button bar
-        StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(pause, start);
-        stackPane.setMaxHeight(0);
-
-        buttonBar.getChildren().addAll(
-                fileMenuButton,
-                disease, medicine, diseaseList, MedicineListBox, backForward, stackPane, fastForward, speedLabel, timer);
-        buttonBar.setSpacing(10);
-        buttonBar.setPadding(new Insets(10, 10, 10, 10));
-
-        fastForward.setDisable(true);
-        backForward.setDisable(true);
-        //timer.relocate(10, buttonBar.getMaxWidth());
     }
 
     /**
@@ -281,22 +280,12 @@ public class Main extends Application {
         });
 
         disease.setOnAction(event -> {
-//            if (popup != null) {
-//                popup.hide();
-//                pp.hide();
-//            }
             SetUpPopupDisease(diseaseListBox, medicineListBox, primaryStage);
-            backgroundBlock.show(primaryStage);
-            popup.show(primaryStage);
+            blockAndShowPopup(primaryStage);
         });
         medicine.setOnAction(event -> {
-//            if (popup != null) {
-//                popup.hide();
-//                pp.hide();
-//            }
             SetUpPopupMedicine(diseaseListBox, medicineListBox, primaryStage);
-            backgroundBlock.show(primaryStage);
-            popup.show(primaryStage);
+            blockAndShowPopup(primaryStage);
         });
 
         fastForwardbutton.setOnAction(event -> {
@@ -333,20 +322,9 @@ public class Main extends Application {
         setPointers(diseaseListBox, medicineListBox, primaryStage);
     }
 
-    private void closeApplication(Stage primaryStage, WindowEvent event) {
-        if (isStarted) {
-            WindowDialog newSimulationDialog = new WindowDialog();
-            newSimulationDialog.showAndWait();
-            if (newSimulationDialog.isYes()) {
-                interruptAlgorithmAndTimerThreads();
-                System.exit(1);
-            } else if (newSimulationDialog.isSaveAndExit()) {
-                saveLoadManager.saveFile(primaryStage, world);
-                interruptAlgorithmAndTimerThreads();
-                System.exit(1);
-            }
-            event.consume();
-        }
+    private void blockAndShowPopup(Stage primaryStage) {
+        backgroundBlock.show(primaryStage);
+        popup.show(primaryStage);
     }
 
     private void createInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
@@ -358,14 +336,13 @@ public class Main extends Application {
             isClickedOnMapDisease = true;
         }
         if (selectedMedicine != null) {
-            String selectedCode = mapCanvas.getGeoFinder().getCountryCodeFromScreenCoordinates(event.getX(), event.getY());
+            String selectedCode = mapCanvas.getGeoFinder()
+                    .getCountryCodeFromScreenCoordinates(event.getX(), event.getY());
             Optional<Country> countryMaybe = world.getCountryByCode(selectedCode);
             if (countryMaybe.isPresent()) {
                 Country country = countryMaybe.get();
-                if (country != null) {
-                    medicineSpread.addInitialCountry(country);
-                    medicineSpread.setMedicine(selectedMedicine);
-                }
+                medicineSpread.addInitialCountry(country);
+                medicineSpread.setMedicine(selectedMedicine);
                 selectedMedicine = null;
                 isClickedOnMapMedicine = true;
             }
@@ -384,6 +361,152 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Creates a text field which only takes input in the format: digits followed by a single comma or dot
+     * followed by more digits, or just the initial digits.
+     */
+    private TextField createFractionTextField() {
+        return new TextField() {
+            @Override
+            public void replaceText(int i, int j, String string) {
+                if (string.isEmpty() || (this.getText() + string).matches("(-)?(\\d+([.,])?(\\d+)?)?")) {
+                    super.replaceText(i, j, string);
+                }
+            }
+        };
+    }
+
+    /**
+     * Update the disease and medicine lists to represent the currently existing
+     * diseases and medicines.
+     *
+     * @param DiseaseMenuButton the menu containing the diseases
+     * @param MedicineButton    the menu containing the medicines
+     */
+    private void addToListBoxes(MenuButton DiseaseMenuButton, MenuButton MedicineButton) {
+        DiseaseMenuButton.getItems().clear();
+        MedicineButton.getItems().clear();
+        for (Disease disease : infectionSpread.getDiseaseList()) {
+            DiseaseMenuButton.getItems().add(new MenuItem(disease.getName()));
+        }
+        for (Medicine medicine : medicineSpread.getMedicineList()) {
+            MedicineButton.getItems().add(new MenuItem(medicine.getName()));
+        }
+
+    }
+
+    private void setPointers(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
+        for (MenuItem item : diseaseListBox.getItems()) {
+            item.setOnAction(event -> {
+                for (Disease disease : infectionSpread.getDiseaseList()) {
+                    if (item.getText().equals(disease.getName())) {
+                        Image pointer = new Image("file:./images/hazardpointer.png");
+                        primaryStage.getScene().setCursor(new ImageCursor(pointer));
+                        selectedDisease = disease;
+                    }
+                }
+
+            });
+        }
+        for (MenuItem item : medicineListBox.getItems()) {
+            item.setOnAction(event -> {
+                for (Medicine medicine : medicineSpread.getMedicineList()) {
+                    if (item.getText().equals(medicine.getName())) {
+                        Image pointer = new Image("file:./images/medicinepointer.png");
+                        primaryStage.getScene().setCursor(new ImageCursor(pointer));
+                        selectedMedicine = medicine;
+                    }
+                }
+
+            });
+        }
+    }
+
+    private void setUpButtonBar(Stage primaryStage) {
+        buttonBar = new HBox();
+        buttonBar.getStyleClass().add("hbox");
+
+        MenuButton fileMenuButton = new MenuButton("File");
+
+        //addComponent items to file menu button
+        MenuItem newSimulation = new MenuItem("New simulation");
+        MenuItem openSimulation = new MenuItem("Open simulation");
+        SeparatorMenuItem separator = new SeparatorMenuItem();
+        MenuItem saveSimulation = new MenuItem("Save");
+        MenuItem saveSimulationAs = new MenuItem("Save As...");
+
+        fileMenuButton.getItems().addAll(newSimulation, openSimulation, separator,
+                saveSimulation, saveSimulationAs);
+
+
+        medicineListBox = new MenuButton("Medicines");
+        diseaseListBox = new MenuButton("Diseases");
+        addToListBoxes(diseaseListBox, medicineListBox);
+
+        newSimulation.setOnAction(event -> startNewSimulation(primaryStage));
+        openSimulation.setOnAction(event -> {
+            World loadedWorld = saveLoadManager.openFile(primaryStage);
+            if (loadedWorld != null) {
+                world = loadedWorld;
+                timer.setText(world.getTime().toString());
+                mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
+                saveLoadManager.InformativeMessage("Opened!");
+                isClickedOnMapDisease = true;
+            }
+        });
+        saveSimulation.setOnAction(event -> saveLoadManager.saveFile(primaryStage, world));
+        saveSimulationAs.setOnAction(event -> saveLoadManager.saveFileAs(primaryStage, world));
+
+        // assign action handlers to the items in the file menu
+        setUpButtons(fileMenuButton, diseaseListBox, medicineListBox, primaryStage);
+    }
+
+    private void setUpButtons(MenuButton fileMenuButton, MenuButton diseaseList, MenuButton MedicineListBox, Stage primaryStage) {
+
+        start = setUpImageButton(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
+        pause = setUpImageButton(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
+        fastForward = setUpImageButton(ConstantValues.FAST_FORWARD_BUTTON_IMAGE_FILE);
+        backForward = setUpImageButton(ConstantValues.BACK_FORWARD_BUTTON_IMAGE_FILE);
+        // set up the buttons on the buttonBar
+        // set up the buttons on the buttonBar
+        Button disease = new Button("Create Disease");
+        Button medicine = new Button("Create Medicine");
+
+        setUpEventHandlers(primaryStage, disease, medicine, start, pause, fastForward, backForward, diseaseList, MedicineListBox);
+
+        // addComponent the file menu, separators and the object buttons to the button bar
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(pause, start);
+        stackPane.setMaxHeight(0);
+
+        buttonBar.getChildren().addAll(
+                fileMenuButton,
+                disease, medicine, diseaseList, MedicineListBox, backForward, stackPane, fastForward, speedLabel, timer);
+        buttonBar.setSpacing(10);
+        buttonBar.setPadding(new Insets(10, 10, 10, 10));
+
+        fastForward.setDisable(true);
+        backForward.setDisable(true);
+        //timer.relocate(10, buttonBar.getMaxWidth());
+    }
+
+    private void closeApplication(Stage primaryStage, WindowEvent event) {
+        if (isStarted) {
+            WindowDialog newSimulationDialog = new WindowDialog();
+            newSimulationDialog.showAndWait();
+            if (newSimulationDialog.isYes()) {
+                interruptAlgorithmAndTimerThreads();
+                System.exit(1);
+            } else if (newSimulationDialog.isSaveAndExit()) {
+                saveLoadManager.saveFile(primaryStage, world);
+                interruptAlgorithmAndTimerThreads();
+                System.exit(1);
+            }
+            event.consume();
+        }
+    }
+
     private void SetUpPopupDisease(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
         pauseSimulation();
         popup = new Popup();
@@ -391,7 +514,6 @@ public class Main extends Application {
         Rectangle popUpRectangleBackground = new Rectangle(390, 360);
         popUpRectangleBackground.setFill(Color.AQUAMARINE);
         blur.setRadius(15);
-
 
         Rectangle popUpRectangleBackgroundCover = new Rectangle();
         popUpRectangleBackgroundCover.setFill(Color.ALICEBLUE);
@@ -623,131 +745,5 @@ public class Main extends Application {
             backgroundBlock.hide();
             startSimulation(primaryStage);
         });
-    }
-
-    /**
-     * Creates a text field which only takes input in the format: digits followed by a single comma or dot
-     * followed by more digits, or just the initial digits.
-     */
-    private TextField createFractionTextField() {
-        return new TextField() {
-            @Override
-            public void replaceText(int i, int j, String string) {
-                if (string.isEmpty() || (this.getText() + string).matches("(-)?(\\d+([.,])?(\\d+)?)?")) {
-                    super.replaceText(i, j, string);
-                }
-            }
-        };
-    }
-
-    private Thread startTimer() {
-        return new Thread(() -> {
-            while (isWorking) {
-                world.getTime().setElapsedTime();
-                Platform.runLater(() -> timer.setText(world.getTime().toString()));
-                try {
-                    Thread.sleep(world.getTime().timerSleepTime());
-                } catch (InterruptedException e) {
-                    // empty on purpose
-                }
-            }
-        });
-
-    }
-
-    private Thread createAlgorithmThread() {
-        return new Thread(() -> {
-            while (isWorking) {
-                if (isClickedOnMapDisease) {
-                    while (world.getTime().checkHour()) {
-                        if (selectedDisease == null) {
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    saveLoadManager.InformativeMessage("Please select a disease first!");
-                                }
-                            });
-
-                        } else {
-                            infectionSpread.applyAlgorithm(selectedDisease);
-                            mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
-                            mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
-                            infectionSpread.applyAirplaneAlgorithm();
-                        }
-                        try {
-                            Thread.sleep(1000 / ConstantValues.FPS);
-                        } catch (InterruptedException e) {
-                            // empty on purpose
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private Thread createMedicineThread() {
-        return new Thread(() -> {
-            while (isWorking) {
-                if (isClickedOnMapMedicine) {
-                    while (world.getTime().checkHour()) {
-                        if (medicineSpread.getMedicine() == null) {
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    saveLoadManager.InformativeMessage("Please select a Medicine first!");
-                                }
-                            });
-                        } else {
-                            medicineSpread.medicineAlgorithm();
-                        }
-                        try {
-                            Thread.sleep(1000 / ConstantValues.FPS);
-                        } catch (InterruptedException e) {
-                            // empty on purpose
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-
-    private void addToListBoxes(MenuButton DiseaseMenuButton, MenuButton MedicineButton) {
-        DiseaseMenuButton.getItems().clear();
-        MedicineButton.getItems().clear();
-        for (Disease disease : infectionSpread.getDiseaseList()) {
-            DiseaseMenuButton.getItems().add(new MenuItem(disease.getName()));
-        }
-        for (Medicine medicine : medicineSpread.getMedicineList()) {
-            MedicineButton.getItems().add(new MenuItem(medicine.getName()));
-        }
-
-    }
-
-    private void setPointers(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
-        for (MenuItem item : diseaseListBox.getItems()) {
-            item.setOnAction(event -> {
-                for (Disease disease : infectionSpread.getDiseaseList()) {
-                    if (item.getText().equals(disease.getName())) {
-                        Image pointer = new Image("file:./images/hazardpointer.png");
-                        primaryStage.getScene().setCursor(new ImageCursor(pointer));
-                        selectedDisease = disease;
-                    }
-                }
-
-            });
-        }
-        for (MenuItem item : medicineListBox.getItems()) {
-            item.setOnAction(event -> {
-                for (Medicine medicine : medicineSpread.getMedicineList()) {
-                    if (item.getText().equals(medicine.getName())) {
-                        Image pointer = new Image("file:./images/medicinepointer.png");
-                        primaryStage.getScene().setCursor(new ImageCursor(pointer));
-                        selectedMedicine = medicine;
-                    }
-                }
-
-            });
-        }
     }
 }

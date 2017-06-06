@@ -5,9 +5,9 @@ import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
 import main.ConstantValues;
-import main.Country;
-import main.World;
 import map.MapCanvas;
+import world.Country;
+import world.World;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -60,11 +60,8 @@ public class InfectionSpread {
     }
 
     public void applyAlgorithm(Disease disease) {
-        if (disease == null) {
-            System.out.println("no disease");
-        }
-        if (this.diseaseList.isEmpty()) {
-            this.addDisease();
+        if (diseaseList.isEmpty()) {
+            addDisease();
         }
         for (Country country : world.getListOfCountries()) {
 
@@ -74,7 +71,6 @@ public class InfectionSpread {
                 spreadInfection(country, disease.getProperties().getVirulence());
             }
         }
-        // TODO: instead of all points, get the most recent in the queue for each country?
         for (java.awt.geom.Point2D infectionPoint : world.getAllInfectionPoints()) {
             boolean pointWillSpread = random.nextDouble() < getMainDisease().getProperties().getVirulence();
             if (!pointWillSpread) {
@@ -100,15 +96,15 @@ public class InfectionSpread {
 
     private boolean checkCountryToDiseaseCompatibility(Country country, Disease disease) {
 
-        double dTolerence = disease.getProperties().getTemperatureTolerance();
+        double dTolerance = disease.getProperties().getTemperatureTolerance();
         double dTemp = disease.getProperties().getPreferredTemperature();
         double countryTemperature = country.getEnvironment().getAvgYearlyTemp();
 
         if (country.getInfectedPopulation() == country.getTotalPopulation()) {
             return false;
         }
-        boolean temperatureIsInsideBonds = countryTemperature >= dTemp - dTolerence
-                && countryTemperature <= dTemp + dTolerence;
+        boolean temperatureIsInsideBonds = countryTemperature >= dTemp - dTolerance
+                && countryTemperature <= dTemp + dTolerance;
         return temperatureIsInsideBonds && country.getInfectedPopulation() > 0;
     }
 
@@ -175,7 +171,9 @@ public class InfectionSpread {
     private Point2D findSuitablePlaceForPoint(Point2D point) {
         double OFFSET = INFECTION_RADIUS / 5;
         int triesLeft = 5;
-        while (world.containsInfectionPoint(point)) {
+        String codeOfCountryLocatedIn = mapCanvas.getGeoFinder()
+                .getCountryCodeFromMapCoordinates(point.getX(), point.getY());
+        while (world.countryContainsInfectionPoint(codeOfCountryLocatedIn, point)) {
             if (triesLeft-- < 0) {
                 return null;
             }
