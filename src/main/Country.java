@@ -3,6 +3,8 @@ package main;
 
 import java.awt.geom.Point2D;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -22,6 +24,7 @@ public class Country implements Serializable {
     private long migrationRate;
     private Environment environment;
     private Queue<Point2D> infectionPoints;
+    private List<Country> neighbours;
 
     public Country(String countryName, String code, long Population,
                    String governmentForm, long infectedPopulation, long deadPopulation,
@@ -36,12 +39,18 @@ public class Country implements Serializable {
         this.migrationRate = rateOfMigration;
         this.environment = environment;
         infectionPoints = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE);
+        neighbours = new ArrayList<>();
     }
 
     public long getTotalPopulation() {
         return population;
     }
-
+    public List<Country> getNeighbours(){
+        return neighbours;
+    }
+    public void setNeighbours(Country country){
+        neighbours.add(country);
+    }
     public long getInfectedPopulation() {
         return infectedPopulation;
     }

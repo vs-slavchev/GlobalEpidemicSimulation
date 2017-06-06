@@ -1,1051 +1,853 @@
-
-Afghanistan ###
-People's Republic of China 76
-Iran 936
-Pakistan 2,430
-Tajikistan 1,206
-Turkmenistan 744
-Uzbekistan 137
-
-Albania ###
-Greece 282
-Kosovo 112
-Macedonia 151
-Montenegro 172
-
-Algeria ###
-Libya 982
-Mali 1,376
-Mauritania 463
-Morocco 1,559
-Niger 956
-Tunisia 965
-Western Sahara 42
-
-Andorra ###
-France 56
-Spain 63
-
-Angola ###
-Democratic Republic of the Congo 2,511
-Republic of the Congo 201
-Namibia 1,376
-Zambia 1,110
-
-Antigua and Barbuda ###
-
-Argentina ###
-Bolivia 832
-Brazil 1,224
-Chile 5,300
-Paraguay 1,880
-Uruguay 579
-
-Armenia ###
-Azerbaijan 787
-Georgia 164
-Iran 35
-Turkey 268
-
-Australia ###
-
-Austria ###
-Czech Republic 362
-Germany 784
-Hungary 366
-Italy 430
-Liechtenstein 35
-Slovakia 91
-Slovenia 330
-Switzerland 164
-
-Azerbaijan ###
-Armenia 787
-Georgia 322
-Iran 432
-Russia 284
-Turkey 9
-
-Bahamas ###
-
-Bahrain ###
-
-Bangladesh ###
-India  including
-Myanmar 4,053
-
-Barbados ###
-
-Belarus ###
-Latvia 141
-Lithuania 502
-Poland 407
-Russia 959
-Ukraine 891
-
-Belgium ###
-France 620
-Germany 167
-Luxembourg 148
-Netherlands 450
-
-Belize ###
-Guatemala 266
-Mexico 250
-
-Benin ###
-Burkina Faso 306
-Niger 266
-Nigeria 773
-Togo 644
-
-Bhutan ###
-People's Republic of China 470
-India 605
-
-Bolivia ###
-Argentina 832
-Brazil 3,400
-Chile 861
-Paraguay 750
-Peru 900
-
-Bosnia and Herzegovina ###
-Croatia 932
-Montenegro 225
-Serbia 302
-
-Botswana ###
-Namibia 1,360
-South Africa 1,840
-Zambia 0
-Zimbabwe 813
-
-Brazil ###
-Argentina 1,224
-Bolivia 3,400
-Colombia 1,643
-French Guiana 673
-France 1,119
-Guyana 1,290
-Paraguay 1,560
-Peru 597
-Suriname 985
-Uruguay 2,200
-
-Brunei ###
-Malaysia 381
-
-Bulgaria ###
-Greece 494
-Macedonia 148
-Romania 608
-Serbia 318
-Turkey 240
-
-Burkina Faso ###
-Benin 306
-Côte d'Ivoire 584
-Ghana 549
-Mali 1,000
-Niger 628
-Togo 126
-
-Burundi ###
-Democratic Republic of the Congo 233
-Rwanda 290
-Tanzania 451
-
-Cambodia ###
-Laos 541
-Thailand 803
-Vietnam 1,228
-
-Cameroon ###
-Central African Republic 797
-Chad 1,094
-Republic of the Congo 523
-Equatorial Guinea 189
-Gabon 298
-Nigeria 1,690
-
-Canada ###
-United States 8,893
-
-Cape Verde ###
-
-Central African Republic ###
-Cameroon 797
-Chad 1,197
-Democratic Republic of the Congo 1,577
-Republic of the Congo 467
-South Sudan 682
-Sudan 483
-
-Chad ###
-Cameroon 1,094
-Central African Republic 1,197
-Libya 1,055
-Niger 1,175
-Nigeria 87
-Sudan 1,360
-
-Chile ###
-Argentina 5,300
-Bolivia 861
-Peru 160
-
-People's Republic of China ###
-Afghanistan 76
-Bhutan 470
-Hong Kong 30
-PR China 3,380
-India 1,533
-Kazakhstan 1,416
-North Korea 858
-Kyrgyzstan 423
-Laos 0
-Macau 4,677
-PR China 2,185
-Mongolia 1,236
-Myanmar 523
-Nepal 3,645
-Pakistan 414
-Russia 1,281
-
-Colombia ###
-Brazil 1,643
-Ecuador 590
-Panama 225
-Peru 1,496
-Venezuela 2,050
-
-Comoros ###
-
-Democratic Republic of the Congo ###
-Angola 2,511
-Burundi 233
-Central African Republic 1,577
-Republic of the Congo 2,410
-Rwanda 217
-South Sudan 628
-Tanzania 459
-Uganda 765
-Zambia 1,930
-
-Republic of the Congo ###
-Angola 201
-Cameroon 523
-Central African Republic 467
-Democratic Republic of the Congo 2,410
-Gabon 1,903
-
-Costa Rica ###
-Nicaragua 309
-Panama 330
-
-Côte d'Ivoire ###
-Burkina Faso 584
-Ghana 668
-Guinea 610
-Liberia 716
-Mali 532
-
-Croatia ###
-Bosnia and Herzegovina 932
-Hungary 329
-Montenegro 25
-Serbia 241
-Slovenia 670
-
-Cuba ###
-
-Cyprus ###
-
-Czech Republic ###
-Austria 362
-Germany 815
-Poland 658
-Slovakia 215
-
-Denmark ###
-Germany 68
-
-Djibouti ###
-Eritrea 109
-Ethiopia 349
-Somalia 58
-
-Dominica ###
-
-Dominican Republic ###
-Haiti 360
-
-East Timor ###
-Indonesia 228
-
-Ecuador ###
-Colombia 590
-Peru 1,420
-
-Egypt ###
-Gaza Strip 11
-Palestinian territories 266
-Israel 1,115
-Libya 1,273
-
-El Salvador ###
-Guatemala 203
-Honduras 342
-
-Equatorial Guinea ###
-Cameroon 189
-Gabon 350
-
-Eritrea ###
-Djibouti 109
-Ethiopia 912
-Sudan 605
-
-Estonia ###
-Latvia 339
-Russia 294
-
-Ethiopia ###
-Djibouti 349
-Eritrea 912
-Kenya 861
-Somalia 1,600
-South Sudan 883
-Sudan 723
-
-Fiji ###
-
-Finland ###
-Norway 736
-Sweden 614
-Russia 1,340
-
-France ###
-Andorra 56
-Belgium 620
-Germany 451
-Italy 488
-Luxembourg 73
-Monaco 4
-Spain 623
-Switzerland 573
-
-France ###
-Andorra 56
-Belgium 620
-Brazil 673
-Germany 451
-Italy 488
-Luxembourg 73
-Monaco 4
-Sint Maarten 10
-Netherlands 623
-Spain 510
-Suriname 573
-
-Gabon ###
-Cameroon 298
-Republic of the Congo 1,903
-Equatorial Guinea 350
-
-The Gambia ###
-Senegal 740
-
-Georgia ###
-Armenia 164
-Azerbaijan 322
-Russia 723
-Turkey 252
-
-Germany ###
-Austria 784
-Belgium 167
-Czech Republic 815
-Denmark 68
-France 451
-Luxembourg 138
-Netherlands 577
-Poland 456
-Switzerland 334
-
-Ghana ###
-Burkina Faso 549
-Côte d'Ivoire 668
-Togo 877
-
-Greece ###
-Albania 282
-Bulgaria 494
-Turkey 206
-Macedonia 246
-
-Grenada ###
-
-Guatemala ###
-Belize 266
-El Salvador 203
-Honduras 256
-Mexico 962
-
-Guinea ###
-Côte d'Ivoire 610
-Guinea-Bissau 386
-Liberia 563
-Mali 858
-Senegal 330
-Sierra Leone 652
-
-Guinea-Bissau ###
-Guinea 386
-Senegal 338
-
-Guyana ###
-Brazil 1,119
-Suriname 600
-Venezuela 743
-
-Haiti ###
-Dominican Republic 360
-
-Honduras ###
-Guatemala 256
-El Salvador 342
-Nicaragua 922
-
-Hungary ###
-Austria 366
-Croatia 329
-Romania 443
-Serbia 151
-Slovakia 677
-Slovenia 102
-Ukraine 103
-
-Iceland ###
-
-India ###
-Bangladesh  including
-Bhutan 4,053
-People's Republic of China 605
-Myanmar 3,380
-Nepal 1,463
-Pakistan 1,690
-
-Indonesia ###
-East Timor 228
-Malaysia 1,782
-Papua New Guinea 820
-
-Iran ###
-Afghanistan 936
-Armenia 35
-Azerbaijan 432
-Iraq 1,458
-Pakistan 909
-Turkey 499
-Turkmenistan 992
-
-Iraq ###
-Iran 1,458
-Jordan 181
-Kuwait 240
-Saudi Arabia 814
-Syria 605
-Turkey 352
-
-Ireland ###
-United Kingdom 499
-
-Israel ###
-Egypt 266
-Gaza Strip 51
-Palestinian territories 238
-Jordan 79
-Lebanon 76
-Syria 307
-
-Italy ###
-Austria 430
-France 488
-San Marino 39
-Slovenia 232
-Switzerland 740
-Vatican City 3
-
-Jamaica ###
-
-Japan ###
-
-Jordan ###
-Iraq 181
-Israel 238
-Saudi Arabia 744
-Syria 375
-West Bank 97
-
-Kazakhstan ###
-People's Republic of China 1,533
-Kyrgyzstan 1,051
-Russia 6,846
-Turkmenistan 379
-Uzbekistan 2,203
-
-Kenya ###
-Ethiopia 861
-Somalia 682
-South Sudan 232
-Tanzania 769
-Uganda 933
-
-Kiribati ###
-
-North Korea ###
-People's Republic of China 1,416
-South Korea 238
-Russia 19
-
-South Korea ###
-North Korea 238
-
-Kuwait ###
-Iraq 240
-Saudi Arabia 222
-
-Kyrgyzstan ###
-People's Republic of China 858
-Kazakhstan 1,051
-Tajikistan 870
-Uzbekistan 1,099
-
-Laos ###
-Cambodia 541
-People's Republic of China 423
-Myanmar 235
-Thailand 1,754
-Vietnam 2,130
-
-Latvia ###
-Belarus 141
-Estonia 339
-Lithuania 453
-Russia 217
-
-Lebanon ###
-Israel 79
-Syria 375
-
-Lesotho ###
-South Africa 909
-
-Liberia ###
-Guinea 563
-Côte d'Ivoire 716
-Sierra Leone 306
-
-Libya ###
-Algeria 982
-Chad 1,055
-Egypt 1,115
-Niger 354
-Sudan 383
-Tunisia 459
-
-Liechtenstein ###
-Austria 34
-Switzerland 41
-
-Lithuania ###
-Belarus 502
-Latvia 453
-Poland 91
-Russia 227
-
-Luxembourg ###
-Belgium 148
-France 73
-Germany 138
-
-Macedonia ###
-Albania 151
-Bulgaria 148
-Greece 246
-Kosovo 159
-Serbia 62
-
-Madagascar ###
-
-Malawi ###
-Mozambique 1,569
-Tanzania 475
-Zambia 837
-
-Malaysia ###
-Brunei 381
-Indonesia 1,782
-Thailand 506
-
-Maldives ###
-
-Mali ###
-Algeria 1,376
-Burkina Faso 1,000
-Côte d'Ivoire 532
-Guinea 858
-Mauritania 2,237
-Niger 821
-Senegal 419
-
-Malta ###
-
-Marshall Islands ###
-
-Mauritania ###
-Algeria 463
-Mali 2,237
-Senegal 813
-Western Sahara 1,561
-
-Mauritius ###
-
-Mexico ###
-Belize 250
-Guatemala 962
-United States 3,141
-
-Federated States of Micronesia ###
-
-Moldova ###
-Romania 450
-Ukraine 939
-
-Monaco ###
-France 4
-
-Mongolia ###
-People's Republic of China 4,677
-Russia 3,485
-
-Montenegro ###
-Albania 172
-Bosnia and Herzegovina 225
-Croatia 25
-Kosovo 79
-Serbia 124
-
-Morocco ###
-Algeria 1,559
-Western Sahara 443
-Spain 17
-
-Mozambique ###
-Malawi 1,569
-South Africa 491
-Swaziland 105
-Tanzania 756
-Zambia 419
-Zimbabwe 1,231
-
-Myanmar ###
-Bangladesh 193
-People's Republic of China 2,185
-India 1,463
-Laos 235
-Thailand 1,800
-
-Namibia ###
-Angola 1,376
-Botswana 1,360
-South Africa 967
-Zambia 233
-
-Nauru ###
-
-Nepal ###
-People's Republic of China 1,236
-India 1,690
-
-Netherlands ###
-Belgium 450
-Germany 577
-
-Netherlands, Kingdom of the ###
-Belgium 450
-Germany 577
-Saint Martin 10
-
-New Zealand ###
-
-Nicaragua ###
-Costa Rica 309
-Honduras 922
-
-Niger ###
-Algeria 956
-Benin 266
-Burkina Faso 628
-Chad 1,175
-Libya 354
-Mali 821
-Nigeria 1,497
-
-Nigeria ###
-Benin 773
-Cameroon 1,690
-Chad 87
-Niger 1,497
-
-Norway ###
-Finland 736
-Sweden 1,619
-Russia 196
-
-Oman ###
-Saudi Arabia 676
-United Arab Emirates 410
-Yemen 288
-
-Pakistan ###
-Afghanistan 2,430
-People's Republic of China 523
-India 2,912
-Iran 909
-
-Palau ###
-
-Palestine ###
-Egypt 11
-Israel 358
-Jordan 97
-
-Panama ###
-Colombia 225
-Costa Rica 330
-
-Papua New Guinea ###
-Indonesia 820
-
-Paraguay ###
-Argentina 1,880
-Bolivia 750
-Brazil 1,290
-
-Peru ###
-Bolivia 900
-Brazil 1,560
-Chile 160
-Colombia 1,496
-Ecuador 1,420
-
-Philippines ###
-
-Poland ###
-Belarus 407
-Czech Republic 658
-Germany 456
-Lithuania 91
-Russia 206
-Slovakia 444
-Ukraine 526
-
-Portugal ###
-Spain 1,214
-
-Qatar ###
-Saudi Arabia 60
-United Arab Emirates 19.
-
-Romania ###
-Bulgaria 608
-Hungary 443
-Moldova 450
-Serbia 476
-Ukraine 531
-
-Russia ###
-Azerbaijan 284
-Belarus 959
-People's Republic of China 3,645
-Estonia 294
-Finland 1,340
-Georgia 723
-Kazakhstan 6,846
-North Korea 19
-Latvia 217
-Lithuania 227
-Mongolia 3,485
-Norway 196
-Poland 206
-Ukraine 1,576
-
-Rwanda ###
-Burundi 290
-Democratic Republic of the Congo 217
-Tanzania 217
-Uganda 169
-
-Saint Kitts and Nevis ###
-
-Saint Lucia ###
-
-Saint Vincent and the Grenadines ###
-
-Samoa ###
-
-San Marino ###
-Italy 39
-
-São Tomé and Príncipe ###
-
-Saudi Arabia ###
-Iraq 814
-Jordan 744
-Kuwait 222
-Oman 676
-Qatar 60
-United Arab Emirates 457
-Yemen 1,458
-
-Senegal ###
-The Gambia 740
-Guinea 330
-Guinea-Bissau 338
-Mali 419
-Mauritania 813
-
-Serbia ###
-Bosnia and Herzegovina 302
-Bulgaria 318
-Croatia 241
-Hungary 151
-Kosovo 352
-Macedonia 62
-Montenegro 124
-Romania 476
-
-Seychelles ###
-
-Sierra Leone ###
-Guinea 652
-Liberia 306
-
-Singapore ###
-
-Slovakia ###
-Austria 91
-Czech Republic 215
-Hungary 677
-Poland 444
-Ukraine 97
-
-Slovenia ###
-Austria 330
-Croatia 670
-Italy 232
-Hungary 102
-
-Solomon Islands ###
-
-Somalia ###
-Djibouti 58
-Ethiopia 1,600
-Kenya 682
-
-South Africa ###
-Botswana 1,840
-Lesotho 909
-Mozambique 491
-Namibia 967
-Swaziland 430
-Zimbabwe 225
-
-South Sudan ###
-Central African Republic 682
-Democratic Republic of the Congo 628
-Ethiopia 883
-Kenya 232
-Sudan 1,937
-Uganda 435
-
-Spain ###
-Andorra 63
-France 623
-Gibraltar 1
-Portugal 1,214
-Morocco 17
-
-Sri Lanka ###
-India 0
-
-Sudan ###
-Central African Republic 483
-Chad 1,360
-Egypt 1,273
-Eritrea 605
-Ethiopia 723
-Libya 383
-South Sudan 1,937
-
-Suriname ###
-Brazil 597
-French Guiana 510
-France 600
-
-Swaziland ###
-Mozambique 105
-South Africa 430
-
-Sweden ###
-Finland 614
-Norway 1,619
-
-Switzerland ###
-Austria 164
-France 573
-Italy 740
-Liechtenstein 41
-Germany 334
-
-Syria ###
-Iraq 605
-Israel 76
-Jordan 375
-Lebanon 375
-Turkey 822
-
-Tajikistan ###
-Afghanistan 1,206
-People's Republic of China 414
-Kyrgyzstan 870
-Uzbekistan 1,161
-
-Tanzania ###
-Burundi 451
-Democratic Republic of the Congo 459
-Kenya 769
-Malawi 475
-Mozambique 756
-Rwanda 217
-Uganda 396
-Zambia 338
-
-Thailand ###
-Cambodia 803
-Laos 1,754
-Malaysia 506
-Myanmar 1,800
-
-Togo ###
-Benin 644
-Burkina Faso 126
-Ghana 877
-
-Tonga ###
-
-Trinidad and Tobago ###
-
-Tunisia ###
-Algeria 965
-Libya 459
-
-Turkey ###
-Armenia 268
-Azerbaijan 9
-Bulgaria 240
-Georgia 252
-Greece 206
-Iran 499
-Iraq 352
-Syria 822
-
-Turkmenistan ###
-Afghanistan 744
-Iran 992
-Kazakhstan 379
-Uzbekistan 1,621
-
-Tuvalu ###
-
-Uganda ###
-Democratic Republic of the Congo 765
-Kenya 933
-Rwanda 169
-South Sudan 435
-Tanzania 396
-
-Ukraine ###
-Belarus 891
-Hungary 103
-Moldova 939
-Poland 526
-Romania 531
-Russia 1,576
-Slovakia 97
-
-United Arab Emirates ###
-Oman 410
-Qatar 19
-Saudi Arabia 457
-
-United Kingdom ###
-Ireland 499
-
-United Kingdom ###
-Cyprus 152
-Ireland 360
-Spain 1
-
-United States ###
-Canada 8,893
-Mexico 3,141
-
-Uruguay ###
-Argentina 579
-Brazil 985
-
-Uzbekistan ###
-Afghanistan 137
-Kazakhstan 2,203
-Kyrgyzstan 1,099
-Tajikistan 1,161
-Turkmenistan 1,621
-
-Vanuatu ###
-
-Vatican City ###
-Italy 3
-
-Venezuela ###
-Brazil 2,200
-Colombia 2,050
-Guyana 743
-
-Vietnam ###
-Cambodia 1,228
-People's Republic of China 1,281
-Laos 2,130
-
-Yemen ###
-Oman 288
-Saudi Arabia 1,458
-
-Zambia ###
-Angola 1,110
-Botswana 0
-Democratic Republic of the Congo 1,930
-Malawi 837
-Mozambique 419
-Namibia 233
-Tanzania 338
-Zimbabwe 797
-
-Zimbabwe ###
-Botswana 813
-Mozambique 1,231
-South Africa 225
-Zambia 797
+Afghanistan;###
+China;76
+Iran;936
+Pakistan;2,430
+Tajikistan;1,206
+Turkmenistan;744
+Uzbekistan;137
+Albania;###
+Greece;282
+Kosovo;112
+Macedonia;151
+Montenegro;172
+Algeria;###
+Libya;982
+Mali;1,376
+Mauritania;463
+Morocco;1,559
+Niger;956
+Tunisia;965
+Western;Sahara;42
+Andorra;###
+France;56
+Spain;63
+Angola;###
+Democratic Republic of the Congo;2,511
+Republic of the Congo;201
+Namibia;1,376
+Zambia;1,110
+Antigua and Barbuda;###
+Argentina;###
+Bolivia;832
+Brazil;1,224
+Chile;5,300
+Paraguay;1,880
+Uruguay;579
+Armenia;###
+Azerbaijan;787
+Georgia;164
+Iran;35
+Turkey;268
+Australia;###
+Austria;###
+Czech Republic;362
+Germany;784
+Hungary;366
+Italy;430
+Liechtenstein;35
+Slovakia;91
+Slovenia;330
+Switzerland;164
+Azerbaijan;###
+Armenia;787
+Georgia;322
+Iran;432
+Russia;284
+Turkey;9
+Bahamas;###
+Bahrain;###
+Bangladesh;###
+India;100
+Myanmar;4,053
+Barbados;###
+Belarus;###
+Latvia;141
+Lithuania;502
+Poland;407
+Russia;959
+Ukraine;891
+Belgium;###
+France;620
+Germany;167
+Luxembourg;148
+Netherlands;450
+Belize;###
+Guatemala;266
+Mexico;250
+Benin;###
+Burkina;Faso;306
+Niger;266
+Nigeria;773
+Togo;644
+Bhutan;###
+China;470
+India;605
+Bolivia;###
+Argentina;832
+Brazil;3,400
+Chile;861
+Paraguay;750
+Peru;900
+Bosnia and Herzegovina;###
+Croatia;932
+Montenegro;225
+Serbia;302
+Botswana;###
+Namibia;1,360
+South Africa;1,840
+Zambia;0
+Zimbabwe;813
+Brazil;###
+Argentina;1,224
+Bolivia;3,400
+Colombia;1,643
+French Guiana;673
+France;1,119
+Guyana;1,290
+Paraguay;1,560
+Peru;597
+Suriname;985
+Uruguay;2,200
+Brunei;###
+Malaysia;381
+Bulgaria;###
+Greece;494
+Macedonia;148
+Romania;608
+Serbia;318
+Turkey;240
+Burkina Faso;###
+Benin;306
+Côte d'Ivoire;584
+Ghana;549
+Mali;1,000
+Niger;628
+Togo;126
+Burundi;###
+Democratic Republic of the Congo;233
+Rwanda;290
+Tanzania;451
+Cambodia;###
+Laos;541
+Thailand;803
+Vietnam;1,228
+Cameroon;###
+Central African Republic;797
+Chad;1,094
+Republic of the Congo;523
+Equatorial Guinea;189
+Gabon;298
+Nigeria;1,690
+Canada;###
+United States;8,893
+Cape Verde;###
+Central African Republic;###
+Cameroon;797
+Chad;1,197
+Democratic Republic of the Congo;1,577
+Republic of the Congo;467
+South Sudan;682
+Sudan;483
+Chad;###
+Cameroon;1,094
+Central African Republic;1,197
+Libya;1,055
+Niger;1,175
+Nigeria;87
+Sudan;1,360
+Chile;###
+Argentina;5,300
+Bolivia;861
+Peru;160
+China;###
+Afghanistan;76
+Bhutan;470
+Hong Kong;30
+PR China;3,380
+India;1,533
+Kazakhstan;1,416
+North;Korea;858
+Kyrgyzstan;423
+Laos;0
+Macau;4,677
+PR;China;2,185
+Mongolia;1,236
+Myanmar;523
+Nepal;3,645
+Pakistan;414
+Russia;1,281
+Colombia;###
+Brazil;1,643
+Ecuador;590
+Panama;225
+Peru;1,496
+Venezuela;2,050
+Comoros;###
+Democratic Republic of the Congo;###
+Angola;2,511
+Burundi;233
+Central African Republic;1,577
+Republic of the Congo;2,410
+Rwanda;217
+South Sudan;628
+Tanzania;459
+Uganda;765
+Zambia;1,930
+Republic of the Congo;###
+Angola;201
+Cameroon;523
+Central African Republic;467
+Democratic Republic of the Congo;2,410
+Gabon;1,903
+Costa Rica;###
+Nicaragua;309
+Panama;330
+Côte d'Ivoire;###
+Burkina Faso;584
+Ghana;668
+Guinea;610
+Liberia;716
+Mali;532
+Croatia;###
+Bosnia and Herzegovina;932
+Hungary;329
+Montenegro;25
+Serbia;241
+Slovenia;670
+Cuba;###
+Cyprus;###
+Czech Republic;###
+Austria;362
+Germany;815
+Poland;658
+Slovakia;215
+Denmark;###
+Germany;68
+Djibouti;###
+Eritrea;109
+Ethiopia;349
+Somalia;58
+Dominica;###
+Dominican Republic;###
+Haiti;360
+East Timor;###
+Indonesia;228
+Ecuador;###
+Colombia;590
+Peru;1,420
+Egypt;###
+Gaza Strip;11
+Palestinian territories;266
+Israel;1,115
+Libya;1,273
+El Salvador;###
+Guatemala;203
+Honduras;342
+Equatorial Guinea;###
+Cameroon;189
+Gabon;350
+Eritrea;###
+Djibouti;109
+Ethiopia;912
+Sudan;605
+Estonia;###
+Latvia;339
+Russia;294
+Ethiopia;###
+Djibouti;349
+Eritrea;912
+Kenya;861
+Somalia;1,600
+South Sudan;883
+Sudan;723
+Fiji;###
+Finland;###
+Norway;736
+Sweden;614
+Russia;1,340
+France;###
+Andorra;56
+Belgium;620
+Germany;451
+Italy;488
+Luxembourg;73
+Monaco;4
+Spain;623
+Switzerland;573
+France;###
+Andorra;56
+Belgium;620
+Brazil;673
+Germany;451
+Italy;488
+Luxembourg;73
+Monaco;4
+Sint;Maarten;10
+Netherlands;623
+Spain;510
+Suriname;573
+Gabon;###
+Cameroon;298
+Republic of the Congo;1,903
+Equatorial Guinea;350
+The Gambia;###
+Senegal;740
+Georgia;###
+Armenia;164
+Azerbaijan;322
+Russia;723
+Turkey;252
+Germany;###
+Austria;784
+Belgium;167
+Czech Republic;815
+Denmark;68
+France;451
+Luxembourg;138
+Netherlands;577
+Poland;456
+Switzerland;334
+Ghana;###
+Burkina Faso;549
+Côte d'Ivoire;668
+Togo;877
+Greece;###
+Albania;282
+Bulgaria;494
+Turkey;206
+Macedonia;246
+Grenada;###
+Guatemala;###
+Belize;266
+El Salvador;203
+Honduras;256
+Mexico;962
+Guinea;###
+Côte d'Ivoire;610
+Guinea-Bissau;386
+Liberia;563
+Mali;858
+Senegal;330
+Sierra Leone;652
+Guinea-Bissau;###
+Guinea;386
+Senegal;338
+Guyana;###
+Brazil;1,119
+Suriname;600
+Venezuela;743
+Haiti;###
+Dominican Republic;360
+Honduras;###
+Guatemala;256
+El Salvador;342
+Nicaragua;922
+Hungary;###
+Austria;366
+Croatia;329
+Romania;443
+Serbia;151
+Slovakia;677
+Slovenia;102
+Ukraine;103
+Iceland;###
+India;###
+Bangladesh;100
+Bhutan;4,053
+China;605
+Myanmar;3,380
+Nepal;1,463
+Pakistan;1,690
+Indonesia;###
+East Timor;228
+Malaysia;1,782
+Papua New Guinea;820
+Iran;###
+Afghanistan;936
+Armenia;35
+Azerbaijan;432
+Iraq;1,458
+Pakistan;909
+Turkey;499
+Turkmenistan;992
+Iraq;###
+Iran;1,458
+Jordan;181
+Kuwait;240
+Saudi Arabia;814
+Syria;605
+Turkey;352
+Ireland;###
+United Kingdom;499
+Israel;###
+Egypt;266
+Gaza Strip;51
+Palestinian territories;238
+Jordan;79
+Lebanon;76
+Syria;307
+Italy;###
+Austria;430
+France;488
+San Marino;39
+Slovenia;232
+Switzerland;740
+Vatican;City;3
+Jamaica;###
+Japan;###
+Jordan;###
+Iraq;181
+Israel;238
+Saudi Arabia;744
+Syria;375
+West;Bank;97
+Kazakhstan;###
+China;1,533
+Kyrgyzstan;1,051
+Russia;6,846
+Turkmenistan;379
+Uzbekistan;2,203
+Kenya;###
+Ethiopia;861
+Somalia;682
+South Sudan;232
+Tanzania;769
+Uganda;933
+Kiribati;###
+North Korea;###
+China;1,416
+South Korea;238
+Russia;19
+South Korea;###
+North Korea;238
+Kuwait;###
+Iraq;240
+Saudi Arabia;222
+Kyrgyzstan;###
+China;858
+Kazakhstan;1,051
+Tajikistan;870
+Uzbekistan;1,099
+Laos;###
+Cambodia;541
+China;423
+Myanmar;235
+Thailand;1,754
+Vietnam;2,130
+Latvia;###
+Belarus;141
+Estonia;339
+Lithuania;453
+Russia;217
+Lebanon;###
+Israel;79
+Syria;375
+Lesotho;###
+South Africa;909
+Liberia;###
+Guinea;563
+Côte d'Ivoire;716
+Sierra Leone;306
+Libya;###
+Algeria;982
+Chad;1,055
+Egypt;1,115
+Niger;354
+Sudan;383
+Tunisia;459
+Liechtenstein;###
+Austria;34
+Switzerland;41
+Lithuania;###
+Belarus;502
+Latvia;453
+Poland;91
+Russia;227
+Luxembourg;###
+Belgium;148
+France;73
+Germany;138
+Macedonia;###
+Albania;151
+Bulgaria;148
+Greece;246
+Kosovo;159
+Serbia;62
+Madagascar;###
+Malawi;###
+Mozambique;1,569
+Tanzania;475
+Zambia;837
+Malaysia;###
+Brunei;381
+Indonesia;1,782
+Thailand;506
+Maldives;###
+Mali;###
+Algeria;1,376
+Burkina;Faso;1,000
+Côte d'Ivoire;532
+Guinea;858
+Mauritania;2,237
+Niger;821
+Senegal;419
+Malta;###
+Marshall Islands;###
+Mauritania;###
+Algeria;463
+Mali;2,237
+Senegal;813
+Western Sahara;1,561
+Mauritius;###
+Mexico;###
+Belize;250
+Guatemala;962
+United States;3,141
+Federated States of Micronesia;###
+Moldova;###
+Romania;450
+Ukraine;939
+Monaco;###
+France;4
+Mongolia;###
+China;4,677
+Russia;3,485
+Montenegro;###
+Albania;172
+Bosnia and Herzegovina;225
+Croatia;25
+Kosovo;79
+Serbia;124
+Morocco;###
+Algeria;1,559
+Western Sahara;443
+Spain;17
+Mozambique;###
+Malawi;1,569
+South Africa;491
+Swaziland;105
+Tanzania;756
+Zambia;419
+Zimbabwe;1,231
+Myanmar;###
+Bangladesh;193
+China;2,185
+India;1,463
+Laos;235
+Thailand;1,800
+Namibia;###
+Angola;1,376
+Botswana;1,360
+South Africa;967
+Zambia;233
+Nauru;###
+Nepal;###
+China;1,236
+India;1,690
+Netherlands;###
+Belgium;450
+Germany;577
+Netherlands, Kingdom of the;###
+Belgium;450
+Germany;577
+Saint Martin;10
+New Zealand;###
+Nicaragua;###
+Costa Rica;309
+Honduras;922
+Niger;###
+Algeria;956
+Benin;266
+Burkina Faso;628
+Chad;1,175
+Libya;354
+Mali;821
+Nigeria;1,497
+Nigeria;###
+Benin;773
+Cameroon;1,690
+Chad;87
+Niger;1,497
+Norway;###
+Finland;736
+Sweden;1,619
+Russia;196
+Oman;###
+Saudi Arabia;676
+United Arab Emirates;410
+Yemen;288
+Pakistan;###
+Afghanistan;2,430
+China;523
+India;2,912
+Iran;909
+Palau;###
+Palestine;###
+Egypt;11
+Israel;358
+Jordan;97
+Panama;###
+Colombia;225
+Costa Rica;330
+Papua New Guinea;###
+Indonesia;820
+Paraguay;###
+Argentina;1,880
+Bolivia;750
+Brazil;1,290
+Peru;###
+Bolivia;900
+Brazil;1,560
+Chile;160
+Colombia;1,496
+Ecuador;1,420
+Philippines;###
+Poland;###
+Belarus;407
+Czech Republic;658
+Germany;456
+Lithuania;91
+Russia;206
+Slovakia;444
+Ukraine;526
+Portugal;###
+Spain;1,214
+Qatar;###
+Saudi Arabia;60
+United Arab Emirates;19.
+Romania;###
+Bulgaria;608
+Hungary;443
+Moldova;450
+Serbia;476
+Ukraine;531
+Russia;###
+Azerbaijan;284
+Belarus;959
+China;3,645
+Estonia;294
+Finland;1,340
+Georgia;723
+Kazakhstan;6,846
+North Korea;19
+Latvia;217
+Lithuania;227
+Mongolia;3,485
+Norway;196
+Poland;206
+Ukraine;1,576
+Rwanda;###
+Burundi;290
+Democratic Republic of the Congo;217
+Tanzania;217
+Uganda;169
+Saint Kitts and Nevis;###
+Saint Lucia;###
+Saint Vincent and the Grenadines;###
+Samoa;###
+San Marino;###
+Italy;39
+São Tomé and Príncipe;###
+Saudi Arabia;###
+Iraq;814
+Jordan;744
+Kuwait;222
+Oman;676
+Qatar;60
+United Arab Emirates;457
+Yemen;1,458
+Senegal;###
+The Gambia;740
+Guinea;330
+Guinea-Bissau;338
+Mali;419
+Mauritania;813
+Serbia;###
+Bosnia and Herzegovina;302
+Bulgaria;318
+Croatia;241
+Hungary;151
+Kosovo;352
+Macedonia;62
+Montenegro;124
+Romania;476
+Seychelles;###
+Sierra;Leone;###
+Guinea;652
+Liberia;306
+Singapore;###
+Slovakia;###
+Austria;91
+Czech Republic;215
+Hungary;677
+Poland;444
+Ukraine;97
+Slovenia;###
+Austria;330
+Croatia;670
+Italy;232
+Hungary;102
+Solomon Islands;###
+Somalia;###
+Djibouti;58
+Ethiopia;1,600
+Kenya;682
+South Africa;###
+Botswana;1,840
+Lesotho;909
+Mozambique;491
+Namibia;967
+Swaziland;430
+Zimbabwe;225
+South Sudan;###
+Central African Republic;682
+Democratic Republic of the Congo;628
+Ethiopia;883
+Kenya;232
+Sudan;1,937
+Uganda;435
+Spain;###
+Andorra;63
+France;623
+Gibraltar;1
+Portugal;1,214
+Morocco;17
+Sri;Lanka;###
+India;0
+Sudan;###
+Central African Republic;483
+Chad;1,360
+Egypt;1,273
+Eritrea;605
+Ethiopia;723
+Libya;383
+South Sudan;1,937
+Suriname;###
+Brazil;597
+French;Guiana;510
+France;600
+Swaziland;###
+Mozambique;105
+South Africa;430
+Sweden;###
+Finland;614
+Norway;1,619
+Switzerland;###
+Austria;164
+France;573
+Italy;740
+Liechtenstein;41
+Germany;334
+Syria;###
+Iraq;605
+Israel;76
+Jordan;375
+Lebanon;375
+Turkey;822
+Tajikistan;###
+Afghanistan;1,206
+China;414
+Kyrgyzstan;870
+Uzbekistan;1,161
+Tanzania;###
+Burundi;451
+Democratic Republic of the Congo;459
+Kenya;769
+Malawi;475
+Mozambique;756
+Rwanda;217
+Uganda;396
+Zambia;338
+Thailand;###
+Cambodia;803
+Laos;1,754
+Malaysia;506
+Myanmar;1,800
+Togo;###
+Benin;644
+Burkina;Faso;126
+Ghana;877
+Tonga;###
+Trinidad and Tobago;###
+Tunisia;###
+Algeria;965
+Libya;459
+Turkey;###
+Armenia;268
+Azerbaijan;9
+Bulgaria;240
+Georgia;252
+Greece;206
+Iran;499
+Iraq;352
+Syria;822
+Turkmenistan;###
+Afghanistan;744
+Iran;992
+Kazakhstan;379
+Uzbekistan;1,621
+Tuvalu;###
+Uganda;###
+Democratic Republic of the Congo;765
+Kenya;933
+Rwanda;169
+South Sudan;435
+Tanzania;396
+Ukraine;###
+Belarus;891
+Hungary;103
+Moldova;939
+Poland;526
+Romania;531
+Russia;1,576
+Slovakia;97
+United Arab Emirates;###
+Oman;410
+Qatar;19
+Saudi Arabia;457
+United Kingdom;###
+Ireland;499
+United Kingdom;###
+Cyprus;152
+Ireland;360
+Spain;1
+United States;###
+Canada;8,893
+Mexico;3,141
+Uruguay;###
+Argentina;579
+Brazil;985
+Uzbekistan;###
+Afghanistan;137
+Kazakhstan;2,203
+Kyrgyzstan;1,099
+Tajikistan;1,161
+Turkmenistan;1,621
+Vanuatu;###
+Vatican City;###
+Italy;3
+Venezuela;###
+Brazil;2,200
+Colombia;2,050
+Guyana;743
+Vietnam;###
+Cambodia;1,228
+China;1,281
+Laos;2,130
+Yemen;###
+Oman;288
+Saudi Arabia;1,458
+Zambia;###
+Angola;1,110
+Botswana;0
+Democratic Republic of the Congo;1,930
+Malawi;837
+Mozambique;419
+Namibia;233
+Tanzania;338
+Zimbabwe;797
+Zimbabwe;###
+Botswana;813
+Mozambique;1,231
+South Africa;225
+Zambia;797
