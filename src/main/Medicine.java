@@ -26,12 +26,15 @@ public class Medicine {
     public String getName() {
         return name;
     }
-    public DiseaseProperties getProperties(){
+
+    public DiseaseProperties getProperties() {
         return properties;
     }
+
     public DiseaseType getTargetedTypesType() {
         return targetedTypes;
     }
+
     @Override
     public String toString() {
         return name + ", " + targetedTypes + ", " + targetedSymptoms + ", " + properties.toString();

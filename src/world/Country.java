@@ -1,4 +1,4 @@
-package main;
+package world;
 
 
 import java.awt.geom.Point2D;
@@ -45,16 +45,20 @@ public class Country implements Serializable {
     public long getTotalPopulation() {
         return population;
     }
-    public List<Country> getNeighbours(){
+
+    public List<Country> getNeighbours() {
         return neighbours;
     }
-    public void setNeighbours(Country country){
+
+    public void setNeighbours(Country country) {
         neighbours.add(country);
     }
+
     public long getInfectedPopulation() {
         return infectedPopulation;
     }
-    public void setInfectedPopulation(long number){
+
+    public void setInfectedPopulation(long number) {
         this.infectedPopulation = number;
     }
 
@@ -69,6 +73,7 @@ public class Country implements Serializable {
     public Queue<Point2D> getInfectionPoints() {
         return infectionPoints;
     }
+
     /**
      * Add an infection point in map coordinates.
      */
@@ -93,15 +98,19 @@ public class Country implements Serializable {
                 ", ENV=" + environment.toString() +
                 '}';
     }
-    public long getCuredPopulation(){
+
+    public long getCuredPopulation() {
         return curedPopulation;
     }
-    public void setCuredPopulation(long number){
+
+    public void setCuredPopulation(long number) {
         this.curedPopulation = number;
     }
-    public void addCuredPopulation(long number){
+
+    public void addCuredPopulation(long number) {
         this.curedPopulation += number;
     }
+
     public long gethealthyPopulation() {
         return this.population - this.infectedPopulation;
     }
@@ -110,6 +119,7 @@ public class Country implements Serializable {
         long Percentage = this.infectedPopulation / this.population * 100;
         return (int) Percentage;
     }
+
     public void infectPopulation(int number) {
         this.infectedPopulation += number;
         infectedPopulation = Math.min(infectedPopulation, population);

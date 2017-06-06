@@ -4,7 +4,7 @@ import com.sun.istack.internal.Nullable;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import main.World;
+import world.World;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
