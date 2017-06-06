@@ -15,6 +15,10 @@ import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,11 +57,15 @@ public class Main extends Application {
     private Popup backgroundBlock = null;
     private Label timer = new Label();
     private Label speedLabel = new Label();
-    private MenuButton MedicineListBox;
-    private MenuButton DiseaseListBox;
+    private MenuButton medicineListBox;
+    private MenuButton diseaseListBox;
     private Disease selectedDisease;
     private Medicine selectedMedicine;
     private GaussianBlur blur;
+    private Button start;
+    private Button pause;
+    private Button fastForward;
+    private Button backForward;
 
     private boolean isClickedOnMapDisease = false;
     private boolean isClickedOnMapMedicine = false;
@@ -123,9 +131,9 @@ public class Main extends Application {
                 saveSimulation, saveSimulationAs);
 
 
-        MedicineListBox = new MenuButton("Medicines");
-        DiseaseListBox = new MenuButton("Diseases");
-        addToListBoxes(DiseaseListBox, MedicineListBox);
+        medicineListBox = new MenuButton("Medicines");
+        diseaseListBox = new MenuButton("Diseases");
+        addToListBoxes(diseaseListBox, medicineListBox);
 
         newSimulation.setOnAction(event -> startNewSimulation(primaryStage));
         openSimulation.setOnAction(event -> {
@@ -143,7 +151,7 @@ public class Main extends Application {
         saveSimulationAs.setOnAction(event -> saveLoadManager.saveFileAs(primaryStage, world));
 
         // assign action handlers to the items in the file menu
-        setUpButtons(fileMenuButton, DiseaseListBox, MedicineListBox, primaryStage);
+        setUpButtons(fileMenuButton, diseaseListBox, medicineListBox, primaryStage);
     }
 
     private void startNewSimulation(Stage primaryStage) {
@@ -176,10 +184,10 @@ public class Main extends Application {
 
     private void setUpButtons(MenuButton fileMenuButton, MenuButton diseaseList, MenuButton MedicineListBox, Stage primaryStage) {
 
-        Button start = setUpImageButton(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
-        Button pause = setUpImageButton(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
-        Button fastForward = setUpImageButton(ConstantValues.FAST_FORWARD_BUTTON_IMAGE_FILE);
-        Button backForward = setUpImageButton(ConstantValues.BACK_FORWARD_BUTTON_IMAGE_FILE);
+        start = setUpImageButton(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
+        pause = setUpImageButton(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
+        fastForward = setUpImageButton(ConstantValues.FAST_FORWARD_BUTTON_IMAGE_FILE);
+        backForward = setUpImageButton(ConstantValues.BACK_FORWARD_BUTTON_IMAGE_FILE);
         // set up the buttons on the buttonBar
         // set up the buttons on the buttonBar
         Button disease = new Button("Create Disease");
@@ -221,42 +229,55 @@ public class Main extends Application {
         return start;
     }
 
+    /**
+     * Starts the simulation
+     */
+    private void startSimulation(Stage primaryStage){
+        createAlgorithmThread().start();
+        createMedicineThread().start();
+        startTimer().start();
+        start.setVisible(false);
+        pause.setVisible(true);
+        isWorking = true;
+        world.getTime().setRunSpeed(1);
+        isStarted = true;
+        if (world.getTime().getSavedRunSpeed() != 0) {
+            world.getTime().setRunSpeed(world.getTime().getSavedRunSpeed());
+        }
+        speedLabel.setText("x" + world.getTime().getRunSpeed());
+        addToListBoxes(diseaseListBox, medicineListBox);
+        setPointers(diseaseListBox, medicineListBox, primaryStage);
+        backForward.setDisable(false);
+        if (world.getTime().getRunSpeed() < 70) {
+            fastForward.setDisable(false);
+        } else {
+            fastForward.setDisable(true);
+        }
+    }
+    /**
+     * Pauses the simulation
+     */
+    private void pauseSimulation(){
+        start.setVisible(true);
+        pause.setVisible(false);
+        backForward.setDisable(true);
+        fastForward.setDisable(true);
+        isWorking = false;
+        world.getTime().saveRunSpeed();
+        world.getTime().setRunSpeed(0);
+        speedLabel.setText("x" + world.getTime().getRunSpeed());
+    }
+
     private void setUpEventHandlers(final Stage primaryStage, final Button disease, final Button medicine,
                                     final Button start, final Button pause, final Button fastForwardbutton,
                                     final Button backForwardbutton, final MenuButton diseaseListBox,
                                     final MenuButton medicineListBox) {
         start.setOnAction(event -> {
-            createAlgorithmThread().start();
-            createMedicineThread().start();
-            startTimer().start();
-            start.setVisible(false);
-            pause.setVisible(true);
-            isWorking = true;
-            world.getTime().setRunSpeed(1);
-            isStarted = true;
-            if (world.getTime().getSavedRunSpeed() != 0) {
-                world.getTime().setRunSpeed(world.getTime().getSavedRunSpeed());
-            }
-            speedLabel.setText("x" + world.getTime().getRunSpeed());
-            addToListBoxes(DiseaseListBox, MedicineListBox);
-            setPointers(diseaseListBox, medicineListBox, primaryStage);
-            backForwardbutton.setDisable(false);
-            if (world.getTime().getRunSpeed() < 70) {
-                fastForwardbutton.setDisable(false);
-            } else {
-                fastForwardbutton.setDisable(true);
-            }
+            startSimulation(primaryStage);
         });
 
         pause.setOnAction(event -> {
-            start.setVisible(true);
-            pause.setVisible(false);
-            backForwardbutton.setDisable(true);
-            fastForwardbutton.setDisable(true);
-            isWorking = false;
-            world.getTime().saveRunSpeed();
-            world.getTime().setRunSpeed(0);
-            speedLabel.setText("x" + world.getTime().getRunSpeed());
+            pauseSimulation();
         });
 
         disease.setOnAction(event -> {
@@ -329,19 +350,19 @@ public class Main extends Application {
     }
 
     private void createInfectionPointFromClick(MouseEvent event, Stage primaryStage) {
-        if(selectedDisease!=null){
+        if (selectedDisease != null) {
             Point2D mapPoint = mapCanvas.getGeoFinder()
                     .screenToMapCoordinates(event.getX(), event.getY());
             infectionSpread.addInfectionToCountryAtMapCoordinates(mapPoint);
             primaryStage.getScene().setCursor(Cursor.DEFAULT);
             isClickedOnMapDisease = true;
         }
-        if (selectedMedicine!=null){
+        if (selectedMedicine != null) {
             String selectedCode = mapCanvas.getGeoFinder().getCountryCodeFromScreenCoordinates(event.getX(), event.getY());
             Optional<Country> countryMaybe = world.getCountryByCode(selectedCode);
             if (countryMaybe.isPresent()) {
                 Country country = countryMaybe.get();
-                if(country!=null){
+                if (country != null) {
                     medicineSpread.addInitialCountry(country);
                     medicineSpread.setMedicine(selectedMedicine);
                 }
@@ -364,6 +385,7 @@ public class Main extends Application {
     }
 
     private void SetUpPopupDisease(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
+        pauseSimulation();
         popup = new Popup();
         backgroundBlock = new Popup();
         Rectangle popUpRectangleBackground = new Rectangle(390, 360);
@@ -453,11 +475,12 @@ public class Main extends Application {
                                 virulence.getValue() / 100));
 
                 infectionSpread.addDisease(disease);
-                addToListBoxes(DiseaseListBox, MedicineListBox);
+                addToListBoxes(this.diseaseListBox, this.medicineListBox);
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
                 popup.hide();
                 blur.setRadius(0);
                 backgroundBlock.hide();
+                startSimulation(primaryStage);
 
             } catch (Exception ex) {
                 if (preferredTemp.getText().equals("-")) {
@@ -475,10 +498,12 @@ public class Main extends Application {
             popup.hide();
             blur.setRadius(0);
             backgroundBlock.hide();
+            startSimulation(primaryStage);
         });
     }
 
     private void SetUpPopupMedicine(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
+        pauseSimulation();
         popup = new Popup();
         backgroundBlock = new Popup();
         blur.setRadius(15);
@@ -575,10 +600,11 @@ public class Main extends Application {
                                 virulence.getValue() / 100));
                 medicineSpread.addMedicine(medicine);
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
-                addToListBoxes(DiseaseListBox, MedicineListBox);
+                addToListBoxes(this.diseaseListBox, this.medicineListBox);
                 popup.hide();
                 blur.setRadius(0);
                 backgroundBlock.hide();
+                startSimulation(primaryStage);
             } catch (Exception ex) {
                 if (preferredTemp.getText().equals("-")) {
                     preferredTemp.setText("");
@@ -595,6 +621,7 @@ public class Main extends Application {
             popup.hide();
             blur.setRadius(0);
             backgroundBlock.hide();
+            startSimulation(primaryStage);
         });
     }
 
