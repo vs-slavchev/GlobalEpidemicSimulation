@@ -23,6 +23,7 @@ public class ConstantValues {
     public static final Color FILL_COLOR1 = new Color(25, 25, 112);
     public static final Color SEA_COLOR1 = new Color(30, 144, 255);
     public static final Paint POINTS_COLOR1 = javafx.scene.paint.Color.rgb(0, 255, 0, 0.4);
+    public static final Paint SELECTED_COUNTRY_POINTS_COLOR1 = javafx.scene.paint.Color.rgb(255,255,255, 0.8);
     public static final Paint GRAPH_STROKE_COLOR1 = javafx.scene.paint.Color.rgb(220, 20, 60, 1);
     public static final Paint GRAPH_TEXT_COLOR1 = javafx.scene.paint.Color.rgb(25, 25, 112, 1);
     public static final Paint GRAPH_LINE_COLOR1 = javafx.scene.paint.Color.rgb(0, 0, 205, 0.8);

@@ -27,13 +27,14 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 import world.Country;
-
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.util.*;
 
 /**
  * Owner: Veselin
@@ -121,6 +122,16 @@ public class MapCanvas {
             Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
             gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
                     calculatePointRadius(), calculatePointRadius());
+        }
+
+        //changes the color of the points in a selected country
+        if(selectedCountry != null){
+            gc.setFill(ConstantValues.SELECTED_COUNTRY_POINTS_COLOR1);
+                for (Point2D point : selectedCountry.getInfectionPoints()){
+                    Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
+                    gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
+                            calculatePointRadius(), calculatePointRadius());
+                }
         }
     }
 
