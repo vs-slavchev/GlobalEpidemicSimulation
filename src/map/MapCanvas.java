@@ -306,18 +306,7 @@ public class MapCanvas implements CountryPercentageListener {
         displaySelectedFeatures(IDs);
     }
 
-    public void PercentageStyleChange(double x, double y) {
-        SimpleFeatureCollection features = geoFinder.getCountryFeaturesCollectionFromScreenCoordinates(x, y);
 
-        Set<FeatureId> IDs = new HashSet<>();
-        try (SimpleFeatureIterator iterator = features.features()) {
-            while (iterator.hasNext()) {
-                SimpleFeature feature = iterator.next();
-                IDs.add(feature.getIdentifier());
-            }
-        }
-        changeFeatures(IDs);
-    }
 
     private void displaySelectedFeatures(Set<FeatureId> IDs) {
         Style style = IDs.isEmpty() ?
@@ -325,11 +314,7 @@ public class MapCanvas implements CountryPercentageListener {
         setMapStyle(style);
     }
 
-    private void changeFeatures(Set<FeatureId> IDs) {
-        Style style = IDs.isEmpty() ?
-                styleManager.createDefaultStyle() : styleManager.changeStyle(IDs);
-        setMapStyle(style);
-    }
+
 
     /**
      * Deselect any selected countries.
@@ -365,7 +350,8 @@ public class MapCanvas implements CountryPercentageListener {
     }
     @Override
     public void CountryReachedBreakPoint(double x,double y){
-        PercentageStyleChange(x, y);
+//        PercentageStyleChange(x, y);
+        System.out.print(geoFinder.getCountryCodeFromMapCoordinates(x,y)+" reached 50% infected population \n");
         setNeedsRepaint();
     }
 

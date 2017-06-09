@@ -95,22 +95,7 @@ class StyleManager {
         return style;
     }
 
-    public Style changeStyle(Set<FeatureId> IDs) {
-        Color red = new Color(255, 0, 0);
-        Rule selectedRule = createRule(SELECTED_LINE_COLOUR, red);
-        selectedRule.setFilter(ff.id(IDs));
 
-        Rule otherRule = createRule(ConstantValues.LINE_COLOR1, ConstantValues.FILL_COLOR1);
-        otherRule.setElseFilter(true);
-
-        FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.rules().add(selectedRule);
-        fts.rules().add(otherRule);
-
-        Style style = sf.createStyle();
-        style.featureTypeStyles().add(fts);
-        return style;
-    }
 
     private Rule createRule(Color outlineColor, Color fillColor) {
         Symbolizer symbolizer = null;

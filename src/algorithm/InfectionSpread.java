@@ -73,26 +73,27 @@ public class InfectionSpread {
             }
         }
 
-        long startTime = System.currentTimeMillis();
-        for (java.awt.geom.Point2D originalInfectionPoint : world.getAllInfectionPoints()) {
-            boolean pointWillSpread = random.nextDouble() < getMainDisease().getProperties().getVirulence();
-            if (!pointWillSpread) {
-                continue;
-            }
-
-            Point2D newPoint = generateNewRandomPoint(originalInfectionPoint);
-            newPoint = findSuitablePlaceForPoint(newPoint);
-            if (newPoint == null) {
-                continue;
-            }
-            addInfectionToCountryAtMapCoordinates(newPoint);
-        }
-        System.out.println(System.currentTimeMillis() - startTime);
+//        long startTime = System.currentTimeMillis();
+//        for (java.awt.geom.Point2D originalInfectionPoint : world.getAllInfectionPoints()) {
+//            boolean pointWillSpread = random.nextDouble() < getMainDisease().getProperties().getVirulence();
+//            if (!pointWillSpread) {
+//                continue;
+//            }
+//
+//            Point2D newPoint = generateNewRandomPoint(originalInfectionPoint);
+//            newPoint = findSuitablePlaceForPoint(newPoint);
+//            if (newPoint == null) {
+//                continue;
+//            }
+//            addInfectionToCountryAtMapCoordinates(newPoint);
+//        }
+//        System.out.println(System.currentTimeMillis() - startTime);
     }
 
     private void spreadInfection(Country country, Double virulence) {
-        double toInfect = country.getInfectedPopulation() * virulence;
-        toInfect = Math.min(Math.round(toInfect), country.getTotalPopulation() * 5 / 100);
+        long toInfect = Math.round(country.getInfectedPopulation() * virulence);
+        long fivepercent = Math.round(country.getTotalPopulation() * 5 / 100);
+        toInfect = Math.min(toInfect, fivepercent );
 
         country.infectPopulation((int) toInfect);
     }

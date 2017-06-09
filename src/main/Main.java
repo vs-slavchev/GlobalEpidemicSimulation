@@ -107,6 +107,10 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        for (Country c : world.getListOfCountries()){
+            c.addListeners(mapCanvas);
+        }
+
         scene.getStylesheets().add(ConstantValues.CSS_STYLE_FILE);
         blur = new GaussianBlur(0);
         root.setEffect(blur);
