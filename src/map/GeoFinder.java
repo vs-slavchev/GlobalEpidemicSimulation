@@ -144,6 +144,7 @@ public class GeoFinder {
         Point point = gf.createPoint(new Coordinate(x, y));
 
         Filter filter = ff.contains(ff.property("the_geom"), ff.literal(point));
+
         return countries.subCollection(filter);
     }
 

@@ -1,5 +1,6 @@
 package map;
 
+import interfaces.CountryPercentageListener;
 import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
@@ -42,7 +43,7 @@ import java.util.*;
  * Initializes and draws the map. Has event handlers strictly related to the map only.
  */
 
-public class MapCanvas {
+public class MapCanvas implements CountryPercentageListener {
 
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
@@ -305,9 +306,28 @@ public class MapCanvas {
         displaySelectedFeatures(IDs);
     }
 
+    public void PercentageStyleChange(double x, double y) {
+        SimpleFeatureCollection features = geoFinder.getCountryFeaturesCollectionFromScreenCoordinates(x, y);
+
+        Set<FeatureId> IDs = new HashSet<>();
+        try (SimpleFeatureIterator iterator = features.features()) {
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                IDs.add(feature.getIdentifier());
+            }
+        }
+        changeFeatures(IDs);
+    }
+
     private void displaySelectedFeatures(Set<FeatureId> IDs) {
         Style style = IDs.isEmpty() ?
                 styleManager.createDefaultStyle() : styleManager.createSelectedStyle(IDs);
+        setMapStyle(style);
+    }
+
+    private void changeFeatures(Set<FeatureId> IDs) {
+        Style style = IDs.isEmpty() ?
+                styleManager.createDefaultStyle() : styleManager.changeStyle(IDs);
         setMapStyle(style);
     }
 
@@ -343,4 +363,11 @@ public class MapCanvas {
         setNeedsRepaint();
         selectedCountry = country;
     }
+    @Override
+    public void CountryReachedBreakPoint(double x,double y){
+        PercentageStyleChange(x, y);
+        setNeedsRepaint();
+    }
+
+
 }

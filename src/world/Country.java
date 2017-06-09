@@ -1,6 +1,8 @@
 package world;
 
 
+import interfaces.CountryPercentageListener;
+
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class Country implements Serializable {
     private Environment environment;
     private Queue<Point2D> infectionPoints;
     private List<Country> neighbours;
+    private List<CountryPercentageListener> listeners;
 
     public Country(String countryName, String code, long Population,
                    String governmentForm, long infectedPopulation, long deadPopulation,
@@ -40,6 +43,7 @@ public class Country implements Serializable {
         this.environment = environment;
         infectionPoints = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE);
         neighbours = new ArrayList<>();
+        listeners = new ArrayList<>();
     }
 
     public long getTotalPopulation() {
@@ -73,6 +77,7 @@ public class Country implements Serializable {
     public Queue<Point2D> getInfectionPoints() {
         return infectionPoints;
     }
+
 
     /**
      * Add an infection point in map coordinates.
@@ -123,14 +128,13 @@ public class Country implements Serializable {
     public void infectPopulation(int number) {
         this.infectedPopulation += number;
         infectedPopulation = Math.min(infectedPopulation, population);
+
+        if (getPercentageOfInfectedPopulation()>=50){
+            for (CountryPercentageListener listener : listeners){
+                listener.CountryReachedBreakPoint(52.121231,54.12312);
+            }
+        }
     }
-//    public void infectPercentageOfPopulation(int percentage){
-//        long number = this.population * percentage /100;
-//        this.infectedPopulation =+ number;
-//        if (this.infectedPopulation > this.population){
-//            this.infectedPopulation = this.population;
-//        }
-//    }
 
     public String getCode() {
         return code;
@@ -152,5 +156,8 @@ public class Country implements Serializable {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (code != null ? code.hashCode() : 0);
         return result;
+    }
+    public void AddListeners(CountryPercentageListener listener){
+        listeners.add(listener);
     }
 }
