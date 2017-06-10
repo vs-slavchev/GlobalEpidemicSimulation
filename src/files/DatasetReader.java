@@ -121,7 +121,6 @@ public class DatasetReader {
         String SplitBy = "#";
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             Country country = null;
-            List<City> cities = new ArrayList<>();
             while ((line = br.readLine()) != null) {
                 String[] tempFileData = line.split(SplitBy);
                 if (tempFileData[0].equals("country")) {
@@ -133,11 +132,15 @@ public class DatasetReader {
                     }
                 } else {
                     if (country != null) {
-                        country.addCity(new City(
-                                tempFileData[1],
-                                Long.parseLong(tempFileData[2]),
-                                Double.parseDouble(tempFileData[3]),
-                                Double.parseDouble(tempFileData[4])));
+                        try {
+                            country.addCity(new City(
+                                    tempFileData[1],
+                                    Long.parseLong(tempFileData[2]),
+                                    Double.parseDouble(tempFileData[4]),
+                                    Double.parseDouble(tempFileData[3])));
+                        } catch (NumberFormatException nfe) {
+                            continue;
+                        }
                     }
                 }
             }

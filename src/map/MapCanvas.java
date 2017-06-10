@@ -27,15 +27,15 @@ import org.jfree.fx.FXGraphics2D;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
+import world.City;
 import world.Country;
+
+import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import java.awt.*;
-import java.awt.geom.Point2D;
-import java.util.*;
 
 /**
  * Owner: Veselin
@@ -50,7 +50,7 @@ public class MapCanvas implements CountryPercentageListener {
     private Canvas canvas;
     private MapContent map;
     private GraphicsContext graphics;
-    private ArrayList<java.awt.geom.Point2D> infectionPoints;
+    private ArrayList<City> cities;
     private GeoFinder geoFinder;
     private StyleManager styleManager;
     private boolean needsRepaint = true;
@@ -65,7 +65,6 @@ public class MapCanvas implements CountryPercentageListener {
         geoFinder = new GeoFinder(width, height);
         styleManager = new StyleManager(geoFinder.getFeatureSource());
         graphics = canvas.getGraphicsContext2D();
-        infectionPoints = new ArrayList<>();
         initMap();
         initializeEventHandling();
         initPaintThread();
@@ -119,12 +118,20 @@ public class MapCanvas implements CountryPercentageListener {
         draw.paint(graphics, rectangle, map.getViewport().getBounds());
 
         gc.setFill(ConstantValues.POINTS_COLOR1);
-        for (Point2D point : infectionPoints) {
-            Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
-            gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
-                    calculatePointRadius(), calculatePointRadius());
-        }
+        for (City city : cities) {
+            Point2D screenCity = geoFinder.mapToScreenCoordinates(
+                    city.getLatitude(), city.getLongitude());
+            int radius = (int) calculatePointRadius(city.getPopulation());
+            gc.fillOval(screenCity.getX(), screenCity.getY(),
+                    radius, radius);
 
+            if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 50) {
+                gc.fillText(city.getName(), screenCity.getX(), screenCity.getY() + 50);
+                // radius + 10
+            }
+        }
+        // TODO draw cities in selected country
+        /*
         //changes the color of the points in a selected country
         if(selectedCountry != null){
             gc.setFill(ConstantValues.SELECTED_COUNTRY_POINTS_COLOR1);
@@ -133,17 +140,16 @@ public class MapCanvas implements CountryPercentageListener {
                     gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
                             calculatePointRadius(), calculatePointRadius());
                 }
-        }
+        }*/
     }
 
     /**
-     * Calculates the radius of the infection points regarding the scale of X
+     * Calculates the radius of the city point regarding the scale of X
      * Scaling the points when zooming in/out
      */
-    private double calculatePointRadius() {
-        double radius;
-        radius = (geoFinder.createWorldToScreenAffineTransform().getScaleX() + 2) / 2;
-        return radius;
+    private double calculatePointRadius(double cityPopulation) {
+        return (geoFinder.createWorldToScreenAffineTransform().getScaleX() + 2) / 2
+                + cityPopulation/1_000_000;
     }
 
     private void drawGraph(GraphicsContext gc) {
@@ -306,15 +312,11 @@ public class MapCanvas implements CountryPercentageListener {
         displaySelectedFeatures(IDs);
     }
 
-
-
     private void displaySelectedFeatures(Set<FeatureId> IDs) {
         Style style = IDs.isEmpty() ?
                 styleManager.createDefaultStyle() : styleManager.createSelectedStyle(IDs);
         setMapStyle(style);
     }
-
-
 
     /**
      * Deselect any selected countries.
@@ -334,9 +336,8 @@ public class MapCanvas implements CountryPercentageListener {
         return geoFinder;
     }
 
-    public synchronized void updateInfectionPointsCoordinates(ArrayList<Point2D> infectionPoints) {
-        this.infectionPoints = infectionPoints;
-        setNeedsRepaint();
+    public void setCities(ArrayList<City> cities) {
+        this.cities = cities;
     }
 
     public void selectCountry(double x, double y, Country country) {
@@ -354,6 +355,4 @@ public class MapCanvas implements CountryPercentageListener {
         System.out.print(geoFinder.getCountryCodeFromMapCoordinates(x,y)+" reached 50% infected population \n");
         setNeedsRepaint();
     }
-
-
 }

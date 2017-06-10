@@ -89,6 +89,7 @@ public class Main extends Application {
 
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         mapCanvas = new MapCanvas((int) bounds.getWidth(), (int) bounds.getHeight());
+        mapCanvas.setCities(world.getAllCities());
 
         infectionSpread = new InfectionSpread(world, mapCanvas);
         medicineSpread = new MedicineSpread();
@@ -131,7 +132,6 @@ public class Main extends Application {
 
                         } else {
                             infectionSpread.applyAlgorithm(selectedDisease);
-                            mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
                             mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
                             infectionSpread.applyAirplaneAlgorithm();
                             System.gc();
@@ -454,7 +454,7 @@ public class Main extends Application {
             if (loadedWorld != null) {
                 world = loadedWorld;
                 timer.setText(world.getTime().toString());
-                mapCanvas.updateInfectionPointsCoordinates(world.getAllInfectionPoints());
+                mapCanvas.setCities(world.getAllCities());
                 mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
                 saveLoadManager.InformativeMessage("Opened!");
                 isClickedOnMapDisease = true;

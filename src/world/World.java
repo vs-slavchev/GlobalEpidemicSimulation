@@ -46,6 +46,12 @@ public class World implements Serializable {
         return points;
     }
 
+    public ArrayList<City> getAllCities() {
+        ArrayList<City> cities = new ArrayList<>();
+        countries.forEach(country -> cities.addAll(country.getCities()));
+        return cities;
+    }
+
     private long sumPopulationFrom(ToLongFunction<Country> countryFunction) {
         return countries.stream()
                 .mapToLong(countryFunction)

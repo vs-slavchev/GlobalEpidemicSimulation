@@ -164,6 +164,10 @@ public class Country implements Serializable {
         cities.add(city);
     }
 
+    public List<City> getCities() {
+        return cities;
+    }
+
     public void addListeners(CountryPercentageListener listener){
         listeners.add(listener);
     }
