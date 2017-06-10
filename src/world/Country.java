@@ -28,6 +28,7 @@ public class Country implements Serializable {
     private Queue<Point2D> infectionPoints;
     private List<Country> neighbours;
     private List<CountryPercentageListener> listeners;
+    private List<City> cities;
 
     public Country(String countryName, String code, long Population,
                    String governmentForm, long infectedPopulation, long deadPopulation,
@@ -44,6 +45,7 @@ public class Country implements Serializable {
         infectionPoints = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE);
         neighbours = new ArrayList<>();
         listeners = new ArrayList<>();
+        cities = new ArrayList<>();
     }
 
     public long getTotalPopulation() {
@@ -156,6 +158,10 @@ public class Country implements Serializable {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (code != null ? code.hashCode() : 0);
         return result;
+    }
+
+    public void addCity(City city) {
+        cities.add(city);
     }
 
     public void addListeners(CountryPercentageListener listener){

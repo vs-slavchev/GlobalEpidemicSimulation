@@ -1,5 +1,6 @@
 package files;
 
+import world.City;
 import world.Country;
 import world.Environment;
 
@@ -78,6 +79,7 @@ public class DatasetReader {
         }
         readTemperatures(countries);
         readNeighbouringCountries(countries);
+        readCities(countries);
         return countries;
     }
 
@@ -108,6 +110,37 @@ public class DatasetReader {
                 }
             }
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void readCities(List<Country> countries) {
+        String file = "./scripts/cities.txt";
+        String line = "";
+        String SplitBy = "#";
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            Country country = null;
+            List<City> cities = new ArrayList<>();
+            while ((line = br.readLine()) != null) {
+                String[] tempFileData = line.split(SplitBy);
+                if (tempFileData[0].equals("country")) {
+                    String countryName = tempFileData[1];
+                    for (Country c : countries) {
+                        if (c.getName().toUpperCase().equals(countryName.toUpperCase())) {
+                            country = c;
+                        }
+                    }
+                } else {
+                    if (country != null) {
+                        country.addCity(new City(
+                                tempFileData[1],
+                                Long.parseLong(tempFileData[2]),
+                                Double.parseDouble(tempFileData[3]),
+                                Double.parseDouble(tempFileData[4])));
+                    }
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -144,6 +177,7 @@ public class DatasetReader {
             e2.printStackTrace();
         }
     }
+
 
     /**
      * @param text ref for a string to be compared
