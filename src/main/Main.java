@@ -123,12 +123,8 @@ public class Main extends Application {
                 if (isClickedOnMapDisease) {
                     while (world.getTime().checkHour()) {
                         if (selectedDisease == null) {
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    saveLoadManager.InformativeMessage("Please select a disease first!");
-                                }
-                            });
+                            Platform.runLater(() -> saveLoadManager
+                                    .InformativeMessage("Please select a disease first!"));
 
                         } else {
                             infectionSpread.applyAlgorithm(selectedDisease);
@@ -153,12 +149,8 @@ public class Main extends Application {
                 if (isClickedOnMapMedicine) {
                     while (world.getTime().checkHour()) {
                         if (medicineSpread.getMedicine() == null) {
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    saveLoadManager.InformativeMessage("Please select a Medicine first!");
-                                }
-                            });
+                            Platform.runLater(() -> saveLoadManager
+                                    .InformativeMessage("Please select a Medicine first!"));
                         } else {
                             medicineSpread.medicineAlgorithm();
                         }
@@ -273,16 +265,12 @@ public class Main extends Application {
     }
 
     private void setUpEventHandlers(final Stage primaryStage, final Button disease, final Button medicine,
-                                    final Button start, final Button pause, final Button fastForwardbutton,
-                                    final Button backForwardbutton, final MenuButton diseaseListBox,
+                                    final Button start, final Button pause, final Button fastForwardButton,
+                                    final Button backForwardButton, final MenuButton diseaseListBox,
                                     final MenuButton medicineListBox) {
-        start.setOnAction(event -> {
-            startSimulation(primaryStage);
-        });
+        start.setOnAction(event -> startSimulation(primaryStage));
 
-        pause.setOnAction(event -> {
-            pauseSimulation();
-        });
+        pause.setOnAction(event -> pauseSimulation());
 
         disease.setOnAction(event -> {
             SetUpPopupDisease(diseaseListBox, medicineListBox, primaryStage);
@@ -293,20 +281,20 @@ public class Main extends Application {
             blockAndShowPopup(primaryStage);
         });
 
-        fastForwardbutton.setOnAction(event -> {
-            backForwardbutton.setDisable(false);
+        fastForwardButton.setOnAction(event -> {
+            backForwardButton.setDisable(false);
             world.getTime().addRunSpeed();
             if (world.getTime().getRunSpeed() >= 70) {
-                fastForwardbutton.setDisable(true);
+                fastForwardButton.setDisable(true);
             }
             speedLabel.setText("x" + world.getTime().getRunSpeed());
         });
 
-        backForwardbutton.setOnAction(event -> {
-            fastForwardbutton.setDisable(false);
+        backForwardButton.setOnAction(event -> {
+            fastForwardButton.setDisable(false);
             world.getTime().subtract();
             if (world.getTime().getRunSpeed() <= 1) {
-                backForwardbutton.setDisable(true);
+                backForwardButton.setDisable(true);
             }
             speedLabel.setText("x" + world.getTime().getRunSpeed());
         });
@@ -531,7 +519,8 @@ public class Main extends Application {
         final Button save = new Button("Create disease");
         final Button cancel = new Button("Cancel");
         final ComboBox diseaseType = new ComboBox();
-        diseaseType.getItems().addAll(DiseaseType.BACTERIA, DiseaseType.FUNGUS, DiseaseType.PARASITE, DiseaseType.VIRUS);
+        diseaseType.getItems().addAll(DiseaseType.BACTERIA, DiseaseType.FUNGUS,
+                DiseaseType.PARASITE,DiseaseType.VIRUS);
 
         lethality.setShowTickLabels(true);
         lethality.setShowTickMarks(true);
@@ -649,7 +638,8 @@ public class Main extends Application {
         final Button save = new Button("Create medicine");
         final Button cancel = new Button("Cancel");
         final ComboBox diseaseType = new ComboBox();
-        diseaseType.getItems().addAll(DiseaseType.BACTERIA, DiseaseType.FUNGUS, DiseaseType.PARASITE, DiseaseType.VIRUS);
+        diseaseType.getItems().addAll(DiseaseType.BACTERIA, DiseaseType.FUNGUS,
+                DiseaseType.PARASITE, DiseaseType.VIRUS);
         final ComboBox symptomType = new ComboBox();
         symptomType.getItems().addAll(SymptomType.COUGH, SymptomType.NAUSEA);
 

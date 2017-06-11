@@ -65,8 +65,6 @@ public class MapCanvas implements CountryPercentageListener {
         geoFinder = new GeoFinder(width, height);
         styleManager = new StyleManager(geoFinder.getFeatureSource());
         graphics = canvas.getGraphicsContext2D();
-        graphics.setTextAlign(TextAlignment.CENTER);
-        graphics.setTextBaseline(VPos.CENTER);
         initMap();
         initializeEventHandling();
         initPaintThread();
@@ -130,18 +128,23 @@ public class MapCanvas implements CountryPercentageListener {
     }
 
     private void drawCities(GraphicsContext gc, List<City> citiesToDraw) {
+        graphics.setTextAlign(TextAlignment.CENTER);
+        graphics.setTextBaseline(VPos.CENTER);
         for (City city : citiesToDraw) {
             Point2D screenCity = geoFinder.mapToScreenCoordinates(
                     city.getLatitude(), city.getLongitude());
             int radius = (int) calculatePointRadius(city.getPopulation());
-            gc.fillOval(screenCity.getX(), screenCity.getY(),
+            gc.fillOval(screenCity.getX() - radius/2, screenCity.getY() - radius/2,
                     radius, radius);
 
             if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 50) {
-                gc.fillText(city.getName(), screenCity.getX() + radius/2, screenCity.getY() + radius + 20);
+                gc.fillText(city.getName(), screenCity.getX(),
+                        screenCity.getY() + radius/2 + 10);
                 // radius + 10
             }
         }
+        graphics.setTextAlign(TextAlignment.LEFT);
+        graphics.setTextBaseline(VPos.BOTTOM);
     }
 
     /**
@@ -149,8 +152,8 @@ public class MapCanvas implements CountryPercentageListener {
      * Scaling the points when zooming in/out
      */
     private double calculatePointRadius(double cityPopulation) {
-        return (geoFinder.createWorldToScreenAffineTransform().getScaleX() + 2) / 2
-                + cityPopulation/1_000_000;
+        double scale = geoFinder.createWorldToScreenAffineTransform().getScaleX();
+        return scale / 2 + (cityPopulation/500_000.0) * scale / 5;
     }
 
     private void drawGraph(GraphicsContext gc) {

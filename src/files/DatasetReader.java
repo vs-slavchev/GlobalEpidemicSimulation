@@ -33,8 +33,8 @@ public class DatasetReader {
                 String GovernmentForm = "";
                 float AirPollution = 0;
                 float PublicHealthExpenditure = 0;
-                //HealthExpenditureperCapita not used for now
-                float HealthExpenditureperCapita = 0;
+                //healthExpenditureperCapita not used for now
+                float healthExpenditureperCapita = 0;
                 /*[Name, Code, Population, Population Density,
                 Government Form, Air Pollution, Public Health Expenditure,
                 Health Expenditure per Capita] expected order*/
@@ -60,7 +60,7 @@ public class DatasetReader {
                         PublicHealthExpenditure = Float.parseFloat(string);
                     } else if (string.startsWith("8")) {
                         string = string.substring(1);
-                        HealthExpenditureperCapita = Float.parseFloat(string);
+                        healthExpenditureperCapita = Float.parseFloat(string);
                     } else if (!isAllUpper(string)) {
                         Name = string;
                     } else if (isAllUpper(string)) {
@@ -118,11 +118,11 @@ public class DatasetReader {
     private static void readCities(List<Country> countries) {
         String file = "./scripts/cities.txt";
         String line = "";
-        String SplitBy = "#";
+        String splitBy = "#";
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             Country country = null;
             while ((line = br.readLine()) != null) {
-                String[] tempFileData = line.split(SplitBy);
+                String[] tempFileData = line.split(splitBy);
                 if (tempFileData[0].equals("country")) {
                     String countryName = tempFileData[1];
                     for (Country c : countries) {
@@ -157,7 +157,7 @@ public class DatasetReader {
         Country tempCountry = null;
         try (BufferedReader br = new BufferedReader(new FileReader(File))) {
             while ((line = br.readLine()) != null) {
-                // use semi-comn as separator
+                // use semi-column as separator
                 String[] tempNeighbours = line.split(SplitBy);
                 if (tempNeighbours[1].startsWith("#")) {
                     for (Country c : countries) {
