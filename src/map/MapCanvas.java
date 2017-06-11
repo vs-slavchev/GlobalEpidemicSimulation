@@ -4,12 +4,14 @@ import interfaces.CountryPercentageListener;
 import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import main.ConstantValues;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -32,10 +34,8 @@ import world.Country;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 /**
  * Owner: Veselin
@@ -65,6 +65,8 @@ public class MapCanvas implements CountryPercentageListener {
         geoFinder = new GeoFinder(width, height);
         styleManager = new StyleManager(geoFinder.getFeatureSource());
         graphics = canvas.getGraphicsContext2D();
+        graphics.setTextAlign(TextAlignment.CENTER);
+        graphics.setTextBaseline(VPos.CENTER);
         initMap();
         initializeEventHandling();
         initPaintThread();
@@ -118,7 +120,17 @@ public class MapCanvas implements CountryPercentageListener {
         draw.paint(graphics, rectangle, map.getViewport().getBounds());
 
         gc.setFill(ConstantValues.POINTS_COLOR1);
-        for (City city : cities) {
+
+        drawCities(gc, cities);
+        if (selectedCountry != null) {
+            //changes the color of the points in a selected country
+            gc.setFill(ConstantValues.SELECTED_COUNTRY_POINTS_COLOR1);
+            drawCities(gc, selectedCountry.getCities());
+        }
+    }
+
+    private void drawCities(GraphicsContext gc, List<City> citiesToDraw) {
+        for (City city : citiesToDraw) {
             Point2D screenCity = geoFinder.mapToScreenCoordinates(
                     city.getLatitude(), city.getLongitude());
             int radius = (int) calculatePointRadius(city.getPopulation());
@@ -126,21 +138,10 @@ public class MapCanvas implements CountryPercentageListener {
                     radius, radius);
 
             if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 50) {
-                gc.fillText(city.getName(), screenCity.getX(), screenCity.getY() + 50);
+                gc.fillText(city.getName(), screenCity.getX() + radius/2, screenCity.getY() + radius + 20);
                 // radius + 10
             }
         }
-        // TODO draw cities in selected country
-        /*
-        //changes the color of the points in a selected country
-        if(selectedCountry != null){
-            gc.setFill(ConstantValues.SELECTED_COUNTRY_POINTS_COLOR1);
-                for (Point2D point : selectedCountry.getInfectionPoints()){
-                    Point2D screenInfectionPoint = geoFinder.mapToScreenCoordinates(point.getX(), point.getY());
-                    gc.fillOval(screenInfectionPoint.getX(), screenInfectionPoint.getY(),
-                            calculatePointRadius(), calculatePointRadius());
-                }
-        }*/
     }
 
     /**
