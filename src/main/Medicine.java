@@ -1,7 +1,7 @@
 package main;
 
 /**
- * Owner: Yasen
+ * Owner: Nikolay
  */
 
 import disease.DiseaseProperties;

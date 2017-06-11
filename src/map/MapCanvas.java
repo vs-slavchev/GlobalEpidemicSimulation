@@ -130,16 +130,17 @@ public class MapCanvas implements CountryPercentageListener {
     private void drawCities(GraphicsContext gc, List<City> citiesToDraw) {
         graphics.setTextAlign(TextAlignment.CENTER);
         graphics.setTextBaseline(VPos.CENTER);
+        gc.setFont(new Font(25));
         for (City city : citiesToDraw) {
             Point2D screenCity = geoFinder.mapToScreenCoordinates(
                     city.getLatitude(), city.getLongitude());
             int radius = (int) calculatePointRadius(city.getPopulation());
-            gc.fillOval(screenCity.getX() - radius/2, screenCity.getY() - radius/2,
+            gc.fillOval(screenCity.getX() - radius / 2, screenCity.getY() - radius / 2,
                     radius, radius);
 
             if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 50) {
                 gc.fillText(city.getName(), screenCity.getX(),
-                        screenCity.getY() + radius/2 + 10);
+                        screenCity.getY() + radius / 2 + 10);
                 // radius + 10
             }
         }
@@ -153,7 +154,7 @@ public class MapCanvas implements CountryPercentageListener {
      */
     private double calculatePointRadius(double cityPopulation) {
         double scale = geoFinder.createWorldToScreenAffineTransform().getScaleX();
-        return Math.max(0, 20 - cityPopulation/1_000_000.0)/8 + Math.sqrt(cityPopulation/1_000_000.0) * scale;
+        return Math.max(0, 20 - cityPopulation / 1_000_000.0) / 8 + Math.sqrt(cityPopulation / 1_000_000.0) * scale;
     }
 
     private void drawGraph(GraphicsContext gc) {
@@ -340,33 +341,43 @@ public class MapCanvas implements CountryPercentageListener {
         return geoFinder;
     }
 
-    public void setCities(final ArrayList<City> cities) {
-        this.cities = cities;
+    public void setCities(final ArrayList<City> citiesToAdd) {
+        this.cities = citiesToAdd;
+        removeOverlappingCities();
+        removeCitiesInWater();
+    }
+
+    /**
+     * The smaller city of 2 overlapping ones is removed.
+     *
+     * Each city is compared against another one only a single time.
+     */
+    private void removeOverlappingCities() {
         Set<City> toRemove = new HashSet<>();
 
-        // remove overlapping cities
         for (int first_i = 0; first_i < this.cities.size(); first_i++) {
             for (int other_i = first_i + 1; other_i < this.cities.size(); other_i++) {
                 City first = cities.get(first_i);
                 City other = cities.get(other_i);
                 if ((int) first.getLatitude() == (int) other.getLatitude()
                         && (int) first.getLongitude() == (int) other.getLongitude()) {
-                    City smaller = first.getPopulation() > other.getPopulation() ? other : first;
-                    toRemove.add(smaller);
+                    City smallerCity = first.getPopulation() > other.getPopulation() ? other : first;
+                    toRemove.add(smallerCity);
                 }
             }
         }
+        cities.removeAll(toRemove);
+    }
 
-        // remove smaller cities in the water
+    private void removeCitiesInWater() {
+        Set<City> toRemove = new HashSet<>();
         for (City city : this.cities) {
             if (geoFinder.getCountryCodeFromMapCoordinates(city.getLatitude(), city.getLongitude())
                     .equals("water") && city.getPopulation() < 1_000_000) {
                 toRemove.add(city);
             }
         }
-
-        System.out.println(toRemove.size());
-        this.cities.removeAll(toRemove);
+        cities.removeAll(toRemove);
     }
 
     public void selectCountry(double x, double y, Country country) {
@@ -378,10 +389,11 @@ public class MapCanvas implements CountryPercentageListener {
         setNeedsRepaint();
         selectedCountry = country;
     }
+
     @Override
-    public void CountryReachedBreakPoint(double x,double y){
+    public void CountryReachedBreakPoint(double x, double y) {
 //        PercentageStyleChange(x, y);
-        System.out.print(geoFinder.getCountryCodeFromMapCoordinates(x,y)+" reached 50% infected population \n");
+        System.out.print(geoFinder.getCountryCodeFromMapCoordinates(x, y) + " reached 50% infected population \n");
         setNeedsRepaint();
     }
 }

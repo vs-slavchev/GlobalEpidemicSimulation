@@ -123,7 +123,7 @@ public class Country implements Serializable {
     }
 
     public int getPercentageOfInfectedPopulation() {
-        int Percentage =  Math.round(this.infectedPopulation * 100  / this.population) ;
+        int Percentage = Math.round(this.infectedPopulation * 100 / this.population);
         return Percentage;
     }
 
@@ -131,9 +131,9 @@ public class Country implements Serializable {
         this.infectedPopulation += number;
         infectedPopulation = Math.min(infectedPopulation, population);
 
-        if (getPercentageOfInfectedPopulation()>=50 && getPercentageOfInfectedPopulation()<=80 ){
-            for (CountryPercentageListener listener : listeners){
-                listener.CountryReachedBreakPoint(52.12,54.12);
+        if (getPercentageOfInfectedPopulation() >= 50 && getPercentageOfInfectedPopulation() <= 80) {
+            for (CountryPercentageListener listener : listeners) {
+                listener.CountryReachedBreakPoint(52.12, 54.12);
             }
         }
     }
@@ -168,7 +168,7 @@ public class Country implements Serializable {
         return cities;
     }
 
-    public void addListeners(CountryPercentageListener listener){
+    public void addListeners(CountryPercentageListener listener) {
         listeners.add(listener);
     }
 }

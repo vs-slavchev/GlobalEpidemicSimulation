@@ -14,7 +14,7 @@ public class Environment implements Serializable {
     private float airPollution;
     private float waterPollution;
     private float populationDensity;
-    private Boolean tempcheck = false;
+    private boolean tempCheck = false;
 
     public Environment(float medInfrastructure, float humidity, double avgYearlyTemp, double[] temperature, float pollutionOfAir,
                        float pollutionOfWater, float density) {
@@ -27,8 +27,8 @@ public class Environment implements Serializable {
         this.populationDensity = density;
     }
 
-    public boolean TempCheck() {
-        return tempcheck;
+    public boolean getTempCheck() {
+        return tempCheck;
     }
 
     public String AllTemps() {
@@ -41,12 +41,12 @@ public class Environment implements Serializable {
 
     public void addAvgYearlyTemp(double temp) {
         this.AvgYearlyTemp = temp;
-        tempcheck = true;
+        tempCheck = true;
     }
 
     public void addTemperatures(double[] temps) {
         this.temperatures = temps;
-        tempcheck = true;
+        tempCheck = true;
     }
 
     public String toString() {

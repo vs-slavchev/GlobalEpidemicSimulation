@@ -15,10 +15,6 @@ import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -108,7 +104,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        for (Country c : world.getListOfCountries()){
+        for (Country c : world.getListOfCountries()) {
             c.addListeners(mapCanvas);
         }
 
@@ -228,7 +224,7 @@ public class Main extends Application {
     /**
      * Starts the simulation
      */
-    private void startSimulation(Stage primaryStage){
+    private void startSimulation(Stage primaryStage) {
         createAlgorithmThread().start();
         createMedicineThread().start();
         startTimer().start();
@@ -250,10 +246,11 @@ public class Main extends Application {
             fastForward.setDisable(true);
         }
     }
+
     /**
      * Pauses the simulation
      */
-    private void pauseSimulation(){
+    private void pauseSimulation() {
         start.setVisible(true);
         pause.setVisible(false);
         backForward.setDisable(true);
@@ -520,7 +517,7 @@ public class Main extends Application {
         final Button cancel = new Button("Cancel");
         final ComboBox diseaseType = new ComboBox();
         diseaseType.getItems().addAll(DiseaseType.BACTERIA, DiseaseType.FUNGUS,
-                DiseaseType.PARASITE,DiseaseType.VIRUS);
+                DiseaseType.PARASITE, DiseaseType.VIRUS);
 
         lethality.setShowTickLabels(true);
         lethality.setShowTickMarks(true);

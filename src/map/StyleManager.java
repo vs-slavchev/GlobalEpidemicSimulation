@@ -96,7 +96,6 @@ class StyleManager {
     }
 
 
-
     private Rule createRule(Color outlineColor, Color fillColor) {
         Symbolizer symbolizer = null;
         Stroke stroke = sf.createStroke(ff.literal(outlineColor), ff.literal(LINE_WIDTH));

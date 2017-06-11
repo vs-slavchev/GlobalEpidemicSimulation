@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by k_vol on 17/05/2017.
+ * Owner: Kaloyan
  */
 public class MedicineSpread {
     private List<Medicine> medicines;

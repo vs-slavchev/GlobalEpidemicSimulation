@@ -1,5 +1,9 @@
 package world;
 
+/**
+ * Owner: Ivaylo
+ */
+
 public class City {
     private String name;
     private long population;

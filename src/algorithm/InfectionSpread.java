@@ -10,7 +10,9 @@ import world.Country;
 import world.World;
 
 import java.awt.geom.Point2D;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static main.ConstantValues.INFECTION_RADIUS;
 import static main.ConstantValues.OFFSET;
@@ -93,7 +95,7 @@ public class InfectionSpread {
     private void spreadInfection(Country country, Double virulence) {
         long toInfect = Math.round(country.getInfectedPopulation() * virulence);
         long fivepercent = Math.round(country.getTotalPopulation() * 5 / 100);
-        toInfect = Math.min(toInfect, fivepercent );
+        toInfect = Math.min(toInfect, fivepercent);
 
         country.infectPopulation((int) toInfect);
     }

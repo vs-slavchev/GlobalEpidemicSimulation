@@ -1,7 +1,7 @@
 package disease;
 
 /**
- * Owner: Yasen
+ * Owner: Ivan
  */
 
 public enum DiseaseType {
