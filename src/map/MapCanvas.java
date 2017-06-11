@@ -153,7 +153,7 @@ public class MapCanvas implements CountryPercentageListener {
      */
     private double calculatePointRadius(double cityPopulation) {
         double scale = geoFinder.createWorldToScreenAffineTransform().getScaleX();
-        return scale / 2 + (cityPopulation/500_000.0) * scale / 5;
+        return Math.max(0, 20 - cityPopulation/1_000_000.0)/8 + Math.sqrt(cityPopulation/1_000_000.0) * scale;
     }
 
     private void drawGraph(GraphicsContext gc) {
@@ -340,8 +340,33 @@ public class MapCanvas implements CountryPercentageListener {
         return geoFinder;
     }
 
-    public void setCities(ArrayList<City> cities) {
+    public void setCities(final ArrayList<City> cities) {
         this.cities = cities;
+        Set<City> toRemove = new HashSet<>();
+
+        // remove overlapping cities
+        for (int first_i = 0; first_i < this.cities.size(); first_i++) {
+            for (int other_i = first_i + 1; other_i < this.cities.size(); other_i++) {
+                City first = cities.get(first_i);
+                City other = cities.get(other_i);
+                if ((int) first.getLatitude() == (int) other.getLatitude()
+                        && (int) first.getLongitude() == (int) other.getLongitude()) {
+                    City smaller = first.getPopulation() > other.getPopulation() ? other : first;
+                    toRemove.add(smaller);
+                }
+            }
+        }
+
+        // remove smaller cities in the water
+        for (City city : this.cities) {
+            if (geoFinder.getCountryCodeFromMapCoordinates(city.getLatitude(), city.getLongitude())
+                    .equals("water") && city.getPopulation() < 1_000_000) {
+                toRemove.add(city);
+            }
+        }
+
+        System.out.println(toRemove.size());
+        this.cities.removeAll(toRemove);
     }
 
     public void selectCountry(double x, double y, Country country) {
