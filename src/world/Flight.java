@@ -55,4 +55,8 @@ public class Flight {
     public boolean isLanded() {
         return progress >= 1.0;
     }
+
+    public double getProgress() {
+        return progress;
+    }
 }

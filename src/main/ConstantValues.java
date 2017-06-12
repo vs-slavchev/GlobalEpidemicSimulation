@@ -37,6 +37,7 @@ public class ConstantValues {
     public static final Paint BOX_COLOR1 = javafx.scene.paint.Color.rgb(220, 20, 60, 0.6);
     public static final Paint BOX_TITLES_COLOR1 = javafx.scene.paint.Color.rgb(25, 25, 112, 1);
     public static final Paint BOX_INFO_COLOR1 = javafx.scene.paint.Color.rgb(72, 209, 204, 0.8);
+    public static final Paint PLANE_LINE1 = javafx.scene.paint.Color.rgb(255, 255, 255, 0.05);
 
     //theme 2 colors
     public static final Color LINE_COLOR2 = new Color(0, 128, 128);

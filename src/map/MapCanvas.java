@@ -187,10 +187,14 @@ public class MapCanvas implements CountryPercentageListener {
     }
 
     private void drawFlights() {
+        graphics.setFill(ConstantValues.PLANE_LINE1);
         for (Flight flight : flights) {
             graphics.setFill(javafx.scene.paint.Color.WHITE);
             double pointRadius = 0.5;
-            for (double currentProgress = 0.0; currentProgress <= 1.0; currentProgress += flight.getSingleStep()) {
+            for (double currentProgress = 0.0;
+                 currentProgress <= flight.getProgress();
+                 currentProgress += flight.getSingleStep() * 8) {
+
                 Point2D toDraw = flight.step(currentProgress);
                 toDraw = geoFinder.mapToScreenCoordinates(toDraw.getX(), toDraw.getY());
                 graphics.fillOval(toDraw.getX(), toDraw.getY(), pointRadius, pointRadius);
@@ -198,7 +202,9 @@ public class MapCanvas implements CountryPercentageListener {
 
             Point2D planeOnScreen = geoFinder.mapToScreenCoordinates(
                     flight.getCurrentLocation().getX(), flight.getCurrentLocation().getY());
-            graphics.fillOval(planeOnScreen.getX(), planeOnScreen.getY(),7, 7);
+            int radius = 3;
+            graphics.fillOval(planeOnScreen.getX() - radius/2, planeOnScreen.getY() - radius/2,
+                    radius, radius);
         }
     }
 
