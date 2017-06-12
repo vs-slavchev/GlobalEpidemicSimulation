@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Owner: Yasen
@@ -24,6 +26,7 @@ public class Country implements Serializable {
     private long deadPopulation;
     private long curedPopulation;
     private long migrationRate;
+    private Random random;
     private Environment environment;
     private Queue<Point2D> infectionPoints;
     private List<Country> neighbours;
@@ -42,6 +45,7 @@ public class Country implements Serializable {
         this.curedPopulation = curedPopulation;
         this.migrationRate = rateOfMigration;
         this.environment = environment;
+        this.random = new Random();
         infectionPoints = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE);
         neighbours = new ArrayList<>();
         listeners = new ArrayList<>();
@@ -137,7 +141,17 @@ public class Country implements Serializable {
             }
         }
     }
-
+    public void infectNeighbours(){
+        int next = ThreadLocalRandom.current().nextInt(0, 101);
+        boolean Spread = next < this.getPercentageOfInfectedPopulation();
+               if (Spread) {
+                   int randomNum = ThreadLocalRandom.current().nextInt(0, this.neighbours.size() + 1);
+                   for (Country country : this.neighbours){
+                       if (randomNum<2)
+                       country.infectPopulation(1);
+                   }
+                }
+    }
     public String getCode() {
         return code;
     }

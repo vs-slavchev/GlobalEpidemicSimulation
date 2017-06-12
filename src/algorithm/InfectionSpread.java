@@ -69,12 +69,15 @@ public class InfectionSpread {
             addDisease();
         }
         for (Country country : world.getListOfCountries()) {
-
+            if (country.getInfectedPopulation()==0){
+                continue;
+            }
             if (checkCountryToDiseaseCompatibility(country, disease)) {
                 double currentVirulence = disease.getProperties().getVirulence();
                 disease.getProperties()
                         .setVirulence(currentVirulence + country.getPercentageOfInfectedPopulation() / 1000);
                 spreadInfection(country, disease.getProperties().getVirulence());
+                country.infectNeighbours();
             }
         }
 

@@ -497,7 +497,9 @@ public class Main extends Application {
     }
 
     private void SetUpPopupDisease(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
-        pauseSimulation();
+        if (isStarted){
+            pauseSimulation();
+        }
         popup = new Popup();
         backgroundBlock = new Popup();
         Rectangle popUpRectangleBackground = new Rectangle(390, 360);
@@ -585,14 +587,17 @@ public class Main extends Application {
                                 Double.parseDouble(preferredTemp.getText()),
                                 Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
-
+                System.out.print(virulence.getValue() / 200);
                 infectionSpread.addDisease(disease);
                 addToListBoxes(this.diseaseListBox, this.medicineListBox);
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
                 popup.hide();
                 blur.setRadius(0);
                 backgroundBlock.hide();
-                startSimulation(primaryStage);
+                if (isStarted){
+                    startSimulation(primaryStage);
+                }
+
 
             } catch (Exception ex) {
                 if (preferredTemp.getText().equals("-")) {
@@ -610,12 +615,16 @@ public class Main extends Application {
             popup.hide();
             blur.setRadius(0);
             backgroundBlock.hide();
-            startSimulation(primaryStage);
+            if (isStarted){
+                startSimulation(primaryStage);
+            }
         });
     }
 
     private void SetUpPopupMedicine(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
-        pauseSimulation();
+        if (isStarted){
+            pauseSimulation();
+        }
         popup = new Popup();
         backgroundBlock = new Popup();
         blur.setRadius(15);
@@ -717,7 +726,9 @@ public class Main extends Application {
                 popup.hide();
                 blur.setRadius(0);
                 backgroundBlock.hide();
-                startSimulation(primaryStage);
+                if (isStarted){
+                    startSimulation(primaryStage);
+                }
             } catch (Exception ex) {
                 if (preferredTemp.getText().equals("-")) {
                     preferredTemp.setText("");
@@ -734,7 +745,9 @@ public class Main extends Application {
             popup.hide();
             blur.setRadius(0);
             backgroundBlock.hide();
-            startSimulation(primaryStage);
+            if (isStarted){
+                startSimulation(primaryStage);
+            }
         });
     }
 }
