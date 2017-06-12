@@ -1,12 +1,45 @@
+from random import randrange as r
 #Generates a dictionary for 2/3 letter ISO 3166-1 country codes
-#All
 import csv
 f = open("iso_3166_2_countries.csv", "rt", encoding="utf-8") #file contains all sorts of identification formats for each country
 fr = csv.reader(f, delimiter=',')
 codeDict = {} #used format - '2 letter code': '3 letter code'
+nameCodeDict = {} #used format - 'Common Name': '3 letter code'
+nameCodeDict2 = {} #used format - 'Formal Name': '3 letter code'
 for row in fr:
     if(len(row[10]) == 2):      #only adds if there is a 2 letter ISO 3166-1 code; skips 1 country without 2 annd 3 letter ISO 3166-1 codes and the first row
         codeDict[row[10]] = row[11]
+        nameCodeDict[row[1]] = row[11]
+        nameCodeDict2[row[2]] = row[11]
+
+fsim = open("countriesSimilarity.txt", "rt", encoding='utf-8')
+simDict = {} #dictionary of similar countries extracted from countriesSimilarity.txt
+for row in simDict:
+    try:
+        temp = row.split(' > ')
+        simDict[temp[0]] = temp[1][:-1]
+    except:
+        continue
+
+simCodeDict = {} #converted form of simDict, using country codes instead of names
+for key in simDict.keys():
+    temp = ["", ""]
+    try:        #looks for the code of the main (first) country in the common and formal name dictionaries
+        temp[0] = codeDict[key]
+    except:
+        try:
+            temp[0] = codeDict2[key]
+        except:
+            print(key)
+    try:        #looks for the code of the secondary country (country that resembles the main one) in the common and formal name dictionaries
+        temp[1] = codeDict[res[key]]
+    except:
+        try:
+            temp[1] = codeDict2[res[key]]
+        except:
+            print(key)
+    if(temp[0] and temp[1]
+        simCodeDict[temp[0]] = temp[1]  #adds the entry to the code dictionary after finding both codes
 
 countriesNested = [] #nested list of all countries; Latest country format: [Name, Code, Population, Population Density, Government Form]
 tempCountry = []     #temporary holder for countries to be appended to countriesNested;
@@ -71,6 +104,8 @@ for row in f6r:
                         country.append('8'+[item for item in row if item][-1])  #Appends the most recent non-empty country health expenditure per capita data to the country; Adds a 8 at the front to identify which element it is as per standard country format
         except (ValueError, IndexError) as e:
             pass
+
+#TODO: Iterate over countries, find missing fields and auto-generate "educated guesses" based on the most similar country (biggest neighbor) using a certain % of random deviation in either direction
 
 #Saves the current state of countriesNested in a .txt file; Overwrites any existing files with the same name
 wr = open("country consolidated data.txt", "w+")
