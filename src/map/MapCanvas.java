@@ -202,7 +202,7 @@ public class MapCanvas implements CountryPercentageListener {
 
             Point2D planeOnScreen = geoFinder.mapToScreenCoordinates(
                     flight.getCurrentLocation().getX(), flight.getCurrentLocation().getY());
-            int radius = 3;
+            double radius = 3.0;
             graphics.fillOval(planeOnScreen.getX() - radius/2, planeOnScreen.getY() - radius/2,
                     radius, radius);
         }

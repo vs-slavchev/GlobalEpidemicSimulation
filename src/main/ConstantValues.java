@@ -48,6 +48,8 @@ public class ConstantValues {
     public static final int POINT_RADIUS = 4;
     private static final Point2D.Double[] AIRPORTS = {
             new Point2D.Double(-83.6951559140206, 33.030313668662004), // Hartsfield–Jackson Atlanta International
+            new Point2D.Double(-79.630556, 43.676667), // Toronto Pearson
+            new Point2D.Double(-122.375, 37.618889), // San Francisco
             new Point2D.Double(115.69108481501507, 40.74449381999329), // Beijing Capital International
             new Point2D.Double(55.286382319436555, 24.72033059971252), // Dubai International
             new Point2D.Double(-1.1395673171517586, 52.01777447747722), // Heathrow

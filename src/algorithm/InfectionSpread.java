@@ -1,6 +1,5 @@
 package algorithm;
 
-import com.sun.istack.internal.Nullable;
 import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
@@ -13,9 +12,6 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static main.ConstantValues.INFECTION_RADIUS;
-import static main.ConstantValues.OFFSET;
 
 /**
  * Owner: Nikolay
@@ -40,24 +36,13 @@ public class InfectionSpread {
     }
 
     private void addDisease() {
-        diseaseList.add(new Disease("ebola", DiseaseType.BACTERIA,
+        diseaseList.add(new Disease("Ebola", DiseaseType.BACTERIA,
                 new DiseaseProperties(10, 10,
                         90, 0.6)));
     }
 
-    public void addDisease(String name, int diseaseType, int lethality,
-                           int prefTemp, int tempTolerance, double virulence) {
-        diseaseList.add(new Disease(name, DiseaseType.values()[diseaseType - 1],
-                new DiseaseProperties(lethality, prefTemp,
-                        tempTolerance, virulence)));
-    }
-
     public void addDisease(Disease disease) {
         diseaseList.add(disease);
-    }
-
-    private Disease getMainDisease() {
-        return diseaseList.get(0);
     }
 
     public List<Disease> getDiseaseList() {
@@ -80,28 +65,12 @@ public class InfectionSpread {
                 country.infectNeighbours();
             }
         }
-
-//        long startTime = System.currentTimeMillis();
-//        for (java.awt.geom.Point2D originalInfectionPoint : world.getAllInfectionPoints()) {
-//            boolean pointWillSpread = random.nextDouble() < getMainDisease().getProperties().getVirulence();
-//            if (!pointWillSpread) {
-//                continue;
-//            }
-//
-//            Point2D newPoint = generateNewRandomPoint(originalInfectionPoint);
-//            newPoint = findSuitablePlaceForPoint(newPoint);
-//            if (newPoint == null) {
-//                continue;
-//            }
-//            addInfectionToCountryAtMapCoordinates(newPoint);
-//        }
-//        System.out.println(System.currentTimeMillis() - startTime);
     }
 
     private void spreadInfection(Country country, Double virulence) {
         long toInfect = Math.round(country.getInfectedPopulation() * virulence);
-        long fivepercent = Math.round(country.getTotalPopulation() * 5 / 100);
-        toInfect = Math.min(toInfect, fivepercent);
+        long fivePercent = Math.round(country.getTotalPopulation() * 5 / 100);
+        toInfect = Math.min(toInfect, fivePercent);
 
         country.infectPopulation((int) toInfect);
     }
@@ -144,58 +113,5 @@ public class InfectionSpread {
             country.infectPopulation(1);
             country.addInfectionPoint(newMapPoint);
         }
-    }
-
-    /**
-     * Given a source point, method creates another point near it with random coordinates.
-     *
-     * @param infectionPoint the source point to spawn from
-     */
-    private Point2D generateNewRandomPoint(Point2D infectionPoint) {
-        double offsetX = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-        double offsetY = random.nextDouble() * INFECTION_RADIUS + INFECTION_RADIUS;
-        double newPointX = infectionPoint.getX() +
-                (random.nextBoolean() ? +offsetX : -offsetX);
-        double newPointY = infectionPoint.getY() +
-                (random.nextBoolean() ? offsetY : -offsetY);
-
-        newPointX = wrapAroundHorizontally(newPointX);
-        return new Point2D.Double(newPointX, newPointY);
-    }
-
-    /**
-     * Calculate the new horizontal coordinate of a point if it needs to wrap around.
-     * Example: Russia's Chukotka
-     */
-    private double wrapAroundHorizontally(final double newPointX) {
-        if (newPointX > 180) {
-            return -(newPointX - 1);
-        } else if (newPointX < -180) {
-            return -(newPointX + 1);
-        }
-        return newPointX;
-    }
-
-    /**
-     * Method tries to find an unoccupied place for a point. If the number of tries is
-     * exhausted then null is returned.
-     * <p>
-     * Points which round up to different values may have a visual overlap because of the
-     * circle radius.
-     */
-    @Nullable
-    private Point2D findSuitablePlaceForPoint(Point2D point) {
-        int triesLeft = 5;
-        String codeOfCountryLocatedIn = mapCanvas.getGeoFinder()
-                .getCountryCodeFromMapCoordinates(point.getX(), point.getY());
-        while (world.countryContainsInfectionPoint(codeOfCountryLocatedIn, point)) {
-            if (triesLeft-- < 0) {
-                return null;
-            }
-            point.setLocation(
-                    (random.nextBoolean() ? OFFSET : -OFFSET),
-                    (random.nextBoolean() ? OFFSET : -OFFSET));
-        }
-        return point;
     }
 }

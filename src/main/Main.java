@@ -145,15 +145,15 @@ public class Main extends Application {
                     while (world.getTime().checkHour()) {
                         if (medicineSpread.getMedicine() == null) {
                             Platform.runLater(() -> saveLoadManager
-                                    .InformativeMessage("Please select a Medicine first!"));
+                                    .InformativeMessage("Please select a medicine first!"));
                         } else {
                             medicineSpread.medicineAlgorithm();
                         }
-                        try {
-                            Thread.sleep(1000 / ConstantValues.FPS);
-                        } catch (InterruptedException e) {
-                            // empty on purpose
-                        }
+                    }
+                    try {
+                        Thread.sleep(1000 / ConstantValues.FPS);
+                    } catch (InterruptedException e) {
+                        // empty on purpose
                     }
                 }
             }
