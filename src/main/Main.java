@@ -586,7 +586,7 @@ public class Main extends Application {
                                 Double.parseDouble(preferredTemp.getText()),
                                 Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
-
+                System.out.print(virulence.getValue() / 200);
                 infectionSpread.addDisease(disease);
                 addToListBoxes(this.diseaseListBox, this.medicineListBox);
                 setPointers(diseaseListBox, medicineListBox, primaryStage);
