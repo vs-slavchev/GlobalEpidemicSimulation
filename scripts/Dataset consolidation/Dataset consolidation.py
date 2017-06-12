@@ -104,25 +104,50 @@ for row in f6r:
         except (ValueError, IndexError) as e:
             pass
 
-#TODO: Iterate over countries, find missing fields and auto-generate "educated guesses" based on the most similar country (biggest neighbor) using a certain % of random deviation in either direction
+#Auto-generates missing country data for [Air Pollution, Public Health Expenditure, Health Expenditure per Capita] copying the values of its biggest neighbor with an up to 10% deviation.
 for countryMainCode in simCodeDict.keys():
     for country in countriesNested:
         if countryMainCode == country[1]:
             for dataIndex in range(6,9):
-                if not any(data[:1] == str(dataIndex) for data in country):
+                if not any(data[:1] == str(dataIndex) for data in country):     #checks if no value in the country starts with the given index (and thus the data is missing)
                     for countrySimilar in countriesNested:
-                        if simCodeDict[countryMainCode]==countrySimilar[1]:
+                        if simCodeDict[countryMainCode]==countrySimilar[1]:     #finds the most similar country
                             for similarData in countrySimilar:
                                 if similarData[:1] == str(dataIndex):
-                                    country.append(str(dataIndex)+str(float(similarData[1:])*r(90,111)/100))
+                                    country.append(str(dataIndex)+str(float(similarData[1:])*r(90,111)/100))    #auto-generates and appends the appropriate missing data, attaching its index as per the standard format at the beginning
                                     print("SUCCESS")
-                                    
-           
+
+#Orders the countries' auto-generated data
+for country in countriesNested:
+    index = countriesNested.index(country)  #finds the index of the currently iterated country
+    temp = ["","",""]   #temp list to order generated data; includes 3 null placeholders that will be replaced with either existing or auto-generated [Air Pollution, Public Health Expenditure, Health Expenditure per Capita] data (if possible)
+    numItems = 3    #default number of items to check
+    try:
+        int(country[-3][:1])
+    except:
+        numItems = 2    #reduced number of items to check for countries that only have population and government form data
+    for item in country[-numItems:]:
+        try:
+            if int(item[:1]) not in range(6,9):
+                temp.append(item)   #if the checked item is not part of the data we look to auto-generate if missing, the item is appended to the end of temp
+            else:
+                temp[int(item[:1])-6] = item    #if the checked item is part of the data we look to auto-generate, and so we don't need to generate this item, it is placed in its position in temp
+        except:
+            continue
+    country = country[:-numItems]+temp[3:]      #recreates country, using the unchecked items as well as any falsely flagged checked items (data we split off of a type that we don't seek to auto-generate)
+    for realVal in temp[:3]:                    #checks if the placeholders in temp were replaced with actual values and appends them to the country
+        if realVal:                             
+            country.append(realVal)
+    countriesNested[index] = country            #replaces the country in countriesNested with the ordered form
         
 
 #Saves the current state of countriesNested in a .txt file; Overwrites any existing files with the same name
 wr = open("country consolidated data.txt", "w+")
 for country in countriesNested:
-    s = ";".join(country) + '\n'    #joins all members of a country using a ';' delimiter
-    wr.write(s)
+    s = ""
+    for item in country:
+        s+=";"+item     #joins all members of a country using a ';' delimiter
+    s+="\n"
+    #s = ";".join(country) + '\n'    
+    wr.write(s[1:])
 wr.close()
