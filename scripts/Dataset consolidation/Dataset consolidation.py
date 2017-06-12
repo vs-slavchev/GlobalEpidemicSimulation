@@ -14,7 +14,7 @@ for row in fr:
 
 fsim = open("countriesSimilarity.txt", "rt", encoding='utf-8')
 simDict = {} #dictionary of similar countries extracted from countriesSimilarity.txt
-for row in simDict:
+for row in fsim:
     try:
         temp = row.split(' > ')
         simDict[temp[0]] = temp[1][:-1]
@@ -25,21 +25,20 @@ simCodeDict = {} #converted form of simDict, using country codes instead of name
 for key in simDict.keys():
     temp = ["", ""]
     try:        #looks for the code of the main (first) country in the common and formal name dictionaries
-        temp[0] = codeDict[key]
+        temp[0] = nameCodeDict[key]
     except:
         try:
-            temp[0] = codeDict2[key]
+            temp[0] = nameCodeDict2[key]
         except:
             print(key)
     try:        #looks for the code of the secondary country (country that resembles the main one) in the common and formal name dictionaries
-        temp[1] = codeDict[res[key]]
+        temp[1] = nameCodeDict[simDict[key]]
     except:
         try:
-            temp[1] = codeDict2[res[key]]
+            temp[1] = nameCodeDict2[simDict[key]]
         except:
             print(key)
-    if(temp[0] and temp[1]
-        simCodeDict[temp[0]] = temp[1]  #adds the entry to the code dictionary after finding both codes
+    simCodeDict[temp[0]] = temp[1]  #adds the entry to the code dictionary after finding both codes
 
 countriesNested = [] #nested list of all countries; Latest country format: [Name, Code, Population, Population Density, Government Form]
 tempCountry = []     #temporary holder for countries to be appended to countriesNested;
@@ -106,6 +105,20 @@ for row in f6r:
             pass
 
 #TODO: Iterate over countries, find missing fields and auto-generate "educated guesses" based on the most similar country (biggest neighbor) using a certain % of random deviation in either direction
+for countryMainCode in simCodeDict.keys():
+    for country in countriesNested:
+        if countryMainCode == country[1]:
+            for dataIndex in range(6,9):
+                if not any(data[:1] == str(dataIndex) for data in country):
+                    for countrySimilar in countriesNested:
+                        if simCodeDict[countryMainCode]==countrySimilar[1]:
+                            for similarData in countrySimilar:
+                                if similarData[:1] == str(dataIndex):
+                                    country.append(str(dataIndex)+str(float(similarData[1:])*r(90,111)/100))
+                                    print("SUCCESS")
+                                    
+           
+        
 
 #Saves the current state of countriesNested in a .txt file; Overwrites any existing files with the same name
 wr = open("country consolidated data.txt", "w+")
