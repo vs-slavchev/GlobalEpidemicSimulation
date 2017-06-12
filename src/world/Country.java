@@ -147,7 +147,7 @@ public class Country implements Serializable {
                if (Spread) {
                    int randomNum = ThreadLocalRandom.current().nextInt(0, this.neighbours.size() + 1);
                    for (Country country : this.neighbours){
-                       if (randomNum<1)
+                       if (randomNum<2)
                        country.infectPopulation(1);
                    }
                 }
