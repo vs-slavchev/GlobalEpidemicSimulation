@@ -4,9 +4,9 @@ import com.sun.istack.internal.Nullable;
 import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
-import main.ConstantValues;
 import map.MapCanvas;
 import world.Country;
+import world.FlightManager;
 import world.World;
 
 import java.awt.geom.Point2D;
@@ -27,12 +27,15 @@ public class InfectionSpread {
     private Random random;
     private World world;
     private MapCanvas mapCanvas;
+    private volatile FlightManager flightManager;
 
     public InfectionSpread(World world, MapCanvas mapCanvas) {
         diseaseList = new ArrayList<>();
         this.random = new Random();
         this.world = world;
         this.mapCanvas = mapCanvas;
+        flightManager = new FlightManager();
+        mapCanvas.setFlights(flightManager.getFlights());
         addDisease();
     }
 
@@ -115,10 +118,14 @@ public class InfectionSpread {
     }
 
     public void applyAirplaneAlgorithm() {
-        Point2D newPoint = getRandomAirportCoordinates();
-        addInfectionToCountryAtMapCoordinates(newPoint);
-    }
+        flightManager.updateFlights(world.getTime().getRunSpeed());
+        //addInfectionToCountryAtMapCoordinates(ConstantValues.getRandomAirportCoordinates());
 
+        // the chance to create a new flight depends on the run speed
+        if (random.nextDouble() < world.getTime().getRunSpeed() * 0.003) {
+            flightManager.createRandomFlight();
+        }
+    }
 
     /**
      * Tries to add an infection point to the country which is at the input coordinates.
@@ -187,9 +194,5 @@ public class InfectionSpread {
                     (random.nextBoolean() ? OFFSET : -OFFSET));
         }
         return point;
-    }
-
-    private Point2D getRandomAirportCoordinates() {
-        return ConstantValues.AIRPORTS[random.nextInt(ConstantValues.AIRPORTS.length)];
     }
 }

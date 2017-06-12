@@ -31,6 +31,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 import world.City;
 import world.Country;
+import world.Flight;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -53,6 +54,7 @@ public class MapCanvas implements CountryPercentageListener {
     private ArrayList<City> cities;
     private GeoFinder geoFinder;
     private StyleManager styleManager;
+    private List<Flight> flights;
     private boolean needsRepaint = true;
     private double dragDistanceX;
     private double dragDistanceY;
@@ -94,10 +96,12 @@ public class MapCanvas implements CountryPercentageListener {
                             if (!needsRepaint) {
                                 return;
                             }
-                            needsRepaint = false;
-                            drawMap(graphics);
-                            drawGraph(graphics);
-                            drawSelectedCountryInformation(graphics);
+                            //needsRepaint = false;
+                            needsRepaint = true;
+                            drawMap();
+                            drawGraph();
+                            drawFlights();
+                            drawSelectedCountryInformation();
                         });
                         return true;
                     }
@@ -108,22 +112,22 @@ public class MapCanvas implements CountryPercentageListener {
         svc.start();
     }
 
-    private synchronized void drawMap(GraphicsContext gc) {
+    private synchronized void drawMap() {
         StreamingRenderer draw = new StreamingRenderer();
         draw.setMapContent(map);
-        FXGraphics2D graphics = new FXGraphics2D(gc);
-        graphics.setBackground(ConstantValues.SEA_COLOR1);
-        graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
+        FXGraphics2D fxGraphics2D = new FXGraphics2D(graphics);
+        fxGraphics2D.setBackground(ConstantValues.SEA_COLOR1);
+        fxGraphics2D.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
         Rectangle rectangle = new Rectangle((int) canvas.getWidth(), (int) canvas.getHeight());
-        draw.paint(graphics, rectangle, map.getViewport().getBounds());
+        draw.paint(fxGraphics2D, rectangle, map.getViewport().getBounds());
 
-        gc.setFill(ConstantValues.POINTS_COLOR1);
+        graphics.setFill(ConstantValues.POINTS_COLOR1);
 
-        drawCities(gc, cities);
+        drawCities(graphics, cities);
         if (selectedCountry != null) {
             //changes the color of the points in a selected country
-            gc.setFill(ConstantValues.SELECTED_COUNTRY_POINTS_COLOR1);
-            drawCities(gc, selectedCountry.getCities());
+            graphics.setFill(ConstantValues.SELECTED_COUNTRY_POINTS_COLOR1);
+            drawCities(graphics, selectedCountry.getCities());
         }
     }
 
@@ -157,24 +161,24 @@ public class MapCanvas implements CountryPercentageListener {
         return Math.max(0, 20 - cityPopulation / 1_000_000.0) / 8 + Math.sqrt(cityPopulation / 1_000_000.0) * scale;
     }
 
-    private void drawGraph(GraphicsContext gc) {
+    private void drawGraph() {
         // draw the base
-        gc.setStroke(ConstantValues.GRAPH_STROKE_COLOR1);
-        gc.setLineWidth(3);
-        gc.setFill(ConstantValues.GRAPH_TEXT_COLOR1);
-        gc.setFont(new Font(25));
-        gc.fillText("time", 300, canvas.getHeight() - 125);
-        gc.fillText("%", 20, canvas.getHeight() - 380);
-        gc.strokeLine(50, canvas.getHeight() - 150, 350, canvas.getHeight() - 150);
-        gc.strokeLine(50, canvas.getHeight() - 150, 50, canvas.getHeight() - 400);
+        graphics.setStroke(ConstantValues.GRAPH_STROKE_COLOR1);
+        graphics.setLineWidth(3);
+        graphics.setFill(ConstantValues.GRAPH_TEXT_COLOR1);
+        graphics.setFont(new Font(25));
+        graphics.fillText("time", 300, canvas.getHeight() - 125);
+        graphics.fillText("%", 20, canvas.getHeight() - 380);
+        graphics.strokeLine(50, canvas.getHeight() - 150, 350, canvas.getHeight() - 150);
+        graphics.strokeLine(50, canvas.getHeight() - 150, 50, canvas.getHeight() - 400);
 
         // draw the lines
-        gc.setStroke(ConstantValues.GRAPH_LINE_COLOR1);
+        graphics.setStroke(ConstantValues.GRAPH_LINE_COLOR1);
         for (int firstOfPair_i = 0; firstOfPair_i < percentageInfected.size() - 1; firstOfPair_i++) {
             int firstOfPair = percentageInfected.get(firstOfPair_i);
             int secondOfPair = percentageInfected.get(firstOfPair_i + 1);
 
-            gc.strokeLine(
+            graphics.strokeLine(
                     (firstOfPair_i / (double) percentageInfected.size() * 100.0) * 3 + 50,
                     canvas.getHeight() - 150 - firstOfPair * 2.5,
                     ((firstOfPair_i + 1) / (double) percentageInfected.size() * 100.0) * 3 + 50,
@@ -182,7 +186,23 @@ public class MapCanvas implements CountryPercentageListener {
         }
     }
 
-    private void drawSelectedCountryInformation(GraphicsContext gc) {
+    private void drawFlights() {
+        for (Flight flight : flights) {
+            graphics.setFill(javafx.scene.paint.Color.WHITE);
+            double pointRadius = 0.5;
+            for (double currentProgress = 0.0; currentProgress <= 1.0; currentProgress += flight.getSingleStep()) {
+                Point2D toDraw = flight.step(currentProgress);
+                toDraw = geoFinder.mapToScreenCoordinates(toDraw.getX(), toDraw.getY());
+                graphics.fillOval(toDraw.getX(), toDraw.getY(), pointRadius, pointRadius);
+            }
+
+            Point2D planeOnScreen = geoFinder.mapToScreenCoordinates(
+                    flight.getCurrentLocation().getX(), flight.getCurrentLocation().getY());
+            graphics.fillOval(planeOnScreen.getX(), planeOnScreen.getY(),7, 7);
+        }
+    }
+
+    private void drawSelectedCountryInformation() {
         if (selectedCountry == null) {
             return;
         }
@@ -190,11 +210,11 @@ public class MapCanvas implements CountryPercentageListener {
         int baseX = (int) (canvas.getWidth() - 400);
         int baseY = (int) (canvas.getHeight() - 420);
 
-        gc.setFill(ConstantValues.BOX_COLOR1);
-        gc.fillRect(baseX, baseY, 350, 320);
+        graphics.setFill(ConstantValues.BOX_COLOR1);
+        graphics.fillRect(baseX, baseY, 350, 320);
 
-        gc.setFill(ConstantValues.BOX_TITLES_COLOR1);
-        gc.setFont(new Font(15));
+        graphics.setFill(ConstantValues.BOX_TITLES_COLOR1);
+        graphics.setFont(new Font(15));
 
         String[] labelLines = {
                 "Name:",
@@ -217,12 +237,12 @@ public class MapCanvas implements CountryPercentageListener {
         };
 
         for (int line_i = 0; line_i < labelLines.length; line_i++) {
-            gc.fillText(labelLines[line_i], baseX + 20, baseY + 40 * (line_i + 1));
+            graphics.fillText(labelLines[line_i], baseX + 20, baseY + 40 * (line_i + 1));
         }
 
-        gc.setFill(ConstantValues.BOX_INFO_COLOR1);
+        graphics.setFill(ConstantValues.BOX_INFO_COLOR1);
         for (int line_i = 0; line_i < labelLines.length; line_i++) {
-            gc.fillText(contentLines[line_i], baseX + 50, baseY + 17.5 + 40 * (line_i + 1));
+            graphics.fillText(contentLines[line_i], baseX + 50, baseY + 17.5 + 40 * (line_i + 1));
         }
     }
 
@@ -349,7 +369,7 @@ public class MapCanvas implements CountryPercentageListener {
 
     /**
      * The smaller city of 2 overlapping ones is removed.
-     *
+     * <p>
      * Each city is compared against another one only a single time.
      */
     private void removeOverlappingCities() {
@@ -393,7 +413,11 @@ public class MapCanvas implements CountryPercentageListener {
     @Override
     public void CountryReachedBreakPoint(double x, double y) {
 //        PercentageStyleChange(x, y);
-        System.out.print(geoFinder.getCountryCodeFromMapCoordinates(x, y) + " reached 50% infected population \n");
+        //System.out.print(geoFinder.getCountryCodeFromMapCoordinates(x, y) + " reached 50% infected population \n");
         setNeedsRepaint();
+    }
+
+    public void setFlights(List<Flight> flights) {
+        this.flights = flights;
     }
 }

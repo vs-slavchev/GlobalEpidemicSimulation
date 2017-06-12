@@ -117,22 +117,21 @@ public class Main extends Application {
         return new Thread(() -> {
             while (isWorking) {
                 if (isClickedOnMapDisease) {
+                    infectionSpread.applyAirplaneAlgorithm();
                     while (world.getTime().checkHour()) {
                         if (selectedDisease == null) {
                             Platform.runLater(() -> saveLoadManager
                                     .InformativeMessage("Please select a disease first!"));
-
                         } else {
                             infectionSpread.applyAlgorithm(selectedDisease);
                             mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
-                            infectionSpread.applyAirplaneAlgorithm();
                             System.gc();
                         }
-                        try {
-                            Thread.sleep(1000 / ConstantValues.FPS);
-                        } catch (InterruptedException e) {
-                            // empty on purpose
-                        }
+                    }
+                    try {
+                        Thread.sleep(1000 / ConstantValues.FPS);
+                    } catch (InterruptedException e) {
+                        // empty on purpose
                     }
                 }
             }

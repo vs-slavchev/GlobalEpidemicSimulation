@@ -107,7 +107,7 @@ public class Time implements Serializable {
     /**
      * decrementing(subtracting) RunSpeed value depending on what its
      * value is at the moment.
-     * for instance if RunSpeed<20 is decremented with 10 and etc.
+     * for instance if RunSpeed>20 is decremented with 10 and etc.
      */
     public void subtract() {
         if (RunSpeed > 20) {
