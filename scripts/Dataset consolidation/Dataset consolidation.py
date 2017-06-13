@@ -115,7 +115,6 @@ for countryMainCode in simCodeDict.keys():
                             for similarData in countrySimilar:
                                 if similarData[:1] == str(dataIndex):
                                     country.append(str(dataIndex)+str(float(similarData[1:])*r(90,111)/100))    #auto-generates and appends the appropriate missing data, attaching its index as per the standard format at the beginning
-                                    print("SUCCESS")
 
 #Orders the countries' auto-generated data
 for country in countriesNested:
@@ -139,7 +138,6 @@ for country in countriesNested:
         if realVal:                             
             country.append(realVal)
     countriesNested[index] = country            #replaces the country in countriesNested with the ordered form
-        
 
 #Saves the current state of countriesNested in a .txt file; Overwrites any existing files with the same name
 wr = open("country consolidated data.txt", "w+")
@@ -148,6 +146,6 @@ for country in countriesNested:
     for item in country:
         s+=";"+item     #joins all members of a country using a ';' delimiter
     s+="\n"
-    #s = ";".join(country) + '\n'    
+    #s = ";".join(country) + '\n'                   started exhibiting problems at some point during missing data generation
     wr.write(s[1:])
 wr.close()
