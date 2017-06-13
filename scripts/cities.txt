@@ -863,7 +863,7 @@ city#Duitama#92040#5.8245#-73.03408
 country#Comoros
 city#Moroni#42872#-11.70216#43.25506
 city#Moutsamoudou#23594#-12.16672#44.39944
-country#Congo
+country#Republic of the Congo
 city#Brazzaville#1284609#-4.26613#15.28318
 city#Pointe-Noire#659084#-4.77609#11.86352
 city#Dolisie#103894#-4.19834#12.66664
@@ -880,7 +880,7 @@ city#Liberia#45380#10.63504#-85.43772
 city#Paraíso#39702#9.83832#-83.86557
 city#Puntarenas#35650#9.97625#-84.83836
 city#San Isidro#34877#9.3721#-83.70399
-country#Cote d'Ivoire
+country#Ivory Coast
 city#Abidjan#3677115#5.30966#-4.01266
 city#Abobo#900000#5.41613#-4.0159
 city#Bouaké#567481#7.69385#-5.03031
@@ -2571,7 +2571,7 @@ city#Matola#675422#-25.96222#32.45889
 city#Beira#530604#-19.84361#34.83889
 city#Nampula#388526#-15.11646#39.2666
 city#Chimoio#256936#-19.11639#33.48333
-country#Myanmar
+country#Burma
 city#Yangon#4477638#16.80528#96.15611
 city#Mandalay#1208099#21.97473#96.08359
 city#Nay Pyi Taw#925000#19.745#96.12972
@@ -3098,7 +3098,7 @@ city#Baia Mare#136553#47.65331#23.57949
 city#Buzău#130954#45.15#26.83333
 city#Botoşani#114783#47.75#26.66667
 city#Satu Mare#112490#47.79926#22.86255
-country#Russian Federation
+country#Russia
 city#Moscow#10381222#55.75222#37.61556
 city#Saint Petersburg#5028000#59.93863#30.31413
 city#Novosibirsk#1419007#55.0415#82.9346
@@ -4288,7 +4288,7 @@ city#San Cristóbal#246583#7.76694#-72.225
 city#Baruta#244216#10.43398#-66.87662
 city#Mucumpiz#215259#8.41667#-71.13333
 city#Cabimas#200818#10.38828#-71.43993
-country#Viet Nam
+country#Vietnam
 city#Ho Chi Minh City#3467331#10.82302#106.62965
 city#Hanoi#1431270#21.0245#105.84117
 city#Da Nang#752493#16.06778#108.22083

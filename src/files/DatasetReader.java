@@ -125,6 +125,7 @@ public class DatasetReader {
                 String[] tempFileData = line.split(splitBy);
                 if (tempFileData[0].equals("country")) {
                     String countryName = tempFileData[1];
+                    country = null;
                     for (Country c : countries) {
                         if (c.getName().toUpperCase().equals(countryName.toUpperCase())) {
                             country = c;
