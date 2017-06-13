@@ -203,7 +203,7 @@ public class MapCanvas implements CountryPercentageListener {
             Point2D planeOnScreen = geoFinder.mapToScreenCoordinates(
                     flight.getCurrentLocation().getX(), flight.getCurrentLocation().getY());
             double radius = 3.0;
-            graphics.fillOval(planeOnScreen.getX() - radius/2, planeOnScreen.getY() - radius/2,
+            graphics.fillOval(planeOnScreen.getX() - radius / 2, planeOnScreen.getY() - radius / 2,
                     radius, radius);
         }
     }
@@ -262,7 +262,7 @@ public class MapCanvas implements CountryPercentageListener {
         needsRepaint = true;
     }
 
-    public void setNeedsRepaint() {
+    private void setNeedsRepaint() {
         this.needsRepaint = true;
     }
 
@@ -330,7 +330,7 @@ public class MapCanvas implements CountryPercentageListener {
     /**
      * Changes the style of selected (if any) countries. Takes in screen coordinates.
      */
-    public void selectStyleChange(double x, double y) {
+    private void selectStyleChange(double x, double y) {
         SimpleFeatureCollection features = geoFinder.getCountryFeaturesCollectionFromScreenCoordinates(x, y);
 
         Set<FeatureId> IDs = new HashSet<>();
@@ -352,7 +352,7 @@ public class MapCanvas implements CountryPercentageListener {
     /**
      * Deselect any selected countries.
      */
-    public void deselectStyle() {
+    private void deselectStyle() {
         setMapStyle(styleManager.createDefaultStyle());
         selectedCountry = null;
         needsRepaint = true;

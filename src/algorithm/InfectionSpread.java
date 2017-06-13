@@ -11,6 +11,7 @@ import world.World;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -54,7 +55,7 @@ public class InfectionSpread {
             addDisease();
         }
         for (Country country : world.getListOfCountries()) {
-            if (country.getInfectedPopulation()==0){
+            if (country.getInfectedPopulation() == 0) {
                 continue;
             }
             if (checkCountryToDiseaseCompatibility(country, disease)) {
@@ -100,18 +101,15 @@ public class InfectionSpread {
     }
 
     /**
-     * Tries to add an infection point to the country which is at the input coordinates.
+     * Tries to infect Patient 0 in the country which is at the input coordinates.
      *
-     * @param newMapPoint A point in map coordinates where an infection point should be added.
+     * @param mapPoint A point in map coordinates where an infection point should be added.
      */
-    public void addInfectionToCountryAtMapCoordinates(Point2D newMapPoint) {
+    public void addInfectionToCountryAtMapCoordinates(Point2D mapPoint) {
         String countryCode = mapCanvas.getGeoFinder()
-                .getCountryCodeFromMapCoordinates(newMapPoint.getX(), newMapPoint.getY());
+                .getCountryCodeFromMapCoordinates(mapPoint.getX(), mapPoint.getY());
 
-        if (world.getCountryByCode(countryCode).isPresent()) {
-            Country country = world.getCountryByCode(countryCode).get();
-            country.infectPopulation(1);
-            country.addInfectionPoint(newMapPoint);
-        }
+        Optional<Country> countryByCode = world.getCountryByCode(countryCode);
+        countryByCode.ifPresent(country -> country.infectPopulation(1));
     }
 }

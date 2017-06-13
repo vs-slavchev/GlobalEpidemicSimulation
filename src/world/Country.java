@@ -8,8 +8,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Random;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -17,7 +15,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Country implements Serializable {
 
-    private static final int QUEUE_MAX_SIZE = 10_000;
     private String name;
     private String code;
     private String governmentForm;
@@ -26,7 +23,6 @@ public class Country implements Serializable {
     private long deadPopulation;
     private long curedPopulation;
     private long migrationRate;
-    private Random random;
     private Environment environment;
     private Queue<Point2D> infectionPoints;
     private List<Country> neighbours;
@@ -45,8 +41,6 @@ public class Country implements Serializable {
         this.curedPopulation = curedPopulation;
         this.migrationRate = rateOfMigration;
         this.environment = environment;
-        this.random = new Random();
-        infectionPoints = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE);
         neighbours = new ArrayList<>();
         listeners = new ArrayList<>();
         cities = new ArrayList<>();
@@ -84,17 +78,6 @@ public class Country implements Serializable {
         return infectionPoints;
     }
 
-
-    /**
-     * Add an infection point in map coordinates.
-     */
-    public void addInfectionPoint(Point2D infectionPoint) {
-        if (infectionPoints.size() >= QUEUE_MAX_SIZE) {
-            infectionPoints.poll();
-        }
-        infectionPoints.add(infectionPoint);
-    }
-
     @Override
     public String toString() {
         return "Country{" +
@@ -127,8 +110,8 @@ public class Country implements Serializable {
     }
 
     public int getPercentageOfInfectedPopulation() {
-        int Percentage = Math.round(this.infectedPopulation * 100 / this.population);
-        return Percentage;
+        int percentage = Math.round(this.infectedPopulation * 100 / this.population);
+        return percentage;
     }
 
     public void infectPopulation(int number) {
@@ -141,17 +124,19 @@ public class Country implements Serializable {
             }
         }
     }
-    public void infectNeighbours(){
+
+    public void infectNeighbours() {
         int next = ThreadLocalRandom.current().nextInt(0, 101);
         boolean Spread = next < this.getPercentageOfInfectedPopulation();
-               if (Spread) {
-                   int randomNum = ThreadLocalRandom.current().nextInt(0, this.neighbours.size() + 1);
-                   for (Country country : this.neighbours){
-                       if (randomNum<2)
-                       country.infectPopulation(1);
-                   }
-                }
+        if (Spread) {
+            int randomNum = ThreadLocalRandom.current().nextInt(0, this.neighbours.size() + 1);
+            for (Country country : this.neighbours) {
+                if (randomNum < 2)
+                    country.infectPopulation(1);
+            }
+        }
     }
+
     public String getCode() {
         return code;
     }

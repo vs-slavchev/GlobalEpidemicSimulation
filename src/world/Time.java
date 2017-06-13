@@ -32,12 +32,12 @@ public class Time implements Serializable {
      * @return a boolean value
      */
     public boolean checkHour() {
-        long Hour = seconds/3600;
-        if (Hour == 0 && lastHour >= 23) {
-            lastHour = Hour;
+        long hour = seconds / 3600;
+        if (hour == 0 && lastHour >= 23) {
+            lastHour = hour;
             return true;
-        } else if (Hour > lastHour) {
-            lastHour = Hour;
+        } else if (hour > lastHour) {
+            lastHour = hour;
             return true;
         } else if (initialStart) {
             initialStart = false;
@@ -82,6 +82,7 @@ public class Time implements Serializable {
             runSpeed -= 5;
         }
     }
+
     public int getSavedRunSpeed() {
         return saveRunSpeed;
     }
@@ -114,7 +115,6 @@ public class Time implements Serializable {
     public String toString() {
         Date date = new Date(seconds * 1000);
         DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss, dd MMMMM");
-        return dateFormat.format(date) + String.format(" %02d Years", seconds/31_536_000);
-
+        return dateFormat.format(date) + String.format(" %02d Years", seconds / 31_536_000);
     }
 }

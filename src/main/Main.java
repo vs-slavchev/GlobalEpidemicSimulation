@@ -497,7 +497,7 @@ public class Main extends Application {
     }
 
     private void SetUpPopupDisease(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
-        if (isStarted){
+        if (isStarted) {
             pauseSimulation();
         }
         popup = new Popup();
@@ -594,7 +594,7 @@ public class Main extends Application {
                 popup.hide();
                 blur.setRadius(0);
                 backgroundBlock.hide();
-                if (isStarted){
+                if (isStarted) {
                     startSimulation(primaryStage);
                 }
 
@@ -615,14 +615,14 @@ public class Main extends Application {
             popup.hide();
             blur.setRadius(0);
             backgroundBlock.hide();
-            if (isStarted){
+            if (isStarted) {
                 startSimulation(primaryStage);
             }
         });
     }
 
     private void SetUpPopupMedicine(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
-        if (isStarted){
+        if (isStarted) {
             pauseSimulation();
         }
         popup = new Popup();
@@ -726,7 +726,7 @@ public class Main extends Application {
                 popup.hide();
                 blur.setRadius(0);
                 backgroundBlock.hide();
-                if (isStarted){
+                if (isStarted) {
                     startSimulation(primaryStage);
                 }
             } catch (Exception ex) {
@@ -745,7 +745,7 @@ public class Main extends Application {
             popup.hide();
             blur.setRadius(0);
             backgroundBlock.hide();
-            if (isStarted){
+            if (isStarted) {
                 startSimulation(primaryStage);
             }
         });

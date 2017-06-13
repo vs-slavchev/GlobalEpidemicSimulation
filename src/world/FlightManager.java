@@ -13,6 +13,9 @@ public class FlightManager {
         flights = new CopyOnWriteArrayList<>();
     }
 
+    /**
+     * Creates a flight between 2 random airports.
+     */
     public void createRandomFlight() {
         Point2D departure = ConstantValues.getRandomAirportCoordinates();
         Point2D destination = ConstantValues.getRandomAirportCoordinates();

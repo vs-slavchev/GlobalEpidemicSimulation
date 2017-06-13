@@ -3,27 +3,34 @@ package world;
 import java.awt.geom.Point2D;
 
 public class Flight {
+    private final double singleStep;
     private Point2D departure;
     private Point2D destination;
     private Point2D bezier;
     private volatile double currentX;
     private volatile double currentY;
     private double progress;
-    private final double singleStep;
 
     public Flight(Point2D departure, Point2D destination) {
         this.departure = departure;
         this.destination = destination;
         bezier = new Point2D.Double(
-                20 + Math.min(departure.getX(), destination.getX()) + Math.abs(departure.getX() - destination.getX()) / 4,
-                Math.min(departure.getY(), destination.getY()) + Math.abs(departure.getY() - destination.getY()) / 4);
+                20 + Math.min(
+                        departure.getX(), destination.getX()) + Math.abs(departure.getX() - destination.getX()) / 4,
+                Math.min(
+                        departure.getY(), destination.getY()) + Math.abs(departure.getY() - destination.getY()) / 4);
+
         // the single step is proportional to the distance to travel
         singleStep = 1.0 / (Math.sqrt(Math.pow(Math.abs(departure.getX() - destination.getX()), 2)
                 + Math.pow(Math.abs(departure.getY() - destination.getY()), 2)) * 50);
+
         // take off
         updateCurrentLocation(1);
     }
 
+    /**
+     * Move forward based on the simulation time speed.
+     */
     public void updateCurrentLocation(final int timeSpeed) {
         progress = Math.min(progress + singleStep * timeSpeed, 1.0);
         Point2D current = step(progress);
@@ -32,7 +39,7 @@ public class Flight {
     }
 
     /**
-     * Make a step in a bezier curve manner.
+     * Calculate the position after making a step in a bezier curve manner.
      */
     public Point2D.Double step(final double currentProgress) {
         double x = (1 - currentProgress) * (1 - currentProgress) * departure.getX()
