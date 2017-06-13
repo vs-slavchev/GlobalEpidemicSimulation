@@ -71,20 +71,6 @@ public class Country implements Serializable {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return "Country{" +
-                "name='" + name + '\'' +
-                ", countryCode=" + code +
-                ", population=" + population +
-                ", deadPopulation=" + deadPopulation +
-                ", curedPopulation=" + curedPopulation +
-                ", governmentForm=" + governmentForm +
-                ", migrationRate=" + migrationRate +
-                ", ENV=" + environment.toString() +
-                '}';
-    }
-
     public long getCuredPopulation() {
         return curedPopulation;
     }
@@ -102,8 +88,7 @@ public class Country implements Serializable {
     }
 
     public int getPercentageOfInfectedPopulation() {
-        int percentage = Math.round(this.infectedPopulation * 100 / this.population);
-        return percentage;
+        return Math.round(this.infectedPopulation * 100 / this.population);
     }
 
     public void infectPopulation(int number) {
@@ -133,6 +118,18 @@ public class Country implements Serializable {
         return code;
     }
 
+    public void addCity(City city) {
+        cities.add(city);
+    }
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void addListeners(CountryPercentageListener listener) {
+        listeners.add(listener);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -151,15 +148,17 @@ public class Country implements Serializable {
         return result;
     }
 
-    public void addCity(City city) {
-        cities.add(city);
-    }
-
-    public List<City> getCities() {
-        return cities;
-    }
-
-    public void addListeners(CountryPercentageListener listener) {
-        listeners.add(listener);
+    @Override
+    public String toString() {
+        return "Country{" +
+                "name='" + name + '\'' +
+                ", countryCode=" + code +
+                ", population=" + population +
+                ", deadPopulation=" + deadPopulation +
+                ", curedPopulation=" + curedPopulation +
+                ", governmentForm=" + governmentForm +
+                ", migrationRate=" + migrationRate +
+                ", ENV=" + environment.toString() +
+                '}';
     }
 }

@@ -14,6 +14,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import world.City;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -21,8 +22,7 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Owner: Veselin
@@ -153,7 +153,41 @@ public class GeoFinder {
         return getCountryFeaturesCollectionFromMapCoordinates(pointInWorld.getX(), pointInWorld.getY());
     }
 
-    SimpleFeatureSource getFeatureSource() {
+    /**
+     * The smaller city of 2 overlapping ones is removed.
+     * <p>
+     * Each city is compared against another one only a single time.
+     */
+    public ArrayList<City> removeOverlappingCities(List<City> cities) {
+        ArrayList<City> cleanCities = new ArrayList<>(cities);
+
+        for (int first_i = 0; first_i < cities.size(); first_i++) {
+            for (int other_i = first_i + 1; other_i < cities.size(); other_i++) {
+                City first = cities.get(first_i);
+                City other = cities.get(other_i);
+                if ((int) first.getLatitude() == (int) other.getLatitude()
+                        && (int) first.getLongitude() == (int) other.getLongitude()) {
+                    City smallerCity = first.getPopulation() > other.getPopulation() ? other : first;
+                    cleanCities.remove(smallerCity);
+                }
+            }
+        }
+        return cleanCities;
+    }
+
+    public ArrayList<City> removeCitiesInWater(List<City> cities) {
+        ArrayList<City> cleanCities = new ArrayList<>(cities);
+
+        for (City city : cities) {
+            if (getCountryCodeFromMapCoordinates(city.getLatitude(), city.getLongitude())
+                    .equals("water") && city.getPopulation() < 1_000_000) {
+                cleanCities.remove(city);
+            }
+        }
+        return cleanCities;
+    }
+
+    public SimpleFeatureSource getFeatureSource() {
         return featureSource;
     }
 

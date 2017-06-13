@@ -333,14 +333,14 @@ public class MapCanvas implements CountryPercentageListener {
     private void selectStyleChange(double x, double y) {
         SimpleFeatureCollection features = geoFinder.getCountryFeaturesCollectionFromScreenCoordinates(x, y);
 
-        Set<FeatureId> IDs = new HashSet<>();
+        Set<FeatureId> idSet = new HashSet<>();
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                IDs.add(feature.getIdentifier());
+                idSet.add(feature.getIdentifier());
             }
         }
-        displaySelectedFeatures(IDs);
+        displaySelectedFeatures(idSet);
     }
 
     private void displaySelectedFeatures(Set<FeatureId> IDs) {
@@ -368,42 +368,7 @@ public class MapCanvas implements CountryPercentageListener {
     }
 
     public void setCities(final ArrayList<City> citiesToAdd) {
-        this.cities = citiesToAdd;
-        removeOverlappingCities();
-        removeCitiesInWater();
-    }
-
-    /**
-     * The smaller city of 2 overlapping ones is removed.
-     * <p>
-     * Each city is compared against another one only a single time.
-     */
-    private void removeOverlappingCities() {
-        Set<City> toRemove = new HashSet<>();
-
-        for (int first_i = 0; first_i < this.cities.size(); first_i++) {
-            for (int other_i = first_i + 1; other_i < this.cities.size(); other_i++) {
-                City first = cities.get(first_i);
-                City other = cities.get(other_i);
-                if ((int) first.getLatitude() == (int) other.getLatitude()
-                        && (int) first.getLongitude() == (int) other.getLongitude()) {
-                    City smallerCity = first.getPopulation() > other.getPopulation() ? other : first;
-                    toRemove.add(smallerCity);
-                }
-            }
-        }
-        cities.removeAll(toRemove);
-    }
-
-    private void removeCitiesInWater() {
-        Set<City> toRemove = new HashSet<>();
-        for (City city : this.cities) {
-            if (geoFinder.getCountryCodeFromMapCoordinates(city.getLatitude(), city.getLongitude())
-                    .equals("water") && city.getPopulation() < 1_000_000) {
-                toRemove.add(city);
-            }
-        }
-        cities.removeAll(toRemove);
+        this.cities = geoFinder.removeOverlappingCities(geoFinder.removeCitiesInWater(citiesToAdd));
     }
 
     public void selectCountry(double x, double y, Country country) {
