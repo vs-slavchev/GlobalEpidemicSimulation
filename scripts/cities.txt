@@ -533,6 +533,7 @@ city#Dobrich#94831#43.56667#27.83333
 city#Shumen#87283#43.27064#26.92286
 city#Pernik#82467#42.6#23.03333
 city#Montana#44502#43.407778#23.225
+city#Tryavna#9478#42.866667#25.491944
 city#Vardim#992#43.55#25.466667
 country#Burkina Faso
 city#Ouagadougou#1086505#12.36566#-1.53388

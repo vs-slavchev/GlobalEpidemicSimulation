@@ -163,7 +163,7 @@ public class Main extends Application {
     private Thread startTimer() {
         return new Thread(() -> {
             while (isWorking) {
-                world.getTime().setElapsedTime();
+                world.getTime().tickTime();
                 Platform.runLater(() -> timer.setText(world.getTime().toString()));
                 try {
                     Thread.sleep(world.getTime().timerSleepTime());
@@ -288,7 +288,7 @@ public class Main extends Application {
 
         backForwardButton.setOnAction(event -> {
             fastForwardButton.setDisable(false);
-            world.getTime().subtract();
+            world.getTime().subtractRunSpeed();
             if (world.getTime().getRunSpeed() <= 1) {
                 backForwardButton.setDisable(true);
             }
