@@ -11,17 +11,16 @@ import java.util.Date;
 
 public class Time implements Serializable {
 
+    private final int[] speedValues = {1, 2, 5, 10, 25, 50, 75, 100, 200};
     private long seconds = 0;
-    private int runSpeed = 0;
-    private int saveRunSpeed = 0;
-    private long lastHour = 0;
-    private boolean initialStart = true;
+    private long lastHour = -1;
+    private int speedValueIndex = 0;
 
     /**
      * Calculating the elapsed time after the simulation is stared
      */
     public void tickTime() {
-        seconds += runSpeed;
+        seconds += getTimeSpeed();
     }
 
     /**
@@ -31,90 +30,55 @@ public class Time implements Serializable {
      *
      * @return a boolean value
      */
-    public boolean checkHour() {
-        long hour = seconds / 3600;
-        if (hour == 0 && lastHour >= 23) {
-            lastHour = hour;
+    public boolean checkHourHasPassed() {
+        long currentHour = seconds / 3600;
+        if (currentHour != lastHour) {
+            lastHour = currentHour;
             return true;
-        } else if (hour > lastHour) {
-            lastHour = hour;
-            return true;
-        } else if (initialStart) {
-            initialStart = false;
-            return true;
-        } else return false;
+        }
+        return false;
     }
 
-    public int getRunSpeed() {
-        return runSpeed;
-    }
-
-    public void setRunSpeed(int speed) {
-        this.runSpeed = speed;
-    }
-
-    /**
-     * incrementing runSpeed value depending on what its value is at
-     * the moment
-     */
-    public void addRunSpeed() {
-        if (runSpeed == 0) {
-            runSpeed++;
-        } else if (runSpeed == 1) {
-            runSpeed = 5;
-        } else if (runSpeed < 20) {
-            runSpeed += 5;
-        } else {
-            runSpeed += 10;
+    public int getTimeSpeed() {
+        try {
+            return speedValues[speedValueIndex];
+        } catch (IndexOutOfBoundsException ioobe) {
+            ioobe.printStackTrace();
+            return 0;
         }
     }
 
-    /**
-     * subtracting runSpeed value depending on what its
-     * value is at the moment.
-     */
-    public void subtractRunSpeed() {
-        if (runSpeed > 20) {
-            runSpeed -= 10;
-        } else if (runSpeed == 0) {
-            runSpeed = 0;
-        } else {
-            runSpeed -= 5;
-        }
+    public void increaseSpeed() {
+        speedValueIndex = Math.min(speedValueIndex + 1, speedValues.length - 1);
     }
 
-    public int getSavedRunSpeed() {
-        return saveRunSpeed;
-    }
-
-    public void saveRunSpeed() {
-        this.saveRunSpeed = runSpeed;
+    public void decreaseSpeed() {
+        speedValueIndex = Math.max(speedValueIndex - 1, 0);
     }
 
     /**
-     * The method is used to check what is the value of runSpeed
-     * ( the method is created mainly for the purpose of timing the
-     * Thread responsible for the Timer in the application)
+     * The method is created mainly for the purpose of timing the
+     * Thread responsible for the Timer in the application.
      *
-     * @return a value in the range of 1000-10 depending on the runSpeed value
+     * @return the milliseconds the timer thread is supposed to sleep for
      */
-    public int timerSleepTime() {
-        if (runSpeed >= 0 && runSpeed <= 5) {
-            return 1000;
-        } else if (runSpeed >= 5 && runSpeed <= 10) {
-            return 750;
-        } else if (runSpeed >= 10 && runSpeed <= 20) {
-            return 500;
-        } else if (runSpeed >= 20 && runSpeed <= 40) {
-            return 250;
-        } else
-            return 10;
+    public int calculateTimerSleepTime() {
+        return 1000 / getTimeSpeed();
+    }
+
+    public boolean isAtMaxSpeed() {
+        return speedValueIndex == speedValues.length - 1;
+    }
+
+    public boolean isAtMinSpeed() {
+        return speedValueIndex == 0;
     }
 
     @Override
     public String toString() {
         Date date = new Date(seconds * 1000);
         DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss, dd MMMMM");
+        // that is how many seconds there are in one year
         return dateFormat.format(date) + String.format(" %02d Years", seconds / 31_536_000);
     }
 }

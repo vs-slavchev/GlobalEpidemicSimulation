@@ -3,6 +3,7 @@ package algorithm;
 import disease.Disease;
 import disease.DiseaseProperties;
 import disease.DiseaseType;
+import main.ConstantValues;
 import map.MapCanvas;
 import world.Country;
 import world.FlightManager;
@@ -90,12 +91,15 @@ public class InfectionSpread {
         return temperatureIsInsideBonds && country.getInfectedPopulation() > 0;
     }
 
+    /**
+     * Update the flights and try to start a new one.
+     */
     public void applyAirplaneAlgorithm() {
-        flightManager.updateFlights(world.getTime().getRunSpeed());
+        flightManager.updateFlights(world.getTime().getTimeSpeed());
         //addInfectionToCountryAtMapCoordinates(ConstantValues.getRandomAirportCoordinates());
 
         // the chance to create a new flight depends on the run speed
-        if (random.nextDouble() < world.getTime().getRunSpeed() * 0.003) {
+        if (random.nextDouble() < world.getTime().getTimeSpeed() * ConstantValues.CHANCE_TO_START_FLIGHT) {
             flightManager.createRandomFlight();
         }
     }

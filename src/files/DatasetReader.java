@@ -129,6 +129,7 @@ public class DatasetReader {
                     for (Country c : countries) {
                         if (c.getName().toUpperCase().equals(countryName.toUpperCase())) {
                             country = c;
+                            break;
                         }
                     }
                 } else {

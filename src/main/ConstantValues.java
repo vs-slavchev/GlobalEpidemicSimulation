@@ -12,8 +12,7 @@ import java.util.Random;
 
 public class ConstantValues {
     public static final int FPS = 30;
-    public static final double INFECTION_RADIUS = 2.0;
-    public static final double OFFSET = INFECTION_RADIUS / 5;
+    public static final double CHANCE_TO_START_FLIGHT = 0.001;
 
     // input files
     public static final String CSS_STYLE_FILE = "Style.css";

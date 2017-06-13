@@ -3,11 +3,9 @@ package world;
 
 import interfaces.CountryPercentageListener;
 
-import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -24,9 +22,8 @@ public class Country implements Serializable {
     private long curedPopulation;
     private long migrationRate;
     private Environment environment;
-    private Queue<Point2D> infectionPoints;
     private List<Country> neighbours;
-    private List<CountryPercentageListener> listeners;
+    private List<CountryPercentageListener> listeners; // reference to mapCanvas instance, not serializable
     private List<City> cities;
 
     public Country(String countryName, String code, long Population,
@@ -74,10 +71,6 @@ public class Country implements Serializable {
         return name;
     }
 
-    public Queue<Point2D> getInfectionPoints() {
-        return infectionPoints;
-    }
-
     @Override
     public String toString() {
         return "Country{" +
@@ -88,7 +81,6 @@ public class Country implements Serializable {
                 ", curedPopulation=" + curedPopulation +
                 ", governmentForm=" + governmentForm +
                 ", migrationRate=" + migrationRate +
-                ", infectionPoints.size()=" + infectionPoints.size() +
                 ", ENV=" + environment.toString() +
                 '}';
     }

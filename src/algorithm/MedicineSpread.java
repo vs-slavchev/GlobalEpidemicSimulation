@@ -69,9 +69,9 @@ public class MedicineSpread {
     }
 
     public void medicineAlgorithm() {
-        for (Country country : countries
-                ) {
-            if (country.getInfectedPopulation() != 0 && country.getInfectedPopulation() + country.getCuredPopulation() < country.getTotalPopulation()) {
+        for (Country country : countries) {
+            if (country.getInfectedPopulation() != 0
+                    && country.getInfectedPopulation() + country.getCuredPopulation() < country.getTotalPopulation()) {
                 double currentVirulence = medicine.getProperties().getVirulence();
                 double pop = medicine.getProperties().getVirulence() * (double) country.getInfectedPopulation();
                 if (pop > country.getInfectedPopulation()) {
@@ -80,7 +80,6 @@ public class MedicineSpread {
                 country.addCuredPopulation((long) pop);
                 country.setInfectedPopulation(country.getInfectedPopulation() - (long) pop);
                 medicine.getProperties().setVirulence(currentVirulence + 0.02);
-                System.out.print(country.getInfectionPoints().size() + "," + country.getInfectedPopulation() + "     ");
             }
         }
         /*if(disease.getType()==medicine.getTargetedTypesType()){

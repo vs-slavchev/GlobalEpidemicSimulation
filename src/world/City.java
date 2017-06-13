@@ -1,10 +1,12 @@
 package world;
 
+import java.io.Serializable;
+
 /**
  * Owner: Ivaylo
  */
 
-public class City {
+public class City implements Serializable {
     private String name;
     private long population;
     private double latitude;

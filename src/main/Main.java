@@ -65,10 +65,15 @@ public class Main extends Application {
     private Button fastForward;
     private Button backForward;
 
-    private boolean isClickedOnMapDisease = false;
-    private boolean isClickedOnMapMedicine = false;
-    private volatile boolean isWorking = true;
-    private volatile boolean isStarted = false;
+    private boolean isClickedOnMapDisease;
+    private boolean isClickedOnMapMedicine;
+
+    // setting this to false will make threads finish execution
+    private volatile boolean areThreadsRunning;
+    // are the time and main algorithms currently running
+    private volatile boolean isSimulationRunning;
+    // has the simulation been started at some point
+    private volatile boolean didSimulationAlreadyStart;
 
     public static void main(String[] args) {
         launch(args);
@@ -79,7 +84,6 @@ public class Main extends Application {
         VBox root = new VBox();
         root.setMinWidth(640);
         root.setMinHeight(480);
-        isStarted = false;
 
         world = new World();
 
@@ -93,7 +97,7 @@ public class Main extends Application {
 
         timer.setText(world.getTime().toString());
         timer.setId("timer");
-        speedLabel.setText("x" + world.getTime().getRunSpeed());
+        updateTimeSpeedLabel();
 
         setUpButtonBar(primaryStage);
         root.getChildren().addAll(buttonBar, mapCanvas.getCanvas());
@@ -111,14 +115,20 @@ public class Main extends Application {
         scene.getStylesheets().add(ConstantValues.CSS_STYLE_FILE);
         blur = new GaussianBlur(0);
         root.setEffect(blur);
+
+        // start the threads
+        areThreadsRunning = true;
+        createAlgorithmThread().start();
+        createMedicineThread().start();
+        startTimer().start();
     }
 
     private Thread createAlgorithmThread() {
         return new Thread(() -> {
-            while (isWorking) {
-                if (isClickedOnMapDisease) {
+            while (areThreadsRunning) {
+                if (isSimulationRunning && isClickedOnMapDisease) {
                     infectionSpread.applyAirplaneAlgorithm();
-                    while (world.getTime().checkHour()) {
+                    if (world.getTime().checkHourHasPassed()) {
                         if (selectedDisease == null) {
                             Platform.runLater(() -> saveLoadManager
                                     .InformativeMessage("Please select a disease first!"));
@@ -140,9 +150,9 @@ public class Main extends Application {
 
     private Thread createMedicineThread() {
         return new Thread(() -> {
-            while (isWorking) {
-                if (isClickedOnMapMedicine) {
-                    while (world.getTime().checkHour()) {
+            while (areThreadsRunning) {
+                if (isSimulationRunning && isClickedOnMapMedicine) {
+                    if (world.getTime().checkHourHasPassed()) {
                         if (medicineSpread.getMedicine() == null) {
                             Platform.runLater(() -> saveLoadManager
                                     .InformativeMessage("Please select a medicine first!"));
@@ -162,44 +172,42 @@ public class Main extends Application {
 
     private Thread startTimer() {
         return new Thread(() -> {
-            while (isWorking) {
-                world.getTime().tickTime();
-                Platform.runLater(() -> timer.setText(world.getTime().toString()));
-                try {
-                    Thread.sleep(world.getTime().timerSleepTime());
-                } catch (InterruptedException e) {
-                    // empty on purpose
+            while (areThreadsRunning) {
+                if (isSimulationRunning) {
+
+                    world.getTime().tickTime();
+                    Platform.runLater(() -> timer.setText(world.getTime().toString()));
+                    try {
+                        Thread.sleep(world.getTime().calculateTimerSleepTime());
+                    } catch (InterruptedException e) {
+                        // empty on purpose
+                    }
                 }
             }
         });
     }
 
     private void startNewSimulation(Stage primaryStage) {
-        if (isStarted) {
+        if (didSimulationAlreadyStart) {
             WindowDialog newSimulationDialog = new WindowDialog();
             newSimulationDialog.showAndWait();
 
             if (newSimulationDialog.isYes()) {
-                interruptAlgorithmAndTimerThreads();
+                finishThreads();
                 saveLoadManager.clearFilePath();
                 start(primaryStage);
             }
             if (newSimulationDialog.isSaveAndExit()) {
                 saveLoadManager.saveFile(primaryStage, world);
-                interruptAlgorithmAndTimerThreads();
+                finishThreads();
                 saveLoadManager.clearFilePath();
                 start(primaryStage);
             }
         }
     }
 
-    private void interruptAlgorithmAndTimerThreads() {
-        if (createAlgorithmThread().isAlive()) {
-            createAlgorithmThread().interrupt();
-        }
-        if (startTimer().isAlive()) {
-            startTimer().interrupt();
-        }
+    private void finishThreads() {
+        areThreadsRunning = false;
     }
 
     /**
@@ -223,27 +231,15 @@ public class Main extends Application {
     /**
      * Starts the simulation
      */
-    private void startSimulation(Stage primaryStage) {
-        createAlgorithmThread().start();
-        createMedicineThread().start();
-        startTimer().start();
+    private void startResumeSimulation(Stage primaryStage) {
         start.setVisible(false);
         pause.setVisible(true);
-        isWorking = true;
-        world.getTime().setRunSpeed(1);
-        isStarted = true;
-        if (world.getTime().getSavedRunSpeed() != 0) {
-            world.getTime().setRunSpeed(world.getTime().getSavedRunSpeed());
-        }
-        speedLabel.setText("x" + world.getTime().getRunSpeed());
+        isSimulationRunning = true;
+        didSimulationAlreadyStart = true;
+        updateTimeSpeedLabel();
         addToListBoxes(diseaseListBox, medicineListBox);
         setPointers(diseaseListBox, medicineListBox, primaryStage);
-        backForward.setDisable(false);
-        if (world.getTime().getRunSpeed() < 70) {
-            fastForward.setDisable(false);
-        } else {
-            fastForward.setDisable(true);
-        }
+        updateSpeedBackwardForwardButtons();
     }
 
     /**
@@ -252,19 +248,13 @@ public class Main extends Application {
     private void pauseSimulation() {
         start.setVisible(true);
         pause.setVisible(false);
-        backForward.setDisable(true);
-        fastForward.setDisable(true);
-        isWorking = false;
-        world.getTime().saveRunSpeed();
-        world.getTime().setRunSpeed(0);
-        speedLabel.setText("x" + world.getTime().getRunSpeed());
+        updateSpeedBackwardForwardButtons();
+        isSimulationRunning = false;
+        updateTimeSpeedLabel();
     }
 
-    private void setUpEventHandlers(final Stage primaryStage, final Button disease, final Button medicine,
-                                    final Button start, final Button pause, final Button fastForwardButton,
-                                    final Button backForwardButton, final MenuButton diseaseListBox,
-                                    final MenuButton medicineListBox) {
-        start.setOnAction(event -> startSimulation(primaryStage));
+    private void setUpEventHandlers(final Stage primaryStage, final Button disease, final Button medicine) {
+        start.setOnAction(event -> startResumeSimulation(primaryStage));
 
         pause.setOnAction(event -> pauseSimulation());
 
@@ -277,22 +267,18 @@ public class Main extends Application {
             blockAndShowPopup(primaryStage);
         });
 
-        fastForwardButton.setOnAction(event -> {
-            backForwardButton.setDisable(false);
-            world.getTime().addRunSpeed();
-            if (world.getTime().getRunSpeed() >= 70) {
-                fastForwardButton.setDisable(true);
-            }
-            speedLabel.setText("x" + world.getTime().getRunSpeed());
+        fastForward.setOnAction(event -> {
+            backForward.setDisable(false);
+            world.getTime().increaseSpeed();
+            updateSpeedBackwardForwardButtons();
+            updateTimeSpeedLabel();
         });
 
-        backForwardButton.setOnAction(event -> {
-            fastForwardButton.setDisable(false);
-            world.getTime().subtractRunSpeed();
-            if (world.getTime().getRunSpeed() <= 1) {
-                backForwardButton.setDisable(true);
-            }
-            speedLabel.setText("x" + world.getTime().getRunSpeed());
+        backForward.setOnAction(event -> {
+            fastForward.setDisable(false);
+            world.getTime().decreaseSpeed();
+            updateSpeedBackwardForwardButtons();
+            updateTimeSpeedLabel();
         });
 
         primaryStage.setOnCloseRequest(event -> closeApplication(primaryStage, event));
@@ -448,21 +434,20 @@ public class Main extends Application {
         saveSimulationAs.setOnAction(event -> saveLoadManager.saveFileAs(primaryStage, world));
 
         // assign action handlers to the items in the file menu
-        setUpButtons(fileMenuButton, diseaseListBox, medicineListBox, primaryStage);
+        setUpButtons(fileMenuButton, primaryStage);
     }
 
-    private void setUpButtons(MenuButton fileMenuButton, MenuButton diseaseList, MenuButton MedicineListBox, Stage primaryStage) {
+    private void setUpButtons(MenuButton fileMenuButton, Stage primaryStage) {
 
         start = setUpImageButton(ConstantValues.PLAY_BUTTON_IMAGE_FILE);
         pause = setUpImageButton(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
         fastForward = setUpImageButton(ConstantValues.FAST_FORWARD_BUTTON_IMAGE_FILE);
         backForward = setUpImageButton(ConstantValues.BACK_FORWARD_BUTTON_IMAGE_FILE);
         // set up the buttons on the buttonBar
-        // set up the buttons on the buttonBar
         Button disease = new Button("Create Disease");
         Button medicine = new Button("Create Medicine");
 
-        setUpEventHandlers(primaryStage, disease, medicine, start, pause, fastForward, backForward, diseaseList, MedicineListBox);
+        setUpEventHandlers(primaryStage, disease, medicine);
 
         // addComponent the file menu, separators and the object buttons to the button bar
         StackPane stackPane = new StackPane();
@@ -471,33 +456,49 @@ public class Main extends Application {
 
         buttonBar.getChildren().addAll(
                 fileMenuButton,
-                disease, medicine, diseaseList, MedicineListBox, backForward, stackPane, fastForward, speedLabel, timer);
+                disease, medicine, diseaseListBox, medicineListBox, backForward, stackPane, fastForward, speedLabel, timer);
         buttonBar.setSpacing(10);
         buttonBar.setPadding(new Insets(10, 10, 10, 10));
 
         fastForward.setDisable(true);
         backForward.setDisable(true);
-        //timer.relocate(10, buttonBar.getMaxWidth());
     }
 
     private void closeApplication(Stage primaryStage, WindowEvent event) {
-        if (isStarted) {
+        if (didSimulationAlreadyStart) {
             WindowDialog newSimulationDialog = new WindowDialog();
             newSimulationDialog.showAndWait();
             if (newSimulationDialog.isYes()) {
-                interruptAlgorithmAndTimerThreads();
-                System.exit(1);
+                finishThreads();
+                System.exit(0);
             } else if (newSimulationDialog.isSaveAndExit()) {
                 saveLoadManager.saveFile(primaryStage, world);
-                interruptAlgorithmAndTimerThreads();
-                System.exit(1);
+                finishThreads();
+                System.exit(0);
             }
             event.consume();
         }
     }
 
+    private void updateSpeedBackwardForwardButtons() {
+        if (world.getTime().isAtMinSpeed()) {
+            backForward.setDisable(true);
+        } else {
+            backForward.setDisable(false);
+        }
+        if (world.getTime().isAtMaxSpeed()) {
+            fastForward.setDisable(true);
+        } else {
+            fastForward.setDisable(false);
+        }
+    }
+
+    private void updateTimeSpeedLabel() {
+        speedLabel.setText("x" + world.getTime().getTimeSpeed());
+    }
+
     private void SetUpPopupDisease(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
-        if (isStarted) {
+        if (didSimulationAlreadyStart) {
             pauseSimulation();
         }
         popup = new Popup();
@@ -594,8 +595,8 @@ public class Main extends Application {
                 popup.hide();
                 blur.setRadius(0);
                 backgroundBlock.hide();
-                if (isStarted) {
-                    startSimulation(primaryStage);
+                if (didSimulationAlreadyStart) {
+                    startResumeSimulation(primaryStage);
                 }
 
 
@@ -615,14 +616,14 @@ public class Main extends Application {
             popup.hide();
             blur.setRadius(0);
             backgroundBlock.hide();
-            if (isStarted) {
-                startSimulation(primaryStage);
+            if (didSimulationAlreadyStart) {
+                startResumeSimulation(primaryStage);
             }
         });
     }
 
     private void SetUpPopupMedicine(MenuButton diseaseListBox, MenuButton medicineListBox, Stage primaryStage) {
-        if (isStarted) {
+        if (didSimulationAlreadyStart) {
             pauseSimulation();
         }
         popup = new Popup();
@@ -726,8 +727,8 @@ public class Main extends Application {
                 popup.hide();
                 blur.setRadius(0);
                 backgroundBlock.hide();
-                if (isStarted) {
-                    startSimulation(primaryStage);
+                if (didSimulationAlreadyStart) {
+                    startResumeSimulation(primaryStage);
                 }
             } catch (Exception ex) {
                 if (preferredTemp.getText().equals("-")) {
@@ -745,8 +746,8 @@ public class Main extends Application {
             popup.hide();
             blur.setRadius(0);
             backgroundBlock.hide();
-            if (isStarted) {
-                startSimulation(primaryStage);
+            if (didSimulationAlreadyStart) {
+                startResumeSimulation(primaryStage);
             }
         });
     }

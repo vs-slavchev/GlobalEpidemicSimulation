@@ -193,7 +193,7 @@ public class MapCanvas implements CountryPercentageListener {
             double pointRadius = 0.5;
             for (double currentProgress = 0.0;
                  currentProgress <= flight.getProgress();
-                 currentProgress += flight.getSingleStep() * 8) {
+                 currentProgress += flight.getSingleStep() * 30) {
 
                 Point2D toDraw = flight.step(currentProgress);
                 toDraw = geoFinder.mapToScreenCoordinates(toDraw.getX(), toDraw.getY());

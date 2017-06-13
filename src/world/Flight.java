@@ -22,7 +22,7 @@ public class Flight {
 
         // the single step is proportional to the distance to travel
         singleStep = 1.0 / (Math.sqrt(Math.pow(Math.abs(departure.getX() - destination.getX()), 2)
-                + Math.pow(Math.abs(departure.getY() - destination.getY()), 2)) * 50);
+                + Math.pow(Math.abs(departure.getY() - destination.getY()), 2)) * 100);
 
         // take off
         updateCurrentLocation(1);
