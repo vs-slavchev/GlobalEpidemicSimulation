@@ -139,6 +139,7 @@ public class MapCanvas implements CountryPercentageListener {
         for (City city : citiesToDraw) {
             Point2D screenCity = geoFinder.mapToScreenCoordinates(
                     city.getLatitude(), city.getLongitude());
+
             int radius = (int) calculatePointRadius(city.getPopulation());
             gc.fillOval(screenCity.getX() - radius / 2, screenCity.getY() - radius / 2,
                     radius, radius);
@@ -169,7 +170,7 @@ public class MapCanvas implements CountryPercentageListener {
      */
     private double calculatePointRadius(double cityPopulation) {
         double scale = geoFinder.createWorldToScreenAffineTransform().getScaleX();
-        return Math.max(0, 20 - cityPopulation / 1_000_000.0) / 8 + Math.sqrt(cityPopulation / 1_000_000.0) * scale;
+        return Math.max(0, 20 - cityPopulation / 1_000_000.0) / 8 + Math.sqrt(cityPopulation / 3_000_000.0) * scale;
     }
 
     private void drawGraph() {
