@@ -19,6 +19,16 @@ public class Flight {
     private World world;
     private Country country;
 
+    public boolean isInfected() {
+        return isInfected;
+    }
+
+    public void setInfected(boolean infected) {
+        isInfected = infected;
+    }
+
+    private boolean isInfected;
+
     public Flight(Point2D departure, Point2D destination, MapCanvas mapcanvas, World world) {
         this.mapCanvas = mapcanvas;
         this.world = world;
@@ -36,7 +46,7 @@ public class Flight {
 
         // take off
         updateCurrentLocation(1);
-        infectedFlight();
+        setInfected(infectedFlight());
     }
 
     public boolean infectedFlight(){

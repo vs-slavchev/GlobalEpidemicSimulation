@@ -190,7 +190,7 @@ public class MapCanvas implements CountryPercentageListener {
     private void drawFlights() {
         graphics.setFill(ConstantValues.PLANE_LINE1);
         for (Flight flight : flights) {
-            if (flight.infectedFlight()) {
+            if (flight.isInfected()) {
                 graphics.setFill(javafx.scene.paint.Color.RED);
             }
             else {graphics.setFill(javafx.scene.paint.Color.WHITE);}
