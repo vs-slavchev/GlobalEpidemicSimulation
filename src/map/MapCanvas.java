@@ -10,6 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.paint.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
@@ -189,7 +190,10 @@ public class MapCanvas implements CountryPercentageListener {
     private void drawFlights() {
         graphics.setFill(ConstantValues.PLANE_LINE1);
         for (Flight flight : flights) {
-            graphics.setFill(javafx.scene.paint.Color.WHITE);
+            if (flight.infectedFlight()) {
+                graphics.setFill(javafx.scene.paint.Color.RED);
+            }
+            else {graphics.setFill(javafx.scene.paint.Color.WHITE);}
             double pointRadius = 0.5;
             for (double currentProgress = 0.0;
                  currentProgress <= flight.getProgress();

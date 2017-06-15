@@ -6,6 +6,7 @@ import disease.DiseaseType;
 import main.ConstantValues;
 import map.MapCanvas;
 import world.Country;
+import world.Flight;
 import world.FlightManager;
 import world.World;
 
@@ -26,13 +27,14 @@ public class InfectionSpread {
     private World world;
     private MapCanvas mapCanvas;
     private volatile FlightManager flightManager;
+    private Flight flight;
 
     public InfectionSpread(World world, MapCanvas mapCanvas) {
         diseaseList = new ArrayList<>();
         this.random = new Random();
         this.world = world;
         this.mapCanvas = mapCanvas;
-        flightManager = new FlightManager();
+        flightManager = new FlightManager(mapCanvas, world);
         mapCanvas.setFlights(flightManager.getFlights());
         addDisease();
     }

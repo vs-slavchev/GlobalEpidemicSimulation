@@ -1,15 +1,21 @@
 package world;
 
 import main.ConstantValues;
+import map.MapCanvas;
 
 import java.awt.geom.Point2D;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class FlightManager {
     private List<Flight> flights;
+    private World world;
+    private MapCanvas mapCanvas;
 
-    public FlightManager() {
+    public FlightManager(MapCanvas mapCanvas, World world) {
+        this.mapCanvas = mapCanvas;
+        this.world = world;
         flights = new CopyOnWriteArrayList<>();
     }
 
@@ -22,7 +28,7 @@ public class FlightManager {
         while (destination.equals(departure)) {
             destination = ConstantValues.getRandomAirportCoordinates();
         }
-        flights.add(new Flight(departure, destination));
+        flights.add(new Flight(departure, destination, mapCanvas, world));
     }
 
     public void updateFlights(int timeSpeed) {
@@ -31,7 +37,6 @@ public class FlightManager {
         }
         flights.removeIf(Flight::isLanded);
     }
-
     public List<Flight> getFlights() {
         return flights;
     }

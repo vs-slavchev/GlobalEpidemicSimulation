@@ -1,6 +1,11 @@
 package world;
 
+import map.MapCanvas;
+
+import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.Optional;
+import java.util.function.ToDoubleBiFunction;
 
 public class Flight {
     private final double singleStep;
@@ -10,8 +15,13 @@ public class Flight {
     private volatile double currentX;
     private volatile double currentY;
     private double progress;
+    private MapCanvas mapCanvas;
+    private World world;
+    private Country country;
 
-    public Flight(Point2D departure, Point2D destination) {
+    public Flight(Point2D departure, Point2D destination, MapCanvas mapcanvas, World world) {
+        this.mapCanvas = mapcanvas;
+        this.world = world;
         this.departure = departure;
         this.destination = destination;
         bezier = new Point2D.Double(
@@ -26,8 +36,27 @@ public class Flight {
 
         // take off
         updateCurrentLocation(1);
+        infectedFlight();
     }
 
+    public boolean infectedFlight(){
+        String selectedCode = mapCanvas.getGeoFinder().getCountryCodeFromMapCoordinates(departure.getX(), departure.getY());
+        Optional<Country> countryMaybe = world.getCountryByCode(selectedCode);
+        if (countryMaybe.isPresent()) {
+            country = countryMaybe.get();
+            if (country.getPercentageOfInfectedPopulation() > 50){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void infectDestination(){
+        if (isLanded() && infectedFlight())
+        {
+            country.setInfectedPopulation(1);
+        }
+    }
     /**
      * Move forward based on the simulation time speed.
      */
@@ -66,4 +95,5 @@ public class Flight {
     public double getProgress() {
         return progress;
     }
+
 }
