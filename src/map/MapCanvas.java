@@ -148,16 +148,15 @@ public class MapCanvas implements CountryPercentageListener {
             if (city.isCapital()) {
                 double circleWidth = geoFinder.createWorldToScreenAffineTransform().getScaleX() / 15;
                 gc.setLineWidth(circleWidth);
-                int capitalRadius = radius + (int)Math.ceil(circleWidth * 5);
-                gc.strokeOval(screenCity.getX() - capitalRadius / 2,
-                        screenCity.getY() - capitalRadius / 2,
-                        capitalRadius, capitalRadius);
+                radius = radius + (int)Math.ceil(circleWidth * 5);
+                gc.strokeOval(screenCity.getX() - radius / 2,
+                        screenCity.getY() - radius / 2,
+                        radius, radius);
             }
 
             if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 50) {
                 gc.fillText(city.getName(), screenCity.getX(),
                         screenCity.getY() + radius / 2 + 10);
-                // radius + 10
             }
         }
         graphics.setTextAlign(TextAlignment.LEFT);
