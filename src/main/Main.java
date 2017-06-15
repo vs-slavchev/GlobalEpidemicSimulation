@@ -478,6 +478,8 @@ public class Main extends Application {
             }
             event.consume();
         }
+        finishThreads();
+        System.exit(0);
     }
 
     private void updateSpeedBackwardForwardButtons() {
