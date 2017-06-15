@@ -10,7 +10,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.paint.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
@@ -136,12 +135,23 @@ public class MapCanvas implements CountryPercentageListener {
         graphics.setTextAlign(TextAlignment.CENTER);
         graphics.setTextBaseline(VPos.CENTER);
         gc.setFont(new Font(25));
+        gc.setStroke(javafx.scene.paint.Color.CYAN);
         for (City city : citiesToDraw) {
             Point2D screenCity = geoFinder.mapToScreenCoordinates(
                     city.getLatitude(), city.getLongitude());
             int radius = (int) calculatePointRadius(city.getPopulation());
             gc.fillOval(screenCity.getX() - radius / 2, screenCity.getY() - radius / 2,
                     radius, radius);
+
+            // draw extra circle for capitals
+            if (city.isCapital()) {
+                double circleWidth = geoFinder.createWorldToScreenAffineTransform().getScaleX() / 15;
+                gc.setLineWidth(circleWidth);
+                int capitalRadius = radius + (int)Math.ceil(circleWidth * 5);
+                gc.strokeOval(screenCity.getX() - capitalRadius / 2,
+                        screenCity.getY() - capitalRadius / 2,
+                        capitalRadius, capitalRadius);
+            }
 
             if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 50) {
                 gc.fillText(city.getName(), screenCity.getX(),

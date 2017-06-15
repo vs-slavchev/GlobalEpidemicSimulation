@@ -118,7 +118,11 @@ public class Country implements Serializable {
         return code;
     }
 
-    public void addCity(City city) {
+    public void addCity(final City city) {
+        // the capital is the first city to be added
+        if (cities.isEmpty()) {
+            city.setIsCapital(true);
+        }
         cities.add(city);
     }
 

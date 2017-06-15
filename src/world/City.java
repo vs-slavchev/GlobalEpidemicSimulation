@@ -11,6 +11,7 @@ public class City implements Serializable {
     private long population;
     private double latitude;
     private double longitude;
+    private boolean isCapital;
 
     public City(String name, long population, double latitude, double longitude) {
         this.name = name;
@@ -33,5 +34,13 @@ public class City implements Serializable {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public void setIsCapital(boolean capital) {
+        isCapital = capital;
+    }
+
+    public boolean isCapital() {
+        return isCapital;
     }
 }
