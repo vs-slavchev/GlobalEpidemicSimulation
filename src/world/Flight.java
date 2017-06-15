@@ -18,15 +18,7 @@ public class Flight {
     private MapCanvas mapCanvas;
     private World world;
     private Country country;
-
-    public boolean isInfected() {
-        return isInfected;
-    }
-
-    public void setInfected(boolean infected) {
-        isInfected = infected;
-    }
-
+    private Country countryDestination;
     private boolean isInfected;
 
     public Flight(Point2D departure, Point2D destination, MapCanvas mapcanvas, World world) {
@@ -62,11 +54,19 @@ public class Flight {
     }
 
     public void infectDestination(){
-        if (isLanded() && infectedFlight())
-        {
-            country.setInfectedPopulation(1);
+        String selectedCode = mapCanvas.getGeoFinder().getCountryCodeFromMapCoordinates(destination.getX(), destination.getY());
+        Optional<Country> countryMaybe = world.getCountryByCode(selectedCode);
+        if (countryMaybe.isPresent()) {
+            countryDestination = countryMaybe.get();
+            if (isLanded() && isInfected())
+                {
+                    if (countryDestination.getInfectedPopulation() == 0) {
+                        countryDestination.setInfectedPopulation(1);
+                    }
+                }
         }
     }
+
     /**
      * Move forward based on the simulation time speed.
      */
@@ -75,6 +75,7 @@ public class Flight {
         Point2D current = step(progress);
         currentX = current.getX();
         currentY = current.getY();
+        infectDestination();
     }
 
     /**
@@ -105,5 +106,15 @@ public class Flight {
     public double getProgress() {
         return progress;
     }
+
+
+    public boolean isInfected() {
+        return isInfected;
+    }
+
+    public void setInfected(boolean infected) {
+        isInfected = infected;
+    }
+
 
 }
