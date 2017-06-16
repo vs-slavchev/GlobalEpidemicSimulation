@@ -288,6 +288,8 @@ public class Main extends Application {
             if (event.getClickCount() == 1) {
                 if (event.getButton() == MouseButton.SECONDARY) {
                     selectCountryOnMap(event);
+                    System.out.println(mapCanvas.getGeoFinder()
+                            .screenToMapCoordinates(event.getX(), event.getY()));
                 } else if (event.getButton() == MouseButton.PRIMARY) {
                     createInfectionPointFromClick(event, primaryStage);
                 }

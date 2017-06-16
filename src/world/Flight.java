@@ -5,6 +5,7 @@ import map.MapCanvas;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.ToDoubleBiFunction;
 
 public class Flight {
@@ -47,7 +48,10 @@ public class Flight {
         if (countryMaybe.isPresent()) {
             country = countryMaybe.get();
             if (country.getPercentageOfInfectedPopulation() > 50){
-                return true;
+                int x = country.getPercentageOfInfectedPopulation() + new Random().nextInt(100);
+                if (x > 150) {
+                    return true;
+                }
             }
         }
         return false;
