@@ -169,7 +169,7 @@ public class MapCanvas implements CountryPercentageListener {
      */
     private double calculatePointRadius(double cityPopulation) {
         double scale = geoFinder.createWorldToScreenAffineTransform().getScaleX();
-        return Math.max(0, 20 - cityPopulation / 1_000_000.0) / 8 + Math.sqrt(cityPopulation / 3_000_000.0) * scale;
+        return Math.max(0, 20 - cityPopulation / 1_000_000.0) / 8 + Math.sqrt(cityPopulation / 3_500_000.0) * scale;
     }
 
     private void drawGraph() {
@@ -180,8 +180,15 @@ public class MapCanvas implements CountryPercentageListener {
         graphics.setFont(new Font(25));
         graphics.fillText("time", 300, canvas.getHeight() - 125);
         graphics.fillText("%", 20, canvas.getHeight() - 380);
-        graphics.strokeLine(50, canvas.getHeight() - 150, 350, canvas.getHeight() - 150);
-        graphics.strokeLine(50, canvas.getHeight() - 150, 50, canvas.getHeight() - 400);
+
+        int leftSide = 50;
+        int bottomSide = (int) (canvas.getHeight() - 150);
+        int width = 300;
+        int height = 250;
+        // horizontal
+        graphics.strokeLine(leftSide, bottomSide, leftSide + width, bottomSide);
+        // vertical
+        graphics.strokeLine(leftSide, bottomSide, leftSide, bottomSide - height);
 
         // draw the lines
         graphics.setStroke(ConstantValues.GRAPH_LINE_COLOR1);
@@ -190,11 +197,16 @@ public class MapCanvas implements CountryPercentageListener {
             int secondOfPair = percentageInfected.get(firstOfPair_i + 1);
 
             graphics.strokeLine(
-                    (firstOfPair_i / (double) percentageInfected.size() * 100.0) * 3 + 50,
-                    canvas.getHeight() - 150 - firstOfPair * 2.5,
-                    ((firstOfPair_i + 1) / (double) percentageInfected.size() * 100.0) * 3 + 50,
-                    canvas.getHeight() - 150 - secondOfPair * 2.5);
+                    firstOfPair_i / (double) percentageInfected.size() * width + leftSide,
+                    bottomSide - firstOfPair * height / 100,
+                    (firstOfPair_i + 1) / (double) percentageInfected.size() * width + leftSide,
+                    bottomSide - secondOfPair * height / 100);
         }
+
+        graphics.setFont(new Font(15));
+        graphics.fillText(percentageInfected.get(percentageInfected.size() - 1) + "%",
+                leftSide + width,
+                bottomSide - percentageInfected.get(percentageInfected.size() - 1) * 2.5);
     }
 
     private void drawFlights() {

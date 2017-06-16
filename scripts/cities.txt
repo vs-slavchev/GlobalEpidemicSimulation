@@ -538,6 +538,7 @@ city#Pernik#82467#42.6#23.03333
 city#Montana#44502#43.407778#23.225
 city#Tryavna#9478#42.866667#25.491944
 city#Vardim#992#43.55#25.466667
+city#Zamfirovo#1260#43.295833#23.242222
 country#Burkina Faso
 city#Ouagadougou#1086505#12.36566#-1.53388
 city#Bobo-Dioulasso#360106#11.17715#-4.2979

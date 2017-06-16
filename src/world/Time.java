@@ -12,7 +12,7 @@ import java.util.Date;
 public class Time implements Serializable {
 
     private final int[] speedValues = {1, 2, 5, 10, 25, 50, 75, 100, 200};
-    private long seconds = 0;
+    private long seconds = -3600;
     private long lastHour = -1;
     private int speedValueIndex = 0;
 
@@ -77,7 +77,7 @@ public class Time implements Serializable {
     @Override
     public String toString() {
         Date date = new Date(seconds * 1000);
-        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss, dd MMMMM");
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss, dd MMMMM");
         // that is how many seconds there are in one year
         return dateFormat.format(date) + String.format(" %02d Years", seconds / 31_536_000);
     }
