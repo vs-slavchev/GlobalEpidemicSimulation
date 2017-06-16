@@ -38,6 +38,10 @@ import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
 
+import static main.ConstantValues.GRAPH_HEIGHT;
+import static main.ConstantValues.GRAPH_WIDTH;
+import static main.ConstantValues.LEFT_SIDE;
+
 /**
  * Owner: Veselin
  * <p>
@@ -58,8 +62,10 @@ public class MapCanvas implements CountryPercentageListener {
     private boolean needsRepaint = true;
     private double dragDistanceX;
     private double dragDistanceY;
+    private final int BOTTOM_SIDE;
 
     private ArrayList<Integer> percentageInfected;
+    private ArrayList<Integer> percentageCured;
     private Country selectedCountry;
 
     public MapCanvas(int width, int height) {
@@ -71,8 +77,12 @@ public class MapCanvas implements CountryPercentageListener {
         initializeEventHandling();
         initPaintThread();
 
+        BOTTOM_SIDE = (int) (canvas.getHeight() - 150);
+
         percentageInfected = new ArrayList<>(100);
         percentageInfected.add(0);
+        percentageCured = new ArrayList<>(100);
+        percentageCured.add(0);
     }
 
     public Node getCanvas() {
@@ -181,32 +191,43 @@ public class MapCanvas implements CountryPercentageListener {
         graphics.fillText("time", 300, canvas.getHeight() - 125);
         graphics.fillText("%", 20, canvas.getHeight() - 380);
 
-        int leftSide = 50;
-        int bottomSide = (int) (canvas.getHeight() - 150);
-        int width = 300;
-        int height = 250;
-        // horizontal
-        graphics.strokeLine(leftSide, bottomSide, leftSide + width, bottomSide);
-        // vertical
-        graphics.strokeLine(leftSide, bottomSide, leftSide, bottomSide - height);
+        // horizontal base
+        graphics.strokeLine(LEFT_SIDE, BOTTOM_SIDE, LEFT_SIDE + GRAPH_WIDTH, BOTTOM_SIDE);
+        // vertical base
+        graphics.strokeLine(LEFT_SIDE, BOTTOM_SIDE, LEFT_SIDE, BOTTOM_SIDE - GRAPH_HEIGHT);
 
-        // draw the lines
+        // draw the actual lines
         graphics.setStroke(ConstantValues.GRAPH_LINE_COLOR1);
-        for (int firstOfPair_i = 0; firstOfPair_i < percentageInfected.size() - 1; firstOfPair_i++) {
-            int firstOfPair = percentageInfected.get(firstOfPair_i);
-            int secondOfPair = percentageInfected.get(firstOfPair_i + 1);
+        drawLineInGraph(percentageInfected);
+        graphics.setStroke(javafx.scene.paint.Color.GREEN);
+        drawLineInGraph(percentageCured);
 
-            graphics.strokeLine(
-                    firstOfPair_i / (double) percentageInfected.size() * width + leftSide,
-                    bottomSide - firstOfPair * height / 100,
-                    (firstOfPair_i + 1) / (double) percentageInfected.size() * width + leftSide,
-                    bottomSide - secondOfPair * height / 100);
-        }
 
         graphics.setFont(new Font(15));
         graphics.fillText(percentageInfected.get(percentageInfected.size() - 1) + "%",
-                leftSide + width,
-                bottomSide - percentageInfected.get(percentageInfected.size() - 1) * 2.5);
+                LEFT_SIDE + GRAPH_WIDTH,
+                BOTTOM_SIDE - percentageInfected.get(percentageInfected.size() - 1) * 2.5);
+    }
+
+    /**
+     * Draw the actual squiggly line with the data points.
+     */
+    private void drawLineInGraph(List<Integer> dataPoints) {
+        for (int firstOfPair_i = 0; firstOfPair_i < dataPoints.size() - 1; firstOfPair_i++) {
+            int firstOfPair = dataPoints.get(firstOfPair_i);
+            int secondOfPair = dataPoints.get(firstOfPair_i + 1);
+
+            graphics.strokeLine(
+                    firstOfPair_i / (double) dataPoints.size() * GRAPH_WIDTH + LEFT_SIDE,
+                    BOTTOM_SIDE - firstOfPair * GRAPH_HEIGHT / 100,
+                    (firstOfPair_i + 1) / (double) dataPoints.size() * GRAPH_WIDTH + LEFT_SIDE,
+                    BOTTOM_SIDE - secondOfPair * GRAPH_HEIGHT / 100);
+        }
+
+        graphics.setFont(new Font(15));
+        graphics.fillText(dataPoints.get(dataPoints.size() - 1) + "%",
+                LEFT_SIDE + GRAPH_WIDTH,
+                BOTTOM_SIDE - dataPoints.get(dataPoints.size() - 1) * 2.5);
     }
 
     private void drawFlights() {
@@ -278,12 +299,20 @@ public class MapCanvas implements CountryPercentageListener {
         }
     }
 
-    public void pushNewPercentageValue(int element) {
-        if (percentageInfected.size() >= 100) {
-            percentageInfected.set(0, element);
-            Collections.rotate(percentageInfected, -1);
+    public void pushNewInfectedPercentageValue(int element) {
+        pushNewPercentageValue(percentageInfected, element);
+    }
+
+    public void pushNewCuredPercentageValue(int element) {
+        pushNewPercentageValue(percentageCured, element);
+    }
+
+    public void pushNewPercentageValue(List<Integer> percentageList, int element) {
+        if (percentageList.size() >= 100) {
+            percentageList.set(0, element);
+            Collections.rotate(percentageList, -1);
         } else {
-            percentageInfected.add(element);
+            percentageList.add(element);
         }
         needsRepaint = true;
     }

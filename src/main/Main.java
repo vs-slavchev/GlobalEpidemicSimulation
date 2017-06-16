@@ -134,7 +134,8 @@ public class Main extends Application {
                                     .InformativeMessage("Please select a disease first!"));
                         } else {
                             infectionSpread.applyAlgorithm(selectedDisease);
-                            mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
+                            mapCanvas.pushNewInfectedPercentageValue(world.calculateWorldTotalInfectedPercentage());
+                            mapCanvas.pushNewCuredPercentageValue(world.calculateWorldTotalCuredPercentage());
                             System.gc();
                         }
                     }
@@ -425,7 +426,6 @@ public class Main extends Application {
                 world = loadedWorld;
                 timer.setText(world.getTime().toString());
                 mapCanvas.setCities(world.getAllCities());
-                mapCanvas.pushNewPercentageValue(world.calculateWorldTotalInfectedPercentage());
                 saveLoadManager.InformativeMessage("Opened!");
                 isClickedOnMapDisease = true;
             }

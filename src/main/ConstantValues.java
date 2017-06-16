@@ -22,6 +22,11 @@ public class ConstantValues {
     public static final String BACK_FORWARD_BUTTON_IMAGE_FILE = "back-forward-button-1";
     public static final String MAP_SHAPE_FILE = "maps/ne_110m_admin_0_countries.shp";
 
+    // graph
+    public static final int LEFT_SIDE = 50;
+    public static final int GRAPH_WIDTH = 300;
+    public static final int GRAPH_HEIGHT = 250;
+
     //theme 1 colors
     public static final Color LINE_COLOR1 = new Color(220, 20, 60);
     public static final Color FILL_COLOR1 = new Color(25, 25, 112);
