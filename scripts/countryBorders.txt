@@ -58,7 +58,7 @@ Bahamas;###
 Bahrain;###
 Bangladesh;###
 India;100
-Myanmar;4,053
+Burma;4,053
 Barbados;###
 Belarus;###
 Latvia;141
@@ -118,7 +118,7 @@ Serbia;318
 Turkey;240
 Burkina Faso;###
 Benin;306
-Côte d'Ivoire;584
+Ivory Coast;584
 Ghana;549
 Mali;1,000
 Niger;628
@@ -309,7 +309,7 @@ Poland;456
 Switzerland;334
 Ghana;###
 Burkina Faso;549
-Côte d'Ivoire;668
+Ivory Coast;668
 Togo;877
 Greece;###
 Albania;282
@@ -323,7 +323,7 @@ El Salvador;203
 Honduras;256
 Mexico;962
 Guinea;###
-Côte d'Ivoire;610
+Ivory Coast;610
 Guinea-Bissau;386
 Liberia;563
 Mali;858
@@ -486,7 +486,7 @@ Maldives;###
 Mali;###
 Algeria;1,376
 Burkina;Faso;1,000
-Côte d'Ivoire;532
+Ivory Coast;532
 Guinea;858
 Mauritania;2,237
 Niger;821
