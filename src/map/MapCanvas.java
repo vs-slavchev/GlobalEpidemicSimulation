@@ -259,7 +259,7 @@ public class MapCanvas implements CountryPercentageListener {
         }
 
         int baseX = (int) (canvas.getWidth() - 400);
-        int baseY = (int) (canvas.getHeight() - 420);
+        int baseY = (int) (canvas.getHeight() - 450);
 
         graphics.setFill(ConstantValues.BOX_COLOR1);
         graphics.fillRoundRect(baseX, baseY, 350, 350, 30, 30);

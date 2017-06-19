@@ -71,7 +71,7 @@ public class MedicineSpread {
     public void medicineAlgorithm() {
         for (Country country : countries) {
             if (country.getInfectedPopulation() != 0
-                    && country.getInfectedPopulation() + country.getCuredPopulation() < country.getTotalPopulation()) {
+                    && country.getInfectedPopulation() + country.getCuredPopulation() <= country.getTotalPopulation()) {
                 double currentVirulence = medicine.getProperties().getVirulence();
                 double pop = medicine.getProperties().getVirulence() * (double) country.getInfectedPopulation();
                 if (pop > country.getInfectedPopulation()) {
