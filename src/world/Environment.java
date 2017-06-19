@@ -10,6 +10,7 @@ public class Environment implements Serializable {
     private float medicalInfrastructure;
     private float humidity;
     private double AvgYearlyTemp;
+    private double currentTemperature;
     private double[] temperatures;
     private float airPollution;
     private float waterPollution;
@@ -49,10 +50,30 @@ public class Environment implements Serializable {
         tempCheck = true;
     }
 
+    public void setTemperaturesbyIndex(int index,double temp) {
+        this.temperatures[index] = temp;
+    }
+
     public String toString() {
         return "medic= " + medicalInfrastructure + ", humidity= " + humidity + ", AVGYearlyTemp= " + AvgYearlyTemp + ", temps= "
                 + AllTemps() + ", airPol= "
                 + airPollution + ", waterPoll= " + waterPollution + ", popDensity= " + populationDensity;
+    }
+
+    public double getTemperatureFromArrayByIntex(int i) {
+        return temperatures[i];
+    }
+
+    public double getCurrentTemperature() {
+        return currentTemperature;
+    }
+
+    public void setCurrentTemperature(double currentTemperature) {
+        this.currentTemperature = currentTemperature;
+    }
+
+    public double[] getTemperatures() {
+        return temperatures;
     }
 
     public float getMedicalInfrastructure() {

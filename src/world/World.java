@@ -23,6 +23,7 @@ public class World implements Serializable {
         countries = DatasetReader.readCountryInfo();
         cleanCities(geoFinder);
         time = new Time();
+        changeMonthsDepentingOnInSimulationTime();
     }
 
     public void cleanCities(GeoFinder geoFinder) {
@@ -51,6 +52,15 @@ public class World implements Serializable {
         return countries.stream()
                 .mapToLong(countryFunction)
                 .sum();
+    }
+    public void changeMonthsDepentingOnInSimulationTime(){
+        for (Country county: countries
+                ) {
+            if(county.getEnvironment().getTemperatures().length>1){
+                county.getEnvironment().setCurrentTemperature(county.getEnvironment()
+                        .getTemperatureFromArrayByIntex(time.getMonthAsInteger()-1));
+            }
+        }
     }
 
     private long getWorldTotalPopulation() {

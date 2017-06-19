@@ -262,7 +262,7 @@ public class MapCanvas implements CountryPercentageListener {
         int baseY = (int) (canvas.getHeight() - 420);
 
         graphics.setFill(ConstantValues.BOX_COLOR1);
-        graphics.fillRoundRect(baseX, baseY, 350, 320, 30, 30);
+        graphics.fillRoundRect(baseX, baseY, 350, 350, 30, 30);
 
 
         graphics.setFill(ConstantValues.BOX_TITLES_COLOR1);
@@ -275,7 +275,8 @@ public class MapCanvas implements CountryPercentageListener {
                 "Population density:",
                 "Infected People",
                 "Cured Population",
-                "Average yearly temperature:"
+                "Average yearly temperature:",
+                "Current temperature:"
         };
 
         String[] contentLines = {
@@ -285,7 +286,8 @@ public class MapCanvas implements CountryPercentageListener {
                 String.valueOf(selectedCountry.getEnvironment().getPopulationDensity()),
                 String.format("%,d", selectedCountry.getInfectedPopulation()),
                 String.format("%,d", selectedCountry.getCuredPopulation()),
-                String.valueOf(selectedCountry.getEnvironment().getAvgYearlyTemp())
+                String.valueOf(selectedCountry.getEnvironment().getAvgYearlyTemp()),
+                String.valueOf(selectedCountry.getEnvironment().getCurrentTemperature())
         };
 
         for (int line_i = 0; line_i < labelLines.length; line_i++) {

@@ -71,7 +71,7 @@ public class DatasetReader {
                 countries.add(
                         new Country(Name, Code, Population, GovernmentForm, 0, 0,
                                 0, 100,
-                                new Environment(PublicHealthExpenditure, 20, 0, new double[1],
+                                new Environment(PublicHealthExpenditure, 20, 0, new double[12],
                                         AirPollution, 20, PopulationDensity)));
             }
         } catch (IOException e) {
@@ -89,7 +89,7 @@ public class DatasetReader {
         String line = "";
         String SplitBy = ", ";
         //array for the avg temps -11 foreach month + the avg for the year
-        double[] monthTemperatures = new double[12];
+//        double[] monthTemperatures = new double[12];
         try (BufferedReader br = new BufferedReader(new FileReader(File))) {
             while ((line = br.readLine()) != null) {
                 // use comma as separator
@@ -100,12 +100,12 @@ public class DatasetReader {
                     if (c.getName().toUpperCase().equals(tempFileData[0].toUpperCase())) {
                         //adding the avg yearly temperature
                         c.getEnvironment().addAvgYearlyTemp(Double.parseDouble(tempFileData[1]));
-                        for (int i = 0; i < 11; i++) {
+                        for (int i = 0; i < 12; i++) {
                             //adding the left temps from Jan- Dec in the monthTemperatures[]
-                            monthTemperatures[i] = Double.parseDouble(tempFileData[i + 2]);
+                            if (i < tempFileData.length-2) {
+                                c.getEnvironment().setTemperaturesbyIndex(i,Double.parseDouble(tempFileData[i + 2]));
+                            }
                         }
-                        //adding the temps
-                        c.getEnvironment().addTemperatures(monthTemperatures);
                     }
                 }
             }

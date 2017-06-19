@@ -176,8 +176,8 @@ public class Main extends Application {
         return new Thread(() -> {
             while (areThreadsRunning) {
                 if (isSimulationRunning) {
-
                     world.getTime().tickTime();
+                    world.changeMonthsDepentingOnInSimulationTime();
                     Platform.runLater(() -> timer.setText(world.getTime().toString()));
                     try {
                         Thread.sleep(world.getTime().calculateTimerSleepTime());
