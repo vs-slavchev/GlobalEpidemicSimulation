@@ -165,7 +165,6 @@ public class DatasetReader {
                     for (Country c : countries) {
                         if (c.getName().toUpperCase().equals(tempNeighbours[0].toUpperCase())) {
                             tempCountry = c;
-                            //System.out.println(c.getName() + " ----" + tempNeighbours[0]);
                             break;
                         }
                     }

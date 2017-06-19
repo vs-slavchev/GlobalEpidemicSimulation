@@ -90,12 +90,6 @@ public class Main extends Application {
         mapCanvas = new MapCanvas((int) bounds.getWidth(), (int) bounds.getHeight());
 
         world = new World(mapCanvas.getGeoFinder());
-        for (Country c: world.getListOfCountries()
-             ) {
-            if(c.getNeighbours().size()<1){
-                System.out.println(c.getName());
-            }
-        }
         mapCanvas.setCountries(world.getListOfCountries());
 
         infectionSpread = new InfectionSpread(world, mapCanvas);
@@ -609,7 +603,6 @@ public class Main extends Application {
                                 Double.parseDouble(preferredTemp.getText()),
                                 Double.parseDouble(tempTolerance.getText()),
                                 virulence.getValue() / 100));
-                System.out.print(virulence.getValue() / 200);
                 infectionSpread.addDisease(disease);
                 addToListBoxes(this.diseaseListBox, this.medicineListBox);
                 setPointers(diseaseListBox, medicineListBox, primaryStage);

@@ -81,15 +81,11 @@ public class World implements Serializable {
 
 
     public int calculateWorldTotalInfectedPercentage() {
-        return (int) (
-                (float) getWorldTotalInfectedPopulation() / (float) getWorldTotalPopulation()
-                        * 100);
+        return Math.round((float) getWorldTotalInfectedPopulation() / (float) getWorldTotalPopulation() * 100);
     }
 
     public int calculateWorldTotalCuredPercentage() {
-        return (int) (
-                (float) getWorldTotalCuredPopulation() / (float) getWorldTotalPopulation()
-                        * 100);
+        return Math.round((float) getWorldTotalCuredPopulation() / (float) getWorldTotalPopulation() * 100);
     }
 
     public Time getTime() {

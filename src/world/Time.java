@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class Time implements Serializable {
 
-    private final int[] speedValues = {1, 2, 5, 10, 25, 50, 75, 100, 200};
+    private final int[] speedValues = {1, 2, 5, 10, 25, 50, 75, 100, 200, 1000};
     private long seconds = -3600;
     private long lastHour = -1;
     private int speedValueIndex = 0;
