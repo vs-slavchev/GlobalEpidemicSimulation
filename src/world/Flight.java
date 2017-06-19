@@ -2,11 +2,9 @@ package world;
 
 import map.MapCanvas;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Optional;
 import java.util.Random;
-import java.util.function.ToDoubleBiFunction;
 
 public class Flight {
     private final double singleStep;
@@ -39,35 +37,30 @@ public class Flight {
 
         // take off
         updateCurrentLocation(1);
-        setInfected(infectedFlight());
+        setInfected(infectFlight());
     }
 
-    public boolean infectedFlight(){
+    public boolean infectFlight() {
         String selectedCode = mapCanvas.getGeoFinder().getCountryCodeFromMapCoordinates(departure.getX(), departure.getY());
         Optional<Country> countryMaybe = world.getCountryByCode(selectedCode);
         if (countryMaybe.isPresent()) {
             country = countryMaybe.get();
-            if (country.getPercentageOfInfectedPopulation() > 50){
-                int x = country.getPercentageOfInfectedPopulation() + new Random().nextInt(100);
-                if (x > 150) {
-                    return true;
-                }
-            }
+            return country.getPercentageOfInfectedPopulation() >= new Random().nextInt(101);
         }
+
         return false;
     }
 
-    public void infectDestination(){
+    public void infectDestination() {
         String selectedCode = mapCanvas.getGeoFinder().getCountryCodeFromMapCoordinates(destination.getX(), destination.getY());
         Optional<Country> countryMaybe = world.getCountryByCode(selectedCode);
         if (countryMaybe.isPresent()) {
             countryDestination = countryMaybe.get();
-            if (isLanded() && isInfected())
-                {
-                    if (countryDestination.getInfectedPopulation() == 0) {
-                        countryDestination.setInfectedPopulation(1);
-                    }
+            if (isLanded() && isInfected()) {
+                if (countryDestination.getInfectedPopulation() == 0) {
+                    countryDestination.setInfectedPopulation(1);
                 }
+            }
         }
     }
 
