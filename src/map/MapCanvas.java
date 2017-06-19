@@ -1,6 +1,5 @@
 package map;
 
-import interfaces.CountryPercentageListener;
 import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
@@ -48,7 +47,7 @@ import static main.ConstantValues.LEFT_SIDE;
  * Initializes and draws the map. Has event handlers strictly related to the map only.
  */
 
-public class MapCanvas implements CountryPercentageListener {
+public class MapCanvas {
 
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
@@ -253,6 +252,9 @@ public class MapCanvas implements CountryPercentageListener {
         }
     }
 
+    /**
+     * Draw the box in lower right with the country information.
+     */
     private void drawSelectedCountryInformation() {
         if (selectedCountry == null) {
             return;
@@ -300,14 +302,11 @@ public class MapCanvas implements CountryPercentageListener {
         }
     }
 
-    public void pushNewInfectedPercentageValue(int element) {
-        pushNewPercentageValue(percentageInfected, element);
-    }
-
-    public void pushNewCuredPercentageValue(int element) {
-        pushNewPercentageValue(percentageCured, element);
-    }
-
+    /**
+     * A percentage value is pushed to the argument list.
+     * @param percentageList the list to push to
+     * @param element the value to push in
+     */
     public void pushNewPercentageValue(List<Integer> percentageList, int element) {
         if (percentageList.size() >= 100) {
             percentageList.set(0, element);
@@ -316,6 +315,14 @@ public class MapCanvas implements CountryPercentageListener {
             percentageList.add(element);
         }
         needsRepaint = true;
+    }
+
+    public void pushNewInfectedPercentageValue(int element) {
+        pushNewPercentageValue(percentageInfected, element);
+    }
+
+    public void pushNewCuredPercentageValue(int element) {
+        pushNewPercentageValue(percentageCured, element);
     }
 
     private void setNeedsRepaint() {
@@ -435,13 +442,6 @@ public class MapCanvas implements CountryPercentageListener {
         selectStyleChange(x, y);
         setNeedsRepaint();
         selectedCountry = country;
-    }
-
-    @Override
-    public void CountryReachedBreakPoint(double x, double y) {
-//        PercentageStyleChange(x, y);
-        //System.out.print(geoFinder.getCountryCodeFromMapCoordinates(x, y) + " reached 50% infected population \n");
-        setNeedsRepaint();
     }
 
     public void setFlights(List<Flight> flights) {

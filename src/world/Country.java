@@ -1,8 +1,6 @@
 package world;
 
 
-import interfaces.CountryPercentageListener;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,6 @@ public class Country implements Serializable {
     private long migrationRate;
     private Environment environment;
     private List<Country> neighbours;
-    private List<CountryPercentageListener> listeners; // reference to mapCanvas instance, not serializable
     private List<City> cities;
 
     public Country(String countryName, String code, long Population,
@@ -39,7 +36,6 @@ public class Country implements Serializable {
         this.migrationRate = rateOfMigration;
         this.environment = environment;
         neighbours = new ArrayList<>();
-        listeners = new ArrayList<>();
         cities = new ArrayList<>();
     }
 
@@ -100,12 +96,6 @@ public class Country implements Serializable {
     public void infectPopulation(int number) {
         this.infectedPopulation += number;
         infectedPopulation = Math.min(infectedPopulation, population);
-
-        if (getPercentageOfInfectedPopulation() >= 50 && getPercentageOfInfectedPopulation() <= 80) {
-            for (CountryPercentageListener listener : listeners) {
-                listener.CountryReachedBreakPoint(52.12, 54.12);
-            }
-        }
     }
 
     public void infectNeighbours() {
@@ -138,10 +128,6 @@ public class Country implements Serializable {
 
     public void setCities(List<City> cities) {
         this.cities = cities;
-    }
-
-    public void addListeners(CountryPercentageListener listener) {
-        listeners.add(listener);
     }
 
     @Override
