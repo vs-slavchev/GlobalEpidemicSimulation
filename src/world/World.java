@@ -4,7 +4,6 @@ import files.DatasetReader;
 import map.GeoFinder;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -23,7 +22,7 @@ public class World implements Serializable {
         countries = DatasetReader.readCountryInfo();
         cleanCities(geoFinder);
         time = new Time();
-        changeMonthsDepentingOnInSimulationTime();
+        changeMonthsDependingOnInSimulationTime();
     }
 
     public void cleanCities(GeoFinder geoFinder) {
@@ -42,23 +41,17 @@ public class World implements Serializable {
         return getFirstCountry(country -> country.getCode().equals(code));
     }
 
-    public ArrayList<City> getAllCities() {
-        ArrayList<City> cities = new ArrayList<>();
-        countries.forEach(country -> cities.addAll(country.getCities()));
-        return cities;
-    }
-
     private long sumPopulationFrom(ToLongFunction<Country> countryFunction) {
         return countries.stream()
                 .mapToLong(countryFunction)
                 .sum();
     }
-    public void changeMonthsDepentingOnInSimulationTime(){
-        for (Country county: countries
-                ) {
-            if(county.getEnvironment().getTemperatures().length>1){
+
+    public void changeMonthsDependingOnInSimulationTime() {
+        for (Country county : countries) {
+            if (county.getEnvironment().getTemperatures().length > 1) {
                 county.getEnvironment().setCurrentTemperature(county.getEnvironment()
-                        .getTemperatureFromArrayByIntex(time.getMonthAsInteger()-1));
+                        .getTemperatureFromArrayByIntex(time.getMonthAsInteger() - 1));
             }
         }
     }

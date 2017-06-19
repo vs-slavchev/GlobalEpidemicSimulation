@@ -22,10 +22,16 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Owner: Veselin
+ *
+ * Responsible for the math behind the map, converting between screen and map points,
+ * getting the geographical collections and removing misplaced cities.
  */
 
 public class GeoFinder {

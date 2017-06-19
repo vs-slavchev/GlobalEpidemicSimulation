@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Owner: Yasen
  */
+
 public class Country implements Serializable {
 
     private String name;
@@ -43,10 +44,6 @@ public class Country implements Serializable {
         return population;
     }
 
-    public List<Country> getNeighbours() {
-        return neighbours;
-    }
-
     public void setNeighbours(Country country) {
         neighbours.add(country);
     }
@@ -71,21 +68,13 @@ public class Country implements Serializable {
         return curedPopulation;
     }
 
-    public void setCuredPopulation(long number) {
-        this.curedPopulation = number;
-    }
-
     public void addCuredPopulation(long number) {
         this.curedPopulation += number;
     }
 
-    public long gethealthyPopulation() {
-        return this.population - this.infectedPopulation;
-    }
-
     public int getPercentageOfInfectedPopulation() {
         int percentage;
-        try{
+        try {
             percentage = Math.round(this.infectedPopulation * 100 / this.population);
         } catch (ArithmeticException ae) {
             percentage = 0;
