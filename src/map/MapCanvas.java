@@ -201,8 +201,7 @@ public class MapCanvas implements CountryPercentageListener {
         // draw the actual lines
         graphics.setStroke(ConstantValues.GRAPH_LINE_COLOR1);
         drawLineInGraph(percentageInfected);
-        graphics.setStroke(javafx.scene.paint.Color.GREEN);
-        graphics.setFill(javafx.scene.paint.Color.GREEN);
+        graphics.setStroke(ConstantValues.GRAPH_LINE_COLOR2);
         drawLineInGraph(percentageCured);
     }
 
@@ -261,10 +260,11 @@ public class MapCanvas implements CountryPercentageListener {
         int baseY = (int) (canvas.getHeight() - 420);
 
         graphics.setFill(ConstantValues.BOX_COLOR1);
-        graphics.fillRect(baseX, baseY, 350, 320);
+        graphics.fillRoundRect(baseX, baseY, 350, 320, 30, 30);
+
 
         graphics.setFill(ConstantValues.BOX_TITLES_COLOR1);
-        graphics.setFont(new Font(15));
+        graphics.setFont(new Font(17));
 
         String[] labelLines = {
                 "Name:",
