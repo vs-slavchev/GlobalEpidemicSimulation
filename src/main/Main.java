@@ -64,6 +64,7 @@ public class Main extends Application {
     private Button pause;
     private Button fastForward;
     private Button backForward;
+    private boolean isSaved;
 
     private boolean isClickedOnMapDisease;
     private boolean isClickedOnMapMedicine;
@@ -115,6 +116,7 @@ public class Main extends Application {
 
         // start the threads
         areThreadsRunning = true;
+        isSaved = false;
         createAlgorithmThread().start();
         createMedicineThread().start();
         startTimer().start();
@@ -130,6 +132,7 @@ public class Main extends Application {
                             Platform.runLater(() -> saveLoadManager
                                     .InformativeMessage("Please select a disease first!"));
                         } else {
+                            isSaved = false;
                             infectionSpread.applyAlgorithm(selectedDisease);
                             mapCanvas.pushNewInfectedPercentageValue(world.calculateWorldTotalInfectedPercentage());
                             mapCanvas.pushNewCuredPercentageValue(world.calculateWorldTotalCuredPercentage());
@@ -155,6 +158,7 @@ public class Main extends Application {
                             Platform.runLater(() -> saveLoadManager
                                     .InformativeMessage("Please select a medicine first!"));
                         } else {
+                            isSaved = false;
                             medicineSpread.medicineAlgorithm();
                         }
                     }
@@ -237,6 +241,7 @@ public class Main extends Application {
         pause.setVisible(true);
         isSimulationRunning = true;
         didSimulationAlreadyStart = true;
+        isSaved = false;
         updateTimeSpeedLabel();
         addToListBoxes(diseaseListBox, medicineListBox);
         setPointers(diseaseListBox, medicineListBox, primaryStage);
@@ -430,8 +435,14 @@ public class Main extends Application {
                 isClickedOnMapDisease = true;
             }
         });
-        saveSimulation.setOnAction(event -> saveLoadManager.saveFile(primaryStage, world));
-        saveSimulationAs.setOnAction(event -> saveLoadManager.saveFileAs(primaryStage, world));
+        saveSimulation.setOnAction(event -> {
+            saveLoadManager.saveFile(primaryStage, world);
+            isSaved = true;
+        });
+        saveSimulationAs.setOnAction(event -> {
+            saveLoadManager.saveFileAs(primaryStage, world);
+            isSaved = true;
+        });
 
         // assign action handlers to the items in the file menu
         setUpButtons(fileMenuButton, primaryStage);
@@ -466,20 +477,22 @@ public class Main extends Application {
 
     private void closeApplication(Stage primaryStage, WindowEvent event) {
         if (didSimulationAlreadyStart) {
-            WindowDialog newSimulationDialog = new WindowDialog();
-            newSimulationDialog.showAndWait();
-            if (newSimulationDialog.isYes()) {
-                finishThreads();
-                System.exit(0);
-            } else if (newSimulationDialog.isSaveAndExit()) {
-                saveLoadManager.saveFile(primaryStage, world);
-                finishThreads();
-                System.exit(0);
+            if (!isSaved) {
+                WindowDialog newSimulationDialog = new WindowDialog();
+                newSimulationDialog.showAndWait();
+                if (newSimulationDialog.isYes()) {
+                    finishThreads();
+                    System.exit(0);
+                } else if (newSimulationDialog.isSaveAndExit()) {
+                    saveLoadManager.saveFile(primaryStage, world);
+                    finishThreads();
+                    System.exit(0);
+                }
+                event.consume();
             }
-            event.consume();
+            finishThreads();
+            System.exit(0);
         }
-        finishThreads();
-        System.exit(0);
     }
 
     private void updateSpeedBackwardForwardButtons() {
