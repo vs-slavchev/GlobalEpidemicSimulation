@@ -55,7 +55,7 @@ public class MapCanvas implements CountryPercentageListener {
     private Canvas canvas;
     private MapContent map;
     private GraphicsContext graphics;
-    private ArrayList<City> cities;
+    private List<Country> countries;
     private GeoFinder geoFinder;
     private StyleManager styleManager;
     private List<Flight> flights;
@@ -133,39 +133,41 @@ public class MapCanvas implements CountryPercentageListener {
 
         graphics.setFill(ConstantValues.POINTS_COLOR1);
 
-        drawCities(graphics, cities);
+        for (Country country : countries) {
+            drawCities(country.getCities());
+        }
         if (selectedCountry != null) {
             //changes the color of the points in a selected country
             graphics.setFill(ConstantValues.SELECTED_COUNTRY_POINTS_COLOR1);
-            drawCities(graphics, selectedCountry.getCities());
+            drawCities(selectedCountry.getCities());
         }
     }
 
-    private void drawCities(GraphicsContext gc, List<City> citiesToDraw) {
+    private void drawCities(List<City> citiesToDraw) {
         graphics.setTextAlign(TextAlignment.CENTER);
         graphics.setTextBaseline(VPos.CENTER);
-        gc.setFont(new Font(25));
-        gc.setStroke(javafx.scene.paint.Color.CYAN);
+        graphics.setFont(new Font(25));
+        graphics.setStroke(javafx.scene.paint.Color.CYAN);
         for (City city : citiesToDraw) {
             Point2D screenCity = geoFinder.mapToScreenCoordinates(
                     city.getLatitude(), city.getLongitude());
 
             int radius = (int) calculatePointRadius(city.getPopulation());
-            gc.fillOval(screenCity.getX() - radius / 2, screenCity.getY() - radius / 2,
+            graphics.fillOval(screenCity.getX() - radius / 2, screenCity.getY() - radius / 2,
                     radius, radius);
 
             // draw extra circle for capitals
             if (city.isCapital()) {
                 double circleWidth = geoFinder.createWorldToScreenAffineTransform().getScaleX() / 15;
-                gc.setLineWidth(circleWidth);
+                graphics.setLineWidth(circleWidth);
                 radius = radius + (int)Math.ceil(circleWidth * 5);
-                gc.strokeOval(screenCity.getX() - radius / 2,
+                graphics.strokeOval(screenCity.getX() - radius / 2,
                         screenCity.getY() - radius / 2,
                         radius, radius);
             }
 
             if (geoFinder.createWorldToScreenAffineTransform().getScaleX() > 50) {
-                gc.fillText(city.getName(), screenCity.getX(),
+                graphics.fillText(city.getName(), screenCity.getX(),
                         screenCity.getY() + radius / 2 + 10);
             }
         }
@@ -200,13 +202,8 @@ public class MapCanvas implements CountryPercentageListener {
         graphics.setStroke(ConstantValues.GRAPH_LINE_COLOR1);
         drawLineInGraph(percentageInfected);
         graphics.setStroke(javafx.scene.paint.Color.GREEN);
+        graphics.setFill(javafx.scene.paint.Color.GREEN);
         drawLineInGraph(percentageCured);
-
-
-        graphics.setFont(new Font(15));
-        graphics.fillText(percentageInfected.get(percentageInfected.size() - 1) + "%",
-                LEFT_SIDE + GRAPH_WIDTH,
-                BOTTOM_SIDE - percentageInfected.get(percentageInfected.size() - 1) * 2.5);
     }
 
     /**
@@ -422,8 +419,8 @@ public class MapCanvas implements CountryPercentageListener {
         return geoFinder;
     }
 
-    public void setCities(final ArrayList<City> citiesToAdd) {
-        this.cities = geoFinder.removeOverlappingCities(geoFinder.removeCitiesInWater(citiesToAdd));
+    public void setCountries(final List<Country> countriesToAdd) {
+        this.countries = countriesToAdd;
     }
 
     public void selectCountry(double x, double y, Country country) {

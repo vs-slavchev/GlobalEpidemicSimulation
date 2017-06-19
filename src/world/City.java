@@ -36,8 +36,8 @@ public class City implements Serializable {
         return longitude;
     }
 
-    public void setIsCapital(boolean capital) {
-        isCapital = capital;
+    public void setIsCapital() {
+        isCapital = true;
     }
 
     public boolean isCapital() {

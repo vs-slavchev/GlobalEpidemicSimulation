@@ -104,8 +104,8 @@ public class Country implements Serializable {
 
     public void infectNeighbours() {
         int next = ThreadLocalRandom.current().nextInt(0, 101);
-        boolean Spread = next < this.getPercentageOfInfectedPopulation();
-        if (Spread) {
+        boolean spread = next < this.getPercentageOfInfectedPopulation();
+        if (spread) {
             int randomNum = ThreadLocalRandom.current().nextInt(0, this.neighbours.size() + 1);
             for (Country country : this.neighbours) {
                 if (randomNum < 2)
@@ -121,13 +121,17 @@ public class Country implements Serializable {
     public void addCity(final City city) {
         // the capital is the first city to be added
         if (cities.isEmpty()) {
-            city.setIsCapital(true);
+            city.setIsCapital();
         }
         cities.add(city);
     }
 
     public List<City> getCities() {
         return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
     }
 
     public void addListeners(CountryPercentageListener listener) {

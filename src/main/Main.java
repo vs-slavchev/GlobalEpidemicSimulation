@@ -85,11 +85,12 @@ public class Main extends Application {
         root.setMinWidth(640);
         root.setMinHeight(480);
 
-        world = new World();
-
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         mapCanvas = new MapCanvas((int) bounds.getWidth(), (int) bounds.getHeight());
-        mapCanvas.setCities(world.getAllCities());
+
+        world = new World(mapCanvas.getGeoFinder());
+
+        mapCanvas.setCountries(world.getListOfCountries());
 
         infectionSpread = new InfectionSpread(world, mapCanvas);
         medicineSpread = new MedicineSpread();
@@ -425,7 +426,7 @@ public class Main extends Application {
             if (loadedWorld != null) {
                 world = loadedWorld;
                 timer.setText(world.getTime().toString());
-                mapCanvas.setCities(world.getAllCities());
+                mapCanvas.setCountries(world.getListOfCountries());
                 saveLoadManager.InformativeMessage("Opened!");
                 isClickedOnMapDisease = true;
             }

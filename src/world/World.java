@@ -1,6 +1,7 @@
 package world;
 
 import files.DatasetReader;
+import map.GeoFinder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,9 +19,16 @@ public class World implements Serializable {
     private List<Country> countries;
     private Time time;
 
-    public World() {
+    public World(GeoFinder geoFinder) {
         countries = DatasetReader.readCountryInfo();
+        cleanCities(geoFinder);
         time = new Time();
+    }
+
+    public void cleanCities(GeoFinder geoFinder) {
+        for (Country country : countries) {
+            country.setCities(geoFinder.removeCitiesInWater(geoFinder.removeOverlappingCities(country.getCities())));
+        }
     }
 
     private Optional<Country> getFirstCountry(Predicate<Country> countryPredicate) {
