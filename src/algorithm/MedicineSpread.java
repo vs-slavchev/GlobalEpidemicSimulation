@@ -8,6 +8,7 @@ import world.Country;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Owner: Kaloyan
@@ -72,14 +73,12 @@ public class MedicineSpread {
         for (Country country : countries) {
             if (country.getInfectedPopulation() != 0
                     && country.getInfectedPopulation() + country.getCuredPopulation() <= country.getTotalPopulation()) {
-                double currentVirulence = medicine.getProperties().getVirulence();
-                double pop = medicine.getProperties().getVirulence() * (double) country.getInfectedPopulation();
-                if (pop > country.getInfectedPopulation()) {
-                    pop = country.getInfectedPopulation();
-                }
-                country.addCuredPopulation((long) pop);
-                country.setInfectedPopulation(country.getInfectedPopulation() - (long) pop);
-                medicine.getProperties().setVirulence(currentVirulence + 0.02);
+                //double currentVirulence = medicine.getProperties().getVirulence();
+                double peopleToBeCured = medicine.getProperties().getVirulence() * (double) country.getInfectedPopulation();
+                peopleToBeCured = Math.max(peopleToBeCured, 1);
+                country.addCuredPopulation((long) peopleToBeCured);
+                country.setInfectedPopulation(country.getInfectedPopulation() - (long) peopleToBeCured);
+                //medicine.getProperties().setVirulence(currentVirulence + 0.02);
             }
         }
         /*if(disease.getType()==medicine.getTargetedTypesType()){
