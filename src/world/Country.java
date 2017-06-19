@@ -95,7 +95,7 @@ public class Country implements Serializable {
 
     public void infectPopulation(int number) {
         this.infectedPopulation += number;
-        infectedPopulation = Math.min(infectedPopulation, population);
+        infectedPopulation = Math.min(infectedPopulation, population - curedPopulation);
     }
 
     public void infectNeighbours() {
