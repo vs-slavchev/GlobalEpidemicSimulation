@@ -206,6 +206,9 @@ public class Main extends Application {
 
     private void finishThreads() {
         areThreadsRunning = false;
+        isSimulationRunning = false;
+        isClickedOnMapDisease = false;
+        isClickedOnMapMedicine = false;
     }
 
     /**
