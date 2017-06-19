@@ -83,8 +83,7 @@ public class InfectionSpread {
 
         double dTolerance = disease.getProperties().getTemperatureTolerance();
         double dTemp = disease.getProperties().getPreferredTemperature();
-        double countryTemperature = country.getEnvironment().getAvgYearlyTemp();
-
+        double countryTemperature = country.getEnvironment().getCurrentTemperature();
         if (country.getInfectedPopulation() == country.getTotalPopulation()) {
             return false;
         }
