@@ -75,6 +75,7 @@ public class ConstantValues {
             new Point2D.Double(175.125, -38.51730769230771), // New Zealand
             new Point2D.Double(9.75, 61.07836538461537), // Norway
             new Point2D.Double(80.0625, 7.92253384615384), // Sri Lanka
+            new Point2D.Double(120.5625, 15.534615384615364) // Philippines
     };
 
     public static Point2D getRandomAirportCoordinates() {
