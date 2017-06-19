@@ -28,7 +28,7 @@ import static map.MapCanvas.styleFactory;
 class StyleManager {
 
     private static final Color SELECTED_COLOUR = ConstantValues.SELECTED_COUNTRY_COLOR1;
-    private static final Color SELECTED_LINE_COLOUR = ConstantValues.SELECTED_COUNTRY_LINE_COLOR1;
+    private static final Color SELECTED_LINE_COLOUR = ConstantValues.LINE_COLOR1;
     private static final float OPACITY = 0.1f;
     private static final float LINE_WIDTH = 1.0f;
 
