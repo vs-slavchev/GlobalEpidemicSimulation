@@ -90,7 +90,12 @@ public class Main extends Application {
         mapCanvas = new MapCanvas((int) bounds.getWidth(), (int) bounds.getHeight());
 
         world = new World(mapCanvas.getGeoFinder());
-
+        for (Country c: world.getListOfCountries()
+             ) {
+            if(c.getNeighbours().size()<1){
+                System.out.println(c.getName());
+            }
+        }
         mapCanvas.setCountries(world.getListOfCountries());
 
         infectionSpread = new InfectionSpread(world, mapCanvas);

@@ -27,6 +27,9 @@ Republic of the Congo;201
 Namibia;1,376
 Zambia;1,110
 Antigua and Barbuda;###
+Anguilla;100
+Anguilla;###
+Antigua and Barbuda;100
 Argentina;###
 Bolivia;832
 Brazil;1,224
@@ -39,6 +42,7 @@ Georgia;164
 Iran;35
 Turkey;268
 Australia;###
+American Samoa;100
 Austria;###
 Czech Republic;362
 Germany;784
@@ -159,6 +163,8 @@ Chile;###
 Argentina;5,300
 Bolivia;861
 Peru;160
+Taiwan;##
+China;100
 China;###
 Taiwan;100
 Afghanistan;76
@@ -167,7 +173,7 @@ Hong Kong;30
 PR China;3,380
 India;1,533
 Kazakhstan;1,416
-North;Korea;858
+North Korea;858
 Kyrgyzstan;423
 Laos;0
 Macau;4,677
@@ -216,7 +222,10 @@ Montenegro;25
 Serbia;241
 Slovenia;670
 Cuba;###
-Puerto Rico;1
+Puerto Rico;100
+Puerto Rico;###
+Dominica;100
+Anguilla;100
 Cyprus;###
 Czech Republic;###
 Austria;362
@@ -648,7 +657,7 @@ Uganda;169
 Saint Kitts and Nevis;###
 Saint Lucia;###
 Saint Vincent and the Grenadines;###
-Samoa;###
+American Samoa;###
 San Marino;###
 Italy;39
 São Tomé and Príncipe;###
@@ -811,6 +820,7 @@ Oman;410
 Qatar;19
 Saudi Arabia;457
 United Kingdom;###
+Isle of Man;123
 Ireland;499
 United Kingdom;###
 Cyprus;152
@@ -836,6 +846,7 @@ Trinidad and Tobago;1
 Brazil;2,200
 Colombia;2,050
 Guyana;743
+Aruba;100
 Vietnam;###
 Cambodia;1,228
 China;1,281

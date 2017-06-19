@@ -78,12 +78,13 @@ public class ConstantValues {
             new Point2D.Double(120.5625, 15.534615384615364), // Philippines
             new Point2D.Double(-82.4122529,22.991533),//José Martí International Airport, Havana, Cuba
             new Point2D.Double(-71.3643645,19.3759666),//Cibao International Airport,Domenican Republic
-            new Point2D.Double(66.5654161,-18.0108965),//Mercedita Airport Poerto Rico
+            new Point2D.Double(-18.0108965,66.5654161),//Mercedita Airport Poerto Rico
             new Point2D.Double(-77.9269551,18.5004657),//Sangster International Airport, Montego Bay, St. James Parish, Jamaica
             new Point2D.Double(-78.8579463,26.5501849),//Grand Bahama International Airport, Freeport, The Bahamas
             new Point2D.Double(-21.9499937,64.154837),//Airport Direct, Fiskislóð, Reykjavík, Iceland
             new Point2D.Double(-50.7140483,67.0098926),//Kangerlussuaq Airport, Greenland
-            new Point2D.Double(121.2320283,25.0796514)//Taiwan
+            new Point2D.Double(120.84851681744593, 23.35999201509931),//Taiwan
+            new Point2D.Double(177.86808396925892, -17.943455920598176)//Fiji
     };
 
     public static Point2D getRandomAirportCoordinates() {
