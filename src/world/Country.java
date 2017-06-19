@@ -88,7 +88,13 @@ public class Country implements Serializable {
     }
 
     public int getPercentageOfInfectedPopulation() {
-        return Math.round(this.infectedPopulation * 100 / this.population);
+        int percentage;
+        try{
+            percentage = Math.round(this.infectedPopulation * 100 / this.population);
+        } catch (ArithmeticException ae) {
+            percentage = 0;
+        }
+        return percentage;
     }
 
     public void infectPopulation(int number) {

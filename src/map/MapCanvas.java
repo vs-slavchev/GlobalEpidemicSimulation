@@ -131,9 +131,11 @@ public class MapCanvas implements CountryPercentageListener {
         Rectangle rectangle = new Rectangle((int) canvas.getWidth(), (int) canvas.getHeight());
         draw.paint(fxGraphics2D, rectangle, map.getViewport().getBounds());
 
-        graphics.setFill(ConstantValues.POINTS_COLOR1);
-
         for (Country country : countries) {
+            int toSubtractFromGreen = (int) Math.round(country.getPercentageOfInfectedPopulation() * 2.35);
+            int toSubtractFromBlue = (int) Math.round(country.getPercentageOfInfectedPopulation() * 1.95);
+            graphics.setFill(javafx.scene.paint.Color.rgb(
+                    220, 255 - toSubtractFromGreen, 255 - toSubtractFromBlue, 1));
             drawCities(country.getCities());
         }
         if (selectedCountry != null) {
