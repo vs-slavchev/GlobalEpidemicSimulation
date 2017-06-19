@@ -489,9 +489,10 @@ public class Main extends Application {
                     System.exit(0);
                 }
                 event.consume();
+            } else {
+                finishThreads();
+                System.exit(0);
             }
-            finishThreads();
-            System.exit(0);
         }
     }
 
