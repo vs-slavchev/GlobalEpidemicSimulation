@@ -31,17 +31,17 @@ public class ConstantValues {
     public static final Paint GRAPH_STROKE_COLOR1 = javafx.scene.paint.Color.rgb(220, 20, 60, 1);
     public static final Paint GRAPH_TEXT_COLOR1 = javafx.scene.paint.Color.rgb(25, 25, 112, 1);
     public static final Paint BOX_COLOR1 = javafx.scene.paint.Color.rgb(220, 20, 60, 0.9);
-    public static final Paint BOX_TITLES_COLOR1 = javafx.scene.paint.Color.rgb(255,255,100, 1);
-    public static final Paint BOX_INFO_COLOR1 = javafx.scene.paint.Color.rgb(200,255,255, 1);
+    public static final Paint BOX_TITLES_COLOR1 = javafx.scene.paint.Color.rgb(255, 255, 100, 1);
+    public static final Paint BOX_INFO_COLOR1 = javafx.scene.paint.Color.rgb(200, 255, 255, 1);
     public static final Paint PLANE_LINE1 = javafx.scene.paint.Color.rgb(255, 255, 255, 0.05);
     public static final Color LINE_COLOR1 = new Color(0, 128, 128);
-    public static final Color FILL_COLOR1 = new Color(154,205,50);
-    public static final Color SEA_COLOR1 = new Color(30,144,255);
+    public static final Color FILL_COLOR1 = new Color(154, 205, 50);
+    public static final Color SEA_COLOR1 = new Color(30, 144, 255);
     public static final Paint POINTS_COLOR1 = javafx.scene.paint.Color.rgb(255, 255, 255, 1);
-    public static final Color SELECTED_COUNTRY_COLOR1 = new Color(240,255,240);
+    public static final Color SELECTED_COUNTRY_COLOR1 = new Color(240, 255, 240);
     public static final Paint SELECTED_COUNTRY_POINTS_COLOR1 = javafx.scene.paint.Color.rgb(0, 128, 128, 0.8);
-    public static final Paint GRAPH_LINE_COLOR1 = javafx.scene.paint.Color.rgb(0,0,255, 0.8);
-    public static final Paint GRAPH_LINE_COLOR2 = javafx.scene.paint.Color.rgb(0,255,0, 0.8);
+    public static final Paint GRAPH_LINE_COLOR1 = javafx.scene.paint.Color.rgb(0, 0, 255, 0.8);
+    public static final Paint GRAPH_LINE_COLOR2 = javafx.scene.paint.Color.rgb(0, 255, 0, 0.8);
 
     private static final Point2D.Double[] AIRPORTS = {
             new Point2D.Double(-83.6951559140206, 33.030313668662004), // Hartsfield–Jackson Atlanta International
@@ -66,12 +66,12 @@ public class ConstantValues {
             new Point2D.Double(9.75, 61.07836538461537), // Norway
             new Point2D.Double(80.0625, 7.92253384615384), // Sri Lanka
             new Point2D.Double(120.5625, 15.534615384615364), // Philippines
-            new Point2D.Double(-82.4122529,22.991533),//José Martí International Airport, Havana, Cuba
-            new Point2D.Double(-71.3643645,19.3759666),//Cibao International Airport,Domenican Republic
-            new Point2D.Double(-77.9269551,18.5004657),//Sangster International Airport, Montego Bay, St. James Parish, Jamaica
-            new Point2D.Double(-78.8579463,26.5501849),//Grand Bahama International Airport, Freeport, The Bahamas
-            new Point2D.Double(-21.9499937,64.154837),//Airport Direct, Fiskislóð, Reykjavík, Iceland
-            new Point2D.Double(-50.7140483,67.0098926),//Kangerlussuaq Airport, Greenland
+            new Point2D.Double(-82.4122529, 22.991533),//José Martí International Airport, Havana, Cuba
+            new Point2D.Double(-71.3643645, 19.3759666),//Cibao International Airport,Domenican Republic
+            new Point2D.Double(-77.9269551, 18.5004657),//Sangster International Airport, Montego Bay, St. James Parish, Jamaica
+            new Point2D.Double(-78.8579463, 26.5501849),//Grand Bahama International Airport, Freeport, The Bahamas
+            new Point2D.Double(-21.9499937, 64.154837),//Airport Direct, Fiskislóð, Reykjavík, Iceland
+            new Point2D.Double(-50.7140483, 67.0098926),//Kangerlussuaq Airport, Greenland
             new Point2D.Double(120.84851681744593, 23.35999201509931),//Taiwan
             new Point2D.Double(177.86808396925892, -17.943455920598176)//Fiji
     };

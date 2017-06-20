@@ -73,11 +73,13 @@ public class Time implements Serializable {
     public boolean isAtMinSpeed() {
         return speedValueIndex == 0;
     }
-    public int getMonthAsInteger(){
+
+    public int getMonthAsInteger() {
         Date date = new Date(seconds * 1000);
         DateFormat dateFormat = new SimpleDateFormat("MM");
         return Integer.parseInt(dateFormat.format(date));
     }
+
     @Override
     public String toString() {
         Date date = new Date(seconds * 1000);

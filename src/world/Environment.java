@@ -50,7 +50,7 @@ public class Environment implements Serializable {
         tempCheck = true;
     }
 
-    public void setTemperaturesbyIndex(int index,double temp) {
+    public void setTemperaturesbyIndex(int index, double temp) {
         this.temperatures[index] = temp;
     }
 

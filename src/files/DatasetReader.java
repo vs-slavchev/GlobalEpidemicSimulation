@@ -102,8 +102,8 @@ public class DatasetReader {
                         c.getEnvironment().addAvgYearlyTemp(Double.parseDouble(tempFileData[1]));
                         for (int i = 0; i < 12; i++) {
                             //adding the left temps from Jan- Dec in the monthTemperatures[]
-                            if (i < tempFileData.length-2) {
-                                c.getEnvironment().setTemperaturesbyIndex(i,Double.parseDouble(tempFileData[i + 2]));
+                            if (i < tempFileData.length - 2) {
+                                c.getEnvironment().setTemperaturesbyIndex(i, Double.parseDouble(tempFileData[i + 2]));
                             }
                         }
                     }

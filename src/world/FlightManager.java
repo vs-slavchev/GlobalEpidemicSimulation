@@ -5,7 +5,6 @@ import map.MapCanvas;
 
 import java.awt.geom.Point2D;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class FlightManager {
@@ -37,6 +36,7 @@ public class FlightManager {
         }
         flights.removeIf(Flight::isLanded);
     }
+
     public List<Flight> getFlights() {
         return flights;
     }

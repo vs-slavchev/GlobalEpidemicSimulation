@@ -37,9 +37,7 @@ import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
 
-import static main.ConstantValues.GRAPH_HEIGHT;
-import static main.ConstantValues.GRAPH_WIDTH;
-import static main.ConstantValues.LEFT_SIDE;
+import static main.ConstantValues.*;
 
 /**
  * Owner: Veselin
@@ -51,6 +49,7 @@ public class MapCanvas {
 
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
+    private final int BOTTOM_SIDE;
     private Canvas canvas;
     private MapContent map;
     private GraphicsContext graphics;
@@ -61,8 +60,6 @@ public class MapCanvas {
     private boolean needsRepaint = true;
     private double dragDistanceX;
     private double dragDistanceY;
-    private final int BOTTOM_SIDE;
-
     private ArrayList<Integer> percentageInfected;
     private ArrayList<Integer> percentageCured;
     private Country selectedCountry;
@@ -161,7 +158,7 @@ public class MapCanvas {
             if (city.isCapital()) {
                 double circleWidth = geoFinder.createWorldToScreenAffineTransform().getScaleX() / 15;
                 graphics.setLineWidth(circleWidth);
-                radius = radius + (int)Math.ceil(circleWidth * 5);
+                radius = radius + (int) Math.ceil(circleWidth * 5);
                 graphics.strokeOval(screenCity.getX() - radius / 2,
                         screenCity.getY() - radius / 2,
                         radius, radius);
@@ -232,8 +229,9 @@ public class MapCanvas {
         for (Flight flight : flights) {
             if (flight.isInfected()) {
                 graphics.setFill(javafx.scene.paint.Color.RED);
+            } else {
+                graphics.setFill(javafx.scene.paint.Color.WHITE);
             }
-            else {graphics.setFill(javafx.scene.paint.Color.WHITE);}
             double pointRadius = 0.5;
             for (double currentProgress = 0.0;
                  currentProgress <= flight.getProgress();
@@ -304,8 +302,9 @@ public class MapCanvas {
 
     /**
      * A percentage value is pushed to the argument list.
+     *
      * @param percentageList the list to push to
-     * @param element the value to push in
+     * @param element        the value to push in
      */
     public void pushNewPercentageValue(List<Integer> percentageList, int element) {
         if (percentageList.size() >= 100) {
