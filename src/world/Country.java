@@ -21,6 +21,7 @@ public class Country implements Serializable {
     private long curedPopulation;
     private long migrationRate;
     private Environment environment;
+
     private List<Country> neighbours;
     private List<City> cities;
 
@@ -42,6 +43,10 @@ public class Country implements Serializable {
 
     public long getTotalPopulation() {
         return population;
+    }
+
+    public List<Country> getNeighbours() {
+        return neighbours;
     }
 
     public void setNeighbours(Country country) {
