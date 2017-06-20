@@ -31,10 +31,6 @@ public class Medicine {
         return properties;
     }
 
-    public DiseaseType getTargetedTypesType() {
-        return targetedTypes;
-    }
-
     @Override
     public String toString() {
         return name + ", " + targetedTypes + ", " + targetedSymptoms + ", " + properties.toString();

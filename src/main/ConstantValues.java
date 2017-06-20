@@ -28,25 +28,15 @@ public class ConstantValues {
     public static final int GRAPH_HEIGHT = 250;
 
     //theme 1 colors
-    public static final Color LINE_COLOR2 = new Color(220, 20, 60);
-    public static final Color FILL_COLOR2 = new Color(25, 25, 112);
-    public static final Color SEA_COLOR2 = new Color(30, 144, 255);
-    public static final Paint POINTS_COLOR2 = javafx.scene.paint.Color.rgb(0, 255, 0, 0.4);
-    public static final Paint SELECTED_COUNTRY_POINTS_COLOR2 = javafx.scene.paint.Color.rgb(255, 255, 255, 0.8);
     public static final Paint GRAPH_STROKE_COLOR1 = javafx.scene.paint.Color.rgb(220, 20, 60, 1);
     public static final Paint GRAPH_TEXT_COLOR1 = javafx.scene.paint.Color.rgb(25, 25, 112, 1);
-    public static final Color SELECTED_COUNTRY_COLOR2 = new Color(220, 20, 60);
-    //public static final Color SELECTED_COUNTRY_LINE_COLOR1 = new Color(0, 128, 128);
     public static final Paint BOX_COLOR1 = javafx.scene.paint.Color.rgb(220, 20, 60, 0.9);
     public static final Paint BOX_TITLES_COLOR1 = javafx.scene.paint.Color.rgb(255,255,100, 1);
     public static final Paint BOX_INFO_COLOR1 = javafx.scene.paint.Color.rgb(200,255,255, 1);
     public static final Paint PLANE_LINE1 = javafx.scene.paint.Color.rgb(255, 255, 255, 0.05);
-
-    //theme 2 colors
     public static final Color LINE_COLOR1 = new Color(0, 128, 128);
     public static final Color FILL_COLOR1 = new Color(154,205,50);
     public static final Color SEA_COLOR1 = new Color(30,144,255);
-    //public static final Paint POINTS_COLOR1 = javafx.scene.paint.Color.rgb(25, 25, 112, 1);
     public static final Paint POINTS_COLOR1 = javafx.scene.paint.Color.rgb(255, 255, 255, 1);
     public static final Color SELECTED_COUNTRY_COLOR1 = new Color(240,255,240);
     public static final Paint SELECTED_COUNTRY_POINTS_COLOR1 = javafx.scene.paint.Color.rgb(0, 128, 128, 0.8);
@@ -88,19 +78,5 @@ public class ConstantValues {
 
     public static Point2D getRandomAirportCoordinates() {
         return ConstantValues.AIRPORTS[new Random().nextInt(ConstantValues.AIRPORTS.length)];
-    }
-
-    private static Point2D createRoundedPoint(double x, double y) {
-        return new Point2D.Double(
-                Math.round(x),
-                Math.round(y));
-    }
-
-    public static boolean doublePointsEqual(Point2D first, Point2D second) {
-        Point2D roundedFirst = createRoundedPoint(first.getX(), first.getY());
-        Point2D roundedSecond = createRoundedPoint(second.getX(), second.getY());
-
-        return Double.compare(roundedFirst.getX(), roundedSecond.getX()) == 0
-                && Double.compare(roundedFirst.getY(), roundedSecond.getY()) == 0;
     }
 }

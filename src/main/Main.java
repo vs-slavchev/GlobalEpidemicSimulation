@@ -159,6 +159,7 @@ public class Main extends Application {
                         } else {
                             isSaved = false;
                             medicineSpread.medicineAlgorithm();
+                            medicineSpread.addNewCountriesToBeCured();
                         }
                     }
                     try {
