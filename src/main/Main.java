@@ -229,9 +229,52 @@ public class Main extends Application {
         imagePlay.setFitWidth(25);
         Button start = new Button();
         start.setGraphic(imagePlay);
+<<<<<<< HEAD
         start.setId(buttonId);
         return start;
     }
+=======
+        start.setId("start-button");
+
+        FileInputStream pauseInput = null;
+        try {
+            pauseInput = new FileInputStream(ConstantValues.PAUSE_BUTTON_IMAGE_FILE);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Image image = new Image(pauseInput);
+        ImageView imagePause = new ImageView(image);
+        imagePause.setFitHeight(25);
+        imagePause.setFitWidth(25);
+        Button pause = new Button();
+        pause.setGraphic(imagePause);
+        pause.setId("pause-button");
+
+
+
+
+
+
+        // set up the buttons on the buttonBar
+        Button disease = new Button("Diseases");
+        Button medicine = new Button("Medicines");
+        Button smaller = new Button("<");
+        Button stop = new Button("Medicines");
+        Button bigger = new Button("Medicines");
+        timer.setTranslateX(1200);
+        setUpEventHandlers(primaryStage, disease, start, pause);
+
+        // addComponent the file menu, separators and the object buttons to the button bar
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(pause, start);
+        stackPane.setMaxHeight(0);
+
+        buttonBar.getChildren().addAll(
+                fileMenuButton,
+                disease, medicine, smaller, stop, bigger, stackPane,timer);
+        buttonBar.setSpacing(10);
+        buttonBar.setPadding(new Insets(10, 10, 10, 10));
+>>>>>>> parent of c269b04... Timer position fixed?
 
     /**
      * Starts the simulation
